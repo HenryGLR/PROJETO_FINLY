@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Finly | Seu dinheiro sob controle</title>
+
+  <meta name="description" content="Finly é um painel financeiro inteligente para organizar salário, gastos, dívidas, metas, investimentos e planejamento mensal." />
+  <meta name="theme-color" content="#050816" />
+
+  <link rel="icon" type="image/png" href="src/assets/favicon.png" />
+  <link rel="apple-touch-icon" href="src/assets/favicon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+
+  <link rel="stylesheet" href="src/css/style.css" />
+  <script src="src/js/script.js" defer></script>
+</head>
+
+<body>
+  <div class="background">
+    <div class="bg-orb bg-orb-one"></div>
+    <div class="bg-orb bg-orb-two"></div>
+    <div class="bg-orb bg-orb-three"></div>
+    <div class="bg-grid"></div>
+  </div>
+
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="#dashboard" class="brand" data-page-link="dashboard">
+          <div class="brand-icon">
+            <img src="src/assets/logo-finly.png" alt="Logo Finly" />
+          </div>
+
+          <div class="brand-copy">
+            <strong>Finly</strong>
+            <span>Money OS</span>
+          </div>
+        </a>
+
+        <button class="icon-button sidebar-close" type="button" id="closeSidebar" aria-label="Fechar menu">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-menu" aria-label="Menu principal">
+        <a href="#dashboard" class="sidebar-link active" data-page-link="dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="#receitas" class="sidebar-link" data-page-link="receitas">
+          <i data-lucide="wallet"></i>
+          <span>Receitas</span>
+        </a>
+
+        <a href="#gastos" class="sidebar-link" data-page-link="gastos">
+          <i data-lucide="receipt-text"></i>
+          <span>Gastos</span>
+        </a>
+
+        <a href="#dividas" class="sidebar-link" data-page-link="dividas">
+          <i data-lucide="credit-card"></i>
+          <span>Dívidas</span>
+        </a>
+
+        <a href="#metas" class="sidebar-link" data-page-link="metas">
+          <i data-lucide="target"></i>
+          <span>Metas</span>
+        </a>
+
+        <a href="#graficos" class="sidebar-link" data-page-link="graficos">
+          <i data-lucide="chart-no-axes-combined"></i>
+          <span>Gráficos</span>
+        </a>
+
+        <a href="#plano" class="sidebar-link" data-page-link="plano">
+          <i data-lucide="clipboard-list"></i>
+          <span>Plano do mês</span>
+        </a>
+
+        <a href="#finly-ai" class="sidebar-link" data-page-link="finly-ai">
+          <i data-lucide="bot"></i>
+          <span>Finly AI</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-icon">
+          <i data-lucide="crown"></i>
+        </div>
+
+        <strong>Finly Pro</strong>
+
+        <p>Relatórios inteligentes, alertas de vencimento, metas automáticas e visão mensal premium.</p>
+
+        <button class="button button-light" type="button" data-open-modal="proModal">
+          Ver recursos
+        </button>
+      </div>
+
+      <div class="sidebar-user">
+        <div class="avatar" id="userAvatar">H</div>
+
+        <div>
+          <strong id="sidebarUserName">Henry</strong>
+          <span id="sidebarMonthLabel">Mês atual</span>
+        </div>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button menu-button" type="button" id="openSidebar" aria-label="Abrir menu">
+            <i data-lucide="menu"></i>
+          </button>
+
+          <div>
+            <span class="eyebrow">Finly Intelligence 1.0</span>
+            <h1>Seu dinheiro sob controle.</h1>
+          </div>
+        </div>
+
+        <div class="topbar-actions">
+          <label class="month-control">
+            <span>Mês</span>
+            <input type="month" id="currentMonth" />
+          </label>
+
+          <button class="button button-ghost" type="button" id="loadDemoData">
+            <i data-lucide="sparkles"></i>
+            <span>Demo</span>
+          </button>
+
+          <button class="button button-ghost" type="button" id="exportData">
+            <i data-lucide="download"></i>
+            <span>Exportar</span>
+          </button>
+
+          <button class="button button-danger" type="button" id="resetData">
+            <i data-lucide="rotate-ccw"></i>
+            <span>Resetar</span>
+          </button>
+
+          <button class="button button-primary" type="button" data-open-modal="quickModal">
+            <i data-lucide="plus"></i>
+            <span>Adicionar</span>
+          </button>
+        </div>
+      </header>
+
+      <section class="page active" id="dashboard" data-page="dashboard">
+        <section class="hero">
+          <div class="hero-content">
+            <div class="hero-badge">
+              <i data-lucide="zap"></i>
+              <span>Seu painel financeiro inteligente</span>
+            </div>
+
+            <h2>Organize salário, dívidas, gastos e metas em uma única tela.</h2>
+
+            <p>O Finly transforma sua vida financeira em um painel visual, moderno e simples de entender. Cadastre seus dados, acompanhe gráficos e receba um plano prático para o mês.</p>
+
+            <div class="hero-actions">
+              <button class="button button-primary button-large" type="button" data-open-modal="setupModal">
+                <i data-lucide="rocket"></i>
+                Começar planejamento
+              </button>
+
+              <button class="button button-glass button-large" type="button" id="heroDemoButton">
+                <i data-lucide="play-circle"></i>
+                Ver demonstração
+              </button>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="hero-orbit">
+              <div class="orbit-card">
+                <span>Saldo previsto</span>
+                <strong id="heroBalance">R$ 0,00</strong>
+                <small id="heroBalanceLabel">Atualizado em tempo real</small>
+              </div>
+
+              <div class="orbit-pill orbit-pill-one">
+                <i data-lucide="shield-check"></i>
+                <span>Reserva</span>
+              </div>
+
+              <div class="orbit-pill orbit-pill-two">
+                <i data-lucide="target"></i>
+                <span>Metas</span>
+              </div>
+
+              <div class="orbit-pill orbit-pill-three">
+                <i data-lucide="credit-card"></i>
+                <span>Dívidas</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="summary-grid">
+          <article class="summary-card">
+            <div class="summary-top">
+              <span>Renda mensal</span>
+              <div class="summary-icon">
+                <i data-lucide="banknote"></i>
+              </div>
+            </div>
+
+            <strong id="incomeTotal">R$ 0,00</strong>
+            <p>Salário, freelas e entradas do mês.</p>
+          </article>
+
+          <article class="summary-card">
+            <div class="summary-top">
+              <span>Gastos totais</span>
+              <div class="summary-icon">
+                <i data-lucide="receipt-text"></i>
+              </div>
+            </div>
+
+            <strong id="expenseTotal">R$ 0,00</strong>
+            <p>Contas fixas, lazer e gastos variáveis.</p>
+          </article>
+
+          <article class="summary-card">
+            <div class="summary-top">
+              <span>Dívidas pendentes</span>
+              <div class="summary-icon">
+                <i data-lucide="credit-card"></i>
+              </div>
+            </div>
+
+            <strong id="debtTotal">R$ 0,00</strong>
+            <p>Parcelas e compromissos em aberto.</p>
+          </article>
+
+          <article class="summary-card highlight">
+            <div class="summary-top">
+              <span>Disponível</span>
+              <div class="summary-icon">
+                <i data-lucide="piggy-bank"></i>
+              </div>
+            </div>
+
+            <strong id="availableTotal">R$ 0,00</strong>
+            <p>Estimativa livre após compromissos.</p>
+          </article>
+        </section>
+
+        <section class="dashboard-grid">
+          <article class="panel health-panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Score financeiro</span>
+                <h3>Saúde do mês</h3>
+              </div>
+
+              <span class="status-pill" id="healthStatus">Aguardando dados</span>
+            </div>
+
+            <div class="health-content">
+              <div class="health-ring">
+                <svg viewBox="0 0 160 160" aria-hidden="true">
+                  <circle class="ring-bg" cx="80" cy="80" r="68"></circle>
+                  <circle class="ring-progress" id="healthRing" cx="80" cy="80" r="68"></circle>
+                </svg>
+
+                <div class="ring-text">
+                  <strong id="healthScore">0</strong>
+                  <span>/100</span>
+                </div>
+              </div>
+
+              <div class="health-list">
+                <div>
+                  <span>Renda comprometida</span>
+                  <strong id="committedPercent">0%</strong>
+                </div>
+
+                <div>
+                  <span>Margem livre</span>
+                  <strong id="freePercent">0%</strong>
+                </div>
+
+                <div>
+                  <span>Prioridade</span>
+                  <strong id="monthPriority">Cadastrar dados</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="insight-box">
+              <i data-lucide="lightbulb"></i>
+              <p id="mainInsight">Cadastre sua renda, gastos e dívidas para receber uma análise automática.</p>
+            </div>
+          </article>
+
+          <article class="panel month-plan-preview">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Plano rápido</span>
+                <h3>Próximas ações</h3>
+              </div>
+
+              <button class="button button-ghost button-small" type="button" data-page-link="plano">
+                Ver plano
+              </button>
+            </div>
+
+            <div class="plan-preview-list" id="dashboardPlanList">
+              <div class="plan-preview-item">
+                <i data-lucide="circle-dot"></i>
+                <span>Cadastre seus dados para montar seu plano.</span>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="panel allocation-panel">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow">Divisão inteligente</span>
+              <h3>Para onde seu salário deveria ir</h3>
+            </div>
+
+            <button class="button button-ghost button-small" type="button" id="recalculatePlan">
+              <i data-lucide="refresh-cw"></i>
+              Recalcular
+            </button>
+          </div>
+
+          <div class="allocation-grid">
+            <article class="allocation-item">
+              <div>
+                <span>Essenciais</span>
+                <strong id="essentialPercent">50%</strong>
+              </div>
+              <div class="progress-bar">
+                <span id="essentialBar"></span>
+              </div>
+              <small id="essentialValue">R$ 0,00</small>
+            </article>
+
+            <article class="allocation-item">
+              <div>
+                <span>Dívidas</span>
+                <strong id="debtPercent">20%</strong>
+              </div>
+              <div class="progress-bar">
+                <span id="debtBar"></span>
+              </div>
+              <small id="debtValue">R$ 0,00</small>
+            </article>
+
+            <article class="allocation-item">
+              <div>
+                <span>Reserva</span>
+                <strong id="reservePercent">15%</strong>
+              </div>
+              <div class="progress-bar">
+                <span id="reserveBar"></span>
+              </div>
+              <small id="reserveValue">R$ 0,00</small>
+            </article>
+
+            <article class="allocation-item">
+              <div>
+                <span>Investimentos</span>
+                <strong id="investPercent">10%</strong>
+              </div>
+              <div class="progress-bar">
+                <span id="investBar"></span>
+              </div>
+              <small id="investValue">R$ 0,00</small>
+            </article>
+
+            <article class="allocation-item">
+              <div>
+                <span>Lazer</span>
+                <strong id="leisurePercent">5%</strong>
+              </div>
+              <div class="progress-bar">
+                <span id="leisureBar"></span>
+              </div>
+              <small id="leisureValue">R$ 0,00</small>
+            </article>
+          </div>
+        </section>
+      </section>
+
+      <section class="page" id="receitas" data-page="receitas">
+        <div class="page-heading">
+          <div>
+            <span class="eyebrow">Entradas</span>
+            <h2>Receitas</h2>
+            <p>Cadastre salário, renda extra, freelas, vendas de site e qualquer entrada de dinheiro.</p>
+          </div>
+
+          <button class="button button-primary" type="button" data-open-modal="incomeModal" data-new-income>
+            <i data-lucide="plus"></i>
+            Nova receita
+          </button>
+        </div>
+
+        <div class="content-grid">
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Lista</span>
+                <h3>Receitas cadastradas</h3>
+              </div>
+
+              <i data-lucide="wallet"></i>
+            </div>
+
+            <div class="item-list" id="incomeList"></div>
+          </article>
+
+          <aside class="panel side-panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Visão rápida</span>
+                <h3>Força de renda</h3>
+              </div>
+
+              <i data-lucide="trending-up"></i>
+            </div>
+
+            <div class="big-number">
+              <span>Total de entradas</span>
+              <strong id="incomePageTotal">R$ 0,00</strong>
+            </div>
+
+            <div class="mini-stats">
+              <div>
+                <span>Principal fonte</span>
+                <strong id="mainIncomeSource">Não definida</strong>
+              </div>
+
+              <div>
+                <span>Renda extra</span>
+                <strong id="extraIncomeTotal">R$ 0,00</strong>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="page" id="gastos" data-page="gastos">
+        <div class="page-heading">
+          <div>
+            <span class="eyebrow">Saídas</span>
+            <h2>Gastos</h2>
+            <p>Controle contas fixas, assinaturas, lazer, transporte, alimentação e gastos variáveis.</p>
+          </div>
+
+          <button class="button button-primary" type="button" data-open-modal="expenseModal" data-new-expense>
+            <i data-lucide="plus"></i>
+            Novo gasto
+          </button>
+        </div>
+
+        <div class="content-grid">
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Lista</span>
+                <h3>Gastos cadastrados</h3>
+              </div>
+
+              <i data-lucide="receipt-text"></i>
+            </div>
+
+            <div class="filters">
+              <button class="chip active" type="button" data-expense-filter="all">Todos</button>
+              <button class="chip" type="button" data-expense-filter="fixed">Fixos</button>
+              <button class="chip" type="button" data-expense-filter="variable">Variáveis</button>
+              <button class="chip" type="button" data-expense-filter="leisure">Lazer</button>
+            </div>
+
+            <div class="item-list" id="expenseList"></div>
+          </article>
+
+          <aside class="panel side-panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Orçamento</span>
+                <h3>Limite inteligente</h3>
+              </div>
+
+              <i data-lucide="gauge"></i>
+            </div>
+
+            <div class="big-number">
+              <span>Total de gastos</span>
+              <strong id="expensePageTotal">R$ 0,00</strong>
+            </div>
+
+            <div class="limit-box">
+              <div>
+                <span>Uso do orçamento</span>
+                <strong id="budgetUsage">0%</strong>
+              </div>
+
+              <div class="progress-bar">
+                <span id="budgetUsageBar"></span>
+              </div>
+            </div>
+
+            <p class="muted" id="expenseAdvice">Cadastre renda e gastos para receber um limite sugerido.</p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="page" id="dividas" data-page="dividas">
+        <div class="page-heading">
+          <div>
+            <span class="eyebrow">Compromissos</span>
+            <h2>Dívidas e parcelas</h2>
+            <p>Veja vencimentos, parcelas, status de pagamento e prioridades de quitação.</p>
+          </div>
+
+          <button class="button button-primary" type="button" data-open-modal="debtModal" data-new-debt>
+            <i data-lucide="plus"></i>
+            Nova dívida
+          </button>
+        </div>
+
+        <div class="mini-grid">
+          <article class="mini-card">
+            <span>Total pendente</span>
+            <strong id="debtPageTotal">R$ 0,00</strong>
+            <small>Valor ainda em aberto</small>
+          </article>
+
+          <article class="mini-card">
+            <span>Próximo vencimento</span>
+            <strong id="nextDueDate">--</strong>
+            <small>Conta mais urgente</small>
+          </article>
+
+          <article class="mini-card">
+            <span>Dívidas pagas</span>
+            <strong id="paidDebts">0</strong>
+            <small>Compromissos quitados</small>
+          </article>
+
+          <article class="mini-card">
+            <span>Risco do mês</span>
+            <strong id="debtRisk">Baixo</strong>
+            <small>Baseado na renda</small>
+          </article>
+        </div>
+
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow">Organização</span>
+              <h3>Painel de dívidas</h3>
+            </div>
+
+            <button class="button button-ghost button-small" type="button" id="markAllPaid">
+              <i data-lucide="check-check"></i>
+              Marcar pagas
+            </button>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Dívida</th>
+                  <th>Categoria</th>
+                  <th>Parcela</th>
+                  <th>Vencimento</th>
+                  <th>Status</th>
+                  <th>Prioridade</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+
+              <tbody id="debtTable"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="page" id="metas" data-page="metas">
+        <div class="page-heading">
+          <div>
+            <span class="eyebrow">Objetivos</span>
+            <h2>Metas financeiras</h2>
+            <p>Crie metas como reserva de emergência, viagem, carro, notebook, celular ou qualquer conquista.</p>
+          </div>
+
+          <button class="button button-primary" type="button" data-open-modal="goalModal" data-new-goal>
+            <i data-lucide="plus"></i>
+            Nova meta
+          </button>
+        </div>
+
+        <div class="goals-grid" id="goalsGrid">
+          <article class="goal-card featured-goal">
+            <div class="goal-icon">
+              <i data-lucide="shield-check"></i>
+            </div>
+
+            <div>
+              <span>Meta recomendada</span>
+              <h3>Reserva de emergência</h3>
+              <p>Antes de pensar grande, o Finly recomenda criar pelo menos 1 mês de segurança financeira.</p>
+
+              <div class="goal-progress">
+                <div>
+                  <span>Progresso estimado</span>
+                  <strong id="emergencyProgressText">0%</strong>
+                </div>
+
+                <div class="progress-bar">
+                  <span id="emergencyProgressBar"></span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="page" id="graficos" data-page="graficos">
+        <div class="page-heading">
+          <div>
+            <span class="eyebrow">Visual financeiro</span>
+            <h2>Gráficos e relatórios</h2>
+            <p>Entenda sua vida financeira de forma visual, clara e moderna.</p>
+          </div>
+
+          <button class="button button-ghost" type="button" id="refreshCharts">
+            <i data-lucide="refresh-cw"></i>
+            Atualizar gráficos
+          </button>
+        </div>
+
+        <div class="charts-grid">
+          <article class="panel chart-panel chart-large">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Distribuição</span>
+                <h3>Para onde seu dinheiro foi</h3>
+              </div>
+
+              <i data-lucide="pie-chart"></i>
+            </div>
+
+            <div class="chart-box">
+              <canvas id="spendingChart"></canvas>
+            </div>
+          </article>
+
+          <article class="panel chart-panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Evolução</span>
+                <h3>Saldo mensal</h3>
+              </div>
+
+              <i data-lucide="line-chart"></i>
+            </div>
+
+            <div class="chart-box">
+              <canvas id="balanceChart"></canvas>
+            </div>
+          </article>
+
+          <article class="panel chart-panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Categorias</span>
+                <h3>Gastos por tipo</h3>
+              </div>
+
+              <i data-lucide="bar-chart-3"></i>
+            </div>
+
+            <div class="chart-box">
+              <canvas id="categoryChart"></canvas>
+            </div>
+          </article>
+
+          <article class="panel chart-panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Dívidas</span>
+                <h3>Plano de quitação</h3>
+              </div>
+
+              <i data-lucide="activity"></i>
+            </div>
+
+            <div class="chart-box">
+              <canvas id="debtChart"></canvas>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="page" id="plano" data-page="plano">
+        <div class="page-heading">
+          <div>
+            <span class="eyebrow">Estratégia mensal</span>
+            <h2>Plano do mês</h2>
+            <p>Um resumo prático para saber o que pagar, quanto guardar e onde tomar cuidado.</p>
+          </div>
+
+          <button class="button button-primary" type="button" id="generateMonthPlan">
+            <i data-lucide="sparkles"></i>
+            Gerar plano
+          </button>
+        </div>
+
+        <div class="plan-grid">
+          <article class="panel plan-main">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Diagnóstico</span>
+                <h3>Resumo inteligente</h3>
+              </div>
+
+              <i data-lucide="clipboard-check"></i>
+            </div>
+
+            <div class="plan-message" id="monthPlanMessage">
+              <p>Cadastre seus dados financeiros para o Finly montar um plano claro para seu mês.</p>
+            </div>
+          </article>
+
+          <aside class="plan-side">
+            <article class="panel">
+              <div class="panel-header">
+                <div>
+                  <span class="eyebrow">Checklist</span>
+                  <h3>Ações recomendadas</h3>
+                </div>
+
+                <i data-lucide="list-checks"></i>
+              </div>
+
+              <div class="task-list" id="monthTaskList">
+                <label>
+                  <input type="checkbox" />
+                  <span>Cadastrar renda do mês</span>
+                </label>
+
+                <label>
+                  <input type="checkbox" />
+                  <span>Adicionar gastos fixos</span>
+                </label>
+
+                <label>
+                  <input type="checkbox" />
+                  <span>Adicionar dívidas</span>
+                </label>
+
+                <label>
+                  <input type="checkbox" />
+                  <span>Criar meta de reserva</span>
+                </label>
+              </div>
+            </article>
+
+            <article class="panel quote-card">
+              <i data-lucide="quote"></i>
+              <p>Dinheiro sem organização vira ansiedade. Dinheiro com direção vira liberdade.</p>
+              <span>Finly</span>
+            </article>
+          </aside>
+        </div>
+      </section>
+
+      <section class="page" id="finly-ai" data-page="finly-ai">
+        <div class="page-heading">
+          <div>
+            <span class="eyebrow">Assistente inteligente</span>
+            <h2>Finly AI</h2>
+            <p>Uma análise automática para mostrar o que fazer com seu dinheiro.</p>
+          </div>
+
+          <button class="button button-primary" type="button" id="generateAnalysis">
+            <i data-lucide="sparkles"></i>
+            Gerar análise
+          </button>
+        </div>
+
+        <div class="ai-grid">
+          <article class="panel ai-panel">
+            <div class="ai-header">
+              <div class="ai-avatar">
+                <i data-lucide="bot"></i>
+              </div>
+
+              <div>
+                <span class="eyebrow">Finly AI</span>
+                <h3>Diagnóstico do seu mês</h3>
+              </div>
+            </div>
+
+            <div class="ai-message" id="aiMessage">
+              <p>Cadastre renda, gastos, dívidas e metas. Depois eu gero uma análise dizendo quanto você pode investir, quanto deve guardar e o que precisa quitar primeiro.</p>
+            </div>
+
+            <div class="suggestions">
+              <button type="button" data-ai-question="Como está minha situação financeira?">Como está minha situação?</button>
+              <button type="button" data-ai-question="Quanto posso investir esse mês?">Quanto posso investir?</button>
+              <button type="button" data-ai-question="Qual dívida devo pagar primeiro?">Qual dívida pagar primeiro?</button>
+              <button type="button" data-ai-question="Como posso economizar mais?">Como economizar mais?</button>
+            </div>
+
+            <form class="ai-form" id="aiForm">
+              <input type="text" id="aiInput" placeholder="Pergunte algo para o Finly..." autocomplete="off" />
+
+              <button type="submit" aria-label="Enviar pergunta">
+                <i data-lucide="send"></i>
+              </button>
+            </form>
+          </article>
+
+          <aside class="ai-side">
+            <article class="panel">
+              <div class="panel-header">
+                <div>
+                  <span class="eyebrow">Memória financeira</span>
+                  <h3>Dados analisados</h3>
+                </div>
+
+                <i data-lucide="database"></i>
+              </div>
+
+              <div class="ai-data-list">
+                <div>
+                  <span>Receitas</span>
+                  <strong id="aiIncomeCount">0</strong>
+                </div>
+
+                <div>
+                  <span>Gastos</span>
+                  <strong id="aiExpenseCount">0</strong>
+                </div>
+
+                <div>
+                  <span>Dívidas</span>
+                  <strong id="aiDebtCount">0</strong>
+                </div>
+
+                <div>
+                  <span>Metas</span>
+                  <strong id="aiGoalCount">0</strong>
+                </div>
+              </div>
+            </article>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Menu mobile">
+    <a href="#dashboard" class="mobile-link active" data-page-link="dashboard">
+      <i data-lucide="layout-dashboard"></i>
+      <span>Início</span>
+    </a>
+
+    <a href="#gastos" class="mobile-link" data-page-link="gastos">
+      <i data-lucide="receipt"></i>
+      <span>Gastos</span>
+    </a>
+
+    <a href="#dividas" class="mobile-link" data-page-link="dividas">
+      <i data-lucide="credit-card"></i>
+      <span>Dívidas</span>
+    </a>
+
+    <a href="#metas" class="mobile-link" data-page-link="metas">
+      <i data-lucide="target"></i>
+      <span>Metas</span>
+    </a>
+
+    <a href="#finly-ai" class="mobile-link" data-page-link="finly-ai">
+      <i data-lucide="bot"></i>
+      <span>AI</span>
+    </a>
+  </nav>
+
+  <dialog class="modal" id="quickModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">Adicionar rápido</span>
+          <h3>O que você quer cadastrar?</h3>
+        </div>
+
+        <button class="icon-button" type="button" data-close-modal="quickModal" aria-label="Fechar">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="quick-grid">
+        <button type="button" data-switch-modal="incomeModal" data-new-income>
+          <i data-lucide="wallet"></i>
+          <strong>Receita</strong>
+          <span>Salário, freela ou venda.</span>
+        </button>
+
+        <button type="button" data-switch-modal="expenseModal" data-new-expense>
+          <i data-lucide="receipt-text"></i>
+          <strong>Gasto</strong>
+          <span>Conta fixa ou variável.</span>
+        </button>
+
+        <button type="button" data-switch-modal="debtModal" data-new-debt>
+          <i data-lucide="credit-card"></i>
+          <strong>Dívida</strong>
+          <span>Parcela ou pendência.</span>
+        </button>
+
+        <button type="button" data-switch-modal="goalModal" data-new-goal>
+          <i data-lucide="target"></i>
+          <strong>Meta</strong>
+          <span>Reserva ou objetivo.</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="modal" id="setupModal">
+    <form class="modal-card" id="setupForm">
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">Configuração</span>
+          <h3>Configure seu mês</h3>
+        </div>
+
+        <button class="icon-button" type="button" data-close-modal="setupModal" aria-label="Fechar">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <label class="field">
+        <span>Seu nome</span>
+        <input type="text" id="userName" placeholder="Ex: Henry" />
+      </label>
+
+      <label class="field">
+        <span>Renda mensal base</span>
+        <div class="money-field">
+          <span>R$</span>
+          <input type="number" id="monthlyIncome" placeholder="1700" min="0" step="0.01" />
+        </div>
+      </label>
+
+      <div class="form-row">
+        <label class="field">
+          <span>Perfil financeiro</span>
+          <select id="financialProfile">
+            <option value="conservative">Conservador</option>
+            <option value="balanced" selected>Equilibrado</option>
+            <option value="growth">Acelerado</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Foco do mês</span>
+          <select id="monthFocus">
+            <option value="organizar">Organizar</option>
+            <option value="quitar">Quitar dívidas</option>
+            <option value="reserva">Criar reserva</option>
+            <option value="investir">Investir</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button class="button button-ghost" type="button" data-close-modal="setupModal">Cancelar</button>
+
+        <button class="button button-primary" type="submit">
+          <i data-lucide="save"></i>
+          Salvar
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="incomeModal">
+    <form class="modal-card" id="incomeForm">
+      <input type="hidden" id="incomeId" />
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">Receita</span>
+          <h3 id="incomeModalTitle">Nova receita</h3>
+        </div>
+
+        <button class="icon-button" type="button" data-close-modal="incomeModal" aria-label="Fechar">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <label class="field">
+        <span>Nome</span>
+        <input type="text" id="incomeName" placeholder="Ex: Salário, freela, venda de site" required />
+      </label>
+
+      <label class="field">
+        <span>Valor</span>
+        <div class="money-field">
+          <span>R$</span>
+          <input type="number" id="incomeAmount" placeholder="1700" min="0" step="0.01" required />
+        </div>
+      </label>
+
+      <div class="form-row">
+        <label class="field">
+          <span>Tipo</span>
+          <select id="incomeType">
+            <option value="salary">Salário</option>
+            <option value="freelance">Freela</option>
+            <option value="business">Venda</option>
+            <option value="extra">Renda extra</option>
+            <option value="other">Outro</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Data</span>
+          <input type="date" id="incomeDate" />
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button class="button button-ghost" type="button" data-close-modal="incomeModal">Cancelar</button>
+
+        <button class="button button-primary" type="submit" id="incomeSubmitText">
+          <i data-lucide="plus"></i>
+          Salvar receita
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="expenseModal">
+    <form class="modal-card" id="expenseForm">
+      <input type="hidden" id="expenseId" />
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">Gasto</span>
+          <h3 id="expenseModalTitle">Novo gasto</h3>
+        </div>
+
+        <button class="icon-button" type="button" data-close-modal="expenseModal" aria-label="Fechar">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <label class="field">
+        <span>Nome</span>
+        <input type="text" id="expenseName" placeholder="Ex: Academia, Spotify, transporte" required />
+      </label>
+
+      <label class="field">
+        <span>Valor</span>
+        <div class="money-field">
+          <span>R$</span>
+          <input type="number" id="expenseAmount" placeholder="170" min="0" step="0.01" required />
+        </div>
+      </label>
+
+      <div class="form-row">
+        <label class="field">
+          <span>Categoria</span>
+          <select id="expenseCategory">
+            <option value="fixed">Fixo</option>
+            <option value="food">Alimentação</option>
+            <option value="transport">Transporte</option>
+            <option value="leisure">Lazer</option>
+            <option value="health">Saúde</option>
+            <option value="education">Educação</option>
+            <option value="subscription">Assinatura</option>
+            <option value="other">Outro</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Data</span>
+          <input type="date" id="expenseDate" />
+        </label>
+      </div>
+
+      <label class="check-field">
+        <input type="checkbox" id="expenseRecurring" />
+        <span>
+          <strong>Gasto recorrente</strong>
+          <small>Marque para contas que voltam todo mês.</small>
+        </span>
+      </label>
+
+      <div class="modal-actions">
+        <button class="button button-ghost" type="button" data-close-modal="expenseModal">Cancelar</button>
+
+        <button class="button button-primary" type="submit" id="expenseSubmitText">
+          <i data-lucide="plus"></i>
+          Salvar gasto
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="debtModal">
+    <form class="modal-card" id="debtForm">
+      <input type="hidden" id="debtId" />
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">Dívida</span>
+          <h3 id="debtModalTitle">Nova dívida</h3>
+        </div>
+
+        <button class="icon-button" type="button" data-close-modal="debtModal" aria-label="Fechar">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <label class="field">
+        <span>Nome</span>
+        <input type="text" id="debtName" placeholder="Ex: Renner, cartão, academia" required />
+      </label>
+
+      <div class="form-row">
+        <label class="field">
+          <span>Valor da parcela</span>
+          <div class="money-field">
+            <span>R$</span>
+            <input type="number" id="debtAmount" placeholder="98.90" min="0" step="0.01" required />
+          </div>
+        </label>
+
+        <label class="field">
+          <span>Valor total</span>
+          <div class="money-field">
+            <span>R$</span>
+            <input type="number" id="debtTotalAmount" placeholder="500" min="0" step="0.01" />
+          </div>
+        </label>
+      </div>
+
+      <div class="form-row">
+        <label class="field">
+          <span>Parcela atual</span>
+          <input type="number" id="debtCurrentInstallment" placeholder="1" min="1" step="1" />
+        </label>
+
+        <label class="field">
+          <span>Total de parcelas</span>
+          <input type="number" id="debtInstallments" placeholder="5" min="1" step="1" />
+        </label>
+      </div>
+
+      <div class="form-row">
+        <label class="field">
+          <span>Categoria</span>
+          <select id="debtCategory">
+            <option value="card">Cartão</option>
+            <option value="store">Loja</option>
+            <option value="sport">Esporte</option>
+            <option value="subscription">Assinatura</option>
+            <option value="health">Saúde</option>
+            <option value="education">Educação</option>
+            <option value="other">Outro</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Vencimento</span>
+          <input type="date" id="debtDueDate" required />
+        </label>
+      </div>
+
+      <label class="field">
+        <span>Status</span>
+        <select id="debtStatus">
+          <option value="pending">Pendente</option>
+          <option value="paid">Pago</option>
+        </select>
+      </label>
+
+      <div class="modal-actions">
+        <button class="button button-ghost" type="button" data-close-modal="debtModal">Cancelar</button>
+
+        <button class="button button-primary" type="submit" id="debtSubmitText">
+          <i data-lucide="plus"></i>
+          Salvar dívida
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="goalModal">
+    <form class="modal-card" id="goalForm">
+      <input type="hidden" id="goalId" />
+
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">Meta</span>
+          <h3 id="goalModalTitle">Nova meta</h3>
+        </div>
+
+        <button class="icon-button" type="button" data-close-modal="goalModal" aria-label="Fechar">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <label class="field">
+        <span>Nome</span>
+        <input type="text" id="goalName" placeholder="Ex: Reserva, viagem, MacBook" required />
+      </label>
+
+      <div class="form-row">
+        <label class="field">
+          <span>Valor desejado</span>
+          <div class="money-field">
+            <span>R$</span>
+            <input type="number" id="goalTarget" placeholder="1000" min="0" step="0.01" required />
+          </div>
+        </label>
+
+        <label class="field">
+          <span>Valor guardado</span>
+          <div class="money-field">
+            <span>R$</span>
+            <input type="number" id="goalCurrent" placeholder="0" min="0" step="0.01" />
+          </div>
+        </label>
+      </div>
+
+      <div class="form-row">
+        <label class="field">
+          <span>Tipo</span>
+          <select id="goalIcon">
+            <option value="shield-check">Reserva</option>
+            <option value="plane">Viagem</option>
+            <option value="car">Carro</option>
+            <option value="smartphone">Celular</option>
+            <option value="laptop">Notebook</option>
+            <option value="home">Casa</option>
+            <option value="sparkles">Outro</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Prazo</span>
+          <input type="date" id="goalDeadline" />
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button class="button button-ghost" type="button" data-close-modal="goalModal">Cancelar</button>
+
+        <button class="button button-primary" type="submit" id="goalSubmitText">
+          <i data-lucide="target"></i>
+          Salvar meta
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="proModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">Finly Pro</span>
+          <h3>Recursos premium</h3>
+        </div>
+
+        <button class="icon-button" type="button" data-close-modal="proModal" aria-label="Fechar">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="pro-list">
+        <div>
+          <i data-lucide="sparkles"></i>
+          <span>Análises financeiras inteligentes</span>
+        </div>
+
+        <div>
+          <i data-lucide="bell-ring"></i>
+          <span>Alertas de vencimento</span>
+        </div>
+
+        <div>
+          <i data-lucide="chart-spline"></i>
+          <span>Relatórios mensais automáticos</span>
+        </div>
+
+        <div>
+          <i data-lucide="lock"></i>
+          <span>Login e dados salvos na nuvem</span>
+        </div>
+      </div>
+
+      <button class="button button-primary button-full" type="button" data-close-modal="proModal">
+        Entendi
+      </button>
+    </div>
+  </dialog>
+</body>
+</html>
