@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finly | Metas</title>
+    <meta name="description" content="Crie e acompanhe metas financeiras no Finly.">
+    <link rel="stylesheet" href="../src/css/style.css">
+</head>
+<body>
+    <button class="sidebar-toggle" type="button" aria-label="Abrir menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
+        </svg>
+    </button>
+
+    <div class="sidebar-overlay"></div>
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <a href="./dashboard.html" class="sidebar__brand">
+                <span class="sidebar__logo">F</span>
+
+                <span class="sidebar__brand-info">
+                    <strong class="sidebar__brand-name">Finly</strong>
+                    <span class="sidebar__brand-label">Painel financeiro</span>
+                </span>
+            </a>
+
+            <div class="sidebar__content custom-scrollbar">
+                <section class="sidebar__section">
+                    <span class="sidebar__section-title">Principal</span>
+
+                    <nav class="sidebar__nav" aria-label="Menu principal">
+                        <a href="./dashboard.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M4 13h7V4H4v9Zm9 7h7V4h-7v16ZM4 20h7v-5H4v5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Dashboard</span>
+                        </a>
+
+                        <a href="./receitas.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="m6 11 6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Receitas</span>
+                        </a>
+
+                        <a href="./despesas.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 5v14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="m18 13-6 6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M5 3h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Despesas</span>
+                        </a>
+
+                        <a href="./parcelamentos.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M7 7h10M7 12h10M7 17h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Parcelamentos</span>
+                            <span class="sidebar__badge">3</span>
+                        </a>
+
+                        <a href="./metas.html" class="sidebar__link is-active">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 12h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Metas</span>
+                        </a>
+                    </nav>
+                </section>
+
+                <section class="sidebar__section">
+                    <span class="sidebar__section-title">Análise</span>
+
+                    <nav class="sidebar__nav" aria-label="Menu de análise">
+                        <a href="./relatorios.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M4 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M8 17v-6M12 17V7M16 17v-4M20 17V9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Relatórios</span>
+                        </a>
+
+                        <a href="#" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">IA Financeira</span>
+                            <span class="sidebar__badge">em breve</span>
+                        </a>
+                    </nav>
+                </section>
+
+                <section class="sidebar__section">
+                    <span class="sidebar__section-title">Conta</span>
+
+                    <nav class="sidebar__nav" aria-label="Menu da conta">
+                        <a href="./perfil.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Perfil</span>
+                        </a>
+
+                        <a href="./configuracoes.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.36a1.7 1.7 0 0 0-1 .64 1.7 1.7 0 0 0-.36 1.08V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.6 19.36a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.24 15a1.7 1.7 0 0 0-.64-1 1.7 1.7 0 0 0-1.08-.36H2.5a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.24 8.6a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 8.6 4.24a1.7 1.7 0 0 0 1-.64A1.7 1.7 0 0 0 9.96 2.5V2.5a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.04 1.65 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.36 8.6a1.7 1.7 0 0 0 .64 1c.3.23.68.36 1.08.36H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Configurações</span>
+                        </a>
+                    </nav>
+                </section>
+            </div>
+
+            <div class="sidebar__footer">
+                <div class="sidebar-card">
+                    <strong class="sidebar-card__title">Metas ativas</strong>
+                    <p class="sidebar-card__text">Acompanhe seus objetivos e veja o quanto falta para chegar lá.</p>
+                    <span class="badge badge--primary">2 metas</span>
+                </div>
+
+                <div class="sidebar-user">
+                    <span class="sidebar-user__avatar">H</span>
+
+                    <span class="sidebar-user__info">
+                        <strong class="sidebar-user__name">Henry Gabriel</strong>
+                        <span class="sidebar-user__email">henry@finly.app</span>
+                    </span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="app-main goals-page">
+            <header class="topbar">
+                <div class="topbar__left">
+                    <div class="topbar__title-group">
+                        <h1 class="topbar__title">Metas</h1>
+                        <span class="topbar__subtitle">Transforme planos em progresso real</span>
+                    </div>
+                </div>
+
+                <div class="topbar__right">
+                    <div class="topbar__search form-search">
+                        <span class="form-search__icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" stroke="currentColor" stroke-width="2"/>
+                                <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </span>
+                        <input class="input" type="search" placeholder="Buscar meta...">
+                    </div>
+
+                    <button class="btn btn-ghost btn-icon" type="button" aria-label="Notificações">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+
+                    <button class="user-menu" type="button">
+                        <span class="user-menu__avatar">H</span>
+
+                        <span class="user-menu__info">
+                            <strong class="user-menu__name">Henry</strong>
+                            <span class="user-menu__role">Conta pessoal</span>
+                        </span>
+                    </button>
+                </div>
+            </header>
+
+            <section class="goals-content">
+                <div class="goals-header">
+                    <div class="goals-header__content">
+                        <span class="goals-header__eyebrow">
+                            <span class="status-dot success"></span>
+                            Metas financeiras
+                        </span>
+
+                        <h2 class="goals-header__title">Planeje o que seu dinheiro vai construir</h2>
+
+                        <p class="goals-header__text">
+                            Crie objetivos, acompanhe o progresso e transforme cada economia em um passo real para conquistar suas metas.
+                        </p>
+                    </div>
+
+                    <div class="goals-header__actions">
+                        <button class="btn btn-soft-success" type="button">
+                            Simular aporte
+                        </button>
+
+                        <a href="#nova-meta" class="btn btn-primary">
+                            Nova meta
+                        </a>
+                    </div>
+                </div>
+
+                <section class="goals-kpis">
+                    <article class="goals-hero-card">
+                        <div>
+                            <span class="goals-hero-card__label">Total guardado</span>
+                            <strong class="goals-hero-card__value">R$ 680,00</strong>
+                        </div>
+
+                        <p class="goals-hero-card__text">
+                            Você já começou sua reserva. Mantendo aportes consistentes, sua meta principal fica cada vez mais próxima.
+                        </p>
+
+                        <div class="goals-hero-card__footer">
+                            <span class="goals-pill">34% da meta principal</span>
+                            <span class="goals-pill">R$ 1.320 para concluir</span>
+                        </div>
+                    </article>
+
+                    <article class="goals-kpi">
+                        <div class="goals-kpi__top">
+                            <div>
+                                <span class="goals-kpi__label">Ativas</span>
+                                <strong class="goals-kpi__value">2</strong>
+                            </div>
+
+                            <span class="goals-kpi__icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <span class="goals-kpi__meta">Objetivos em andamento</span>
+                    </article>
+
+                    <article class="goals-kpi">
+                        <div class="goals-kpi__top">
+                            <div>
+                                <span class="goals-kpi__label">Guardado</span>
+                                <strong class="goals-kpi__value">R$ 680</strong>
+                            </div>
+
+                            <span class="goals-kpi__icon goals-kpi__icon--success">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 3v18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                    <path d="M17 7.5c0-1.38-2.24-2.5-5-2.5S7 6.12 7 7.5 9.24 10 12 10s5 1.12 5 2.5S14.76 15 12 15s-5-1.12-5-2.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <span class="goals-kpi__meta">Valor acumulado nas metas</span>
+                    </article>
+
+                    <article class="goals-kpi">
+                        <div class="goals-kpi__top">
+                            <div>
+                                <span class="goals-kpi__label">Média</span>
+                                <strong class="goals-kpi__value">28%</strong>
+                            </div>
+
+                            <span class="goals-kpi__icon goals-kpi__icon--warning">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M4 19 9 14l4 4 7-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M15 9h5v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <span class="goals-kpi__meta">Progresso médio geral</span>
+                    </article>
+                </section>
+
+                <div class="goals-grid">
+                    <div class="goals-main">
+                        <section class="card goal-form-card" id="nova-meta">
+                            <div class="card__header">
+                                <div class="card__title-group">
+                                    <h3 class="card__title">Nova meta</h3>
+                                    <p class="card__subtitle">Crie um objetivo financeiro para acompanhar no Finly.</p>
+                                </div>
+
+                                <span class="badge badge--primary">Objetivo</span>
+                            </div>
+
+                            <form class="goal-form">
+                                <div class="goal-form__grid">
+                                    <div class="form__group">
+                                        <label class="form__label" for="goalName">Nome da meta</label>
+                                        <input class="input" type="text" id="goalName" name="goalName" placeholder="Ex: Reserva, viagem, curso..." required>
+                                    </div>
+
+                                    <div class="form__group">
+                                        <label class="form__label" for="goalTarget">Valor da meta</label>
+                                        <input class="input" type="number" id="goalTarget" name="goalTarget" placeholder="0,00" min="0" step="0.01" required>
+                                    </div>
+                                </div>
+
+                                <div class="goal-form__grid">
+                                    <div class="form__group">
+                                        <label class="form__label" for="goalCurrent">Valor já guardado</label>
+                                        <input class="input" type="number" id="goalCurrent" name="goalCurrent" placeholder="0,00" min="0" step="0.01" required>
+                                    </div>
+
+                                    <div class="form__group">
+                                        <label class="form__label" for="goalDeadline">Prazo desejado</label>
+                                        <input class="input" type="date" id="goalDeadline" name="goalDeadline" required>
+                                    </div>
+                                </div>
+
+                                <div class="form__group">
+                                    <label class="form__label">Tipo da meta</label>
+
+                                    <div class="goal-type-grid">
+                                        <label class="goal-type is-active">
+                                            <input type="radio" name="goalType" value="reserve" checked>
+                                            <span class="goal-type__icon">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M12 3v18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                                    <path d="M17 7.5c0-1.38-2.24-2.5-5-2.5S7 6.12 7 7.5 9.24 10 12 10s5 1.12 5 2.5S14.76 15 12 15s-5-1.12-5-2.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                                </svg>
+                                            </span>
+                                            <span class="goal-type__name">Reserva</span>
+                                        </label>
+
+                                        <label class="goal-type">
+                                            <input type="radio" name="goalType" value="travel">
+                                            <span class="goal-type__icon">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M3 11 21 3l-8 18-2-8-8-2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                            <span class="goal-type__name">Viagem</span>
+                                        </label>
+
+                                        <label class="goal-type">
+                                            <input type="radio" name="goalType" value="study">
+                                            <span class="goal-type__icon">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M4 19.5V5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-1.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                    <path d="M8 7h7M8 11h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                </svg>
+                                            </span>
+                                            <span class="goal-type__name">Estudo</span>
+                                        </label>
+
+                                        <label class="goal-type">
+                                            <input type="radio" name="goalType" value="business">
+                                            <span class="goal-type__icon">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M4 7h16v12H4V7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                    <path d="M9 7V5h6v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                </svg>
+                                            </span>
+                                            <span class="goal-type__name">Negócio</span>
+                                        </label>
+
+                                        <label class="goal-type">
+                                            <input type="radio" name="goalType" value="purchase">
+                                            <span class="goal-type__icon">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M5 11h14l-1.5 8h-11L5 11Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                    <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                </svg>
+                                            </span>
+                                            <span class="goal-type__name">Compra</span>
+                                        </label>
+
+                                        <label class="goal-type">
+                                            <input type="radio" name="goalType" value="other">
+                                            <span class="goal-type__icon">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                                </svg>
+                                            </span>
+                                            <span class="goal-type__name">Outros</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form__group">
+                                    <label class="form__label" for="goalDescription">Observação</label>
+                                    <textarea class="input textarea" id="goalDescription" name="goalDescription" rows="4" placeholder="Detalhe algo importante sobre essa meta..."></textarea>
+                                </div>
+
+                                <button class="btn btn-primary btn-block btn-lg" type="submit">
+                                    Salvar meta
+                                </button>
+                            </form>
+                        </section>
+
+                        <section class="goals-section">
+                            <div class="goals-section__header">
+                                <div class="goals-section__title-group">
+                                    <h3 class="goals-section__title">Metas registradas</h3>
+                                    <p class="goals-section__text">Objetivos financeiros ativos no Finly.</p>
+                                </div>
+
+                                <div class="goal-filter">
+                                    <input class="input" type="search" placeholder="Filtrar metas...">
+                                    <button class="btn btn-soft" type="button">Filtrar</button>
+                                </div>
+                            </div>
+
+                            <div class="goal-list">
+                                <article class="goal-item">
+                                    <div class="goal-item__top">
+                                        <div class="goal-item__main">
+                                            <span class="goal-item__icon">
+                                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M12 3v18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                                    <path d="M17 7.5c0-1.38-2.24-2.5-5-2.5S7 6.12 7 7.5 9.24 10 12 10s5 1.12 5 2.5S14.76 15 12 15s-5-1.12-5-2.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                                </svg>
+                                            </span>
+
+                                            <span class="goal-item__info">
+                                                <strong class="goal-item__title">Reserva inicial</strong>
+                                                <span class="goal-item__meta">Reserva • prazo 30 Dez</span>
+                                            </span>
+                                        </div>
+
+                                        <div class="goal-item__value">
+                                            <strong class="goal-item__amount">R$ 680 / R$ 2.000</strong>
+                                            <span class="goal-item__small">faltam R$ 1.320</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="goal-progress">
+                                        <div class="goal-progress__top">
+                                            <span>Progresso da meta</span>
+                                            <span>34%</span>
+                                        </div>
+
+                                        <div class="goal-progress__track">
+                                            <span class="goal-progress__bar" style="--progress-value: 34%;"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="goal-item__footer">
+                                        <span class="goal-status">Em andamento</span>
+
+                                        <div class="goal-item__actions">
+                                            <button class="btn btn-ghost btn-sm" type="button">Adicionar valor</button>
+                                            <button class="btn btn-ghost btn-sm" type="button">Editar</button>
+                                            <button class="btn btn-ghost btn-sm" type="button">Excluir</button>
+                                        </div>
+                                    </div>
+                                </article>
+
+                                <article class="goal-item">
+                                    <div class="goal-item__top">
+                                        <div class="goal-item__main">
+                                            <span class="goal-item__icon">
+                                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M3 11 21 3l-8 18-2-8-8-2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+
+                                            <span class="goal-item__info">
+                                                <strong class="goal-item__title">Viagem futura</strong>
+                                                <span class="goal-item__meta">Viagem • prazo 15 Jan</span>
+                                            </span>
+                                        </div>
+
+                                        <div class="goal-item__value">
+                                            <strong class="goal-item__amount">R$ 0 / R$ 1.500</strong>
+                                            <span class="goal-item__small">faltam R$ 1.500</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="goal-progress">
+                                        <div class="goal-progress__top">
+                                            <span>Progresso da meta</span>
+                                            <span>0%</span>
+                                        </div>
+
+                                        <div class="goal-progress__track">
+                                            <span class="goal-progress__bar" style="--progress-value: 0%;"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="goal-item__footer">
+                                        <span class="goal-status goal-status--warning">Começando</span>
+
+                                        <div class="goal-item__actions">
+                                            <button class="btn btn-ghost btn-sm" type="button">Adicionar valor</button>
+                                            <button class="btn btn-ghost btn-sm" type="button">Editar</button>
+                                            <button class="btn btn-ghost btn-sm" type="button">Excluir</button>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                        </section>
+                    </div>
+
+                    <aside class="goals-aside">
+                        <section class="card">
+                            <div class="card__header">
+                                <div class="card__title-group">
+                                    <h3 class="card__title">Resumo</h3>
+                                    <p class="card__subtitle">Visão geral das suas metas.</p>
+                                </div>
+                            </div>
+
+                            <div class="goals-summary">
+                                <div class="goals-summary__item">
+                                    <span class="goals-summary__label">Total planejado</span>
+                                    <strong class="goals-summary__value goals-summary__value--primary">R$ 3.500</strong>
+                                </div>
+
+                                <div class="goals-summary__item">
+                                    <span class="goals-summary__label">Total guardado</span>
+                                    <strong class="goals-summary__value goals-summary__value--success">R$ 680</strong>
+                                </div>
+
+                                <div class="goals-summary__item">
+                                    <span class="goals-summary__label">Falta guardar</span>
+                                    <strong class="goals-summary__value goals-summary__value--warning">R$ 2.820</strong>
+                                </div>
+
+                                <div class="goals-summary__item">
+                                    <span class="goals-summary__label">Metas concluídas</span>
+                                    <strong class="goals-summary__value">0</strong>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="card">
+                            <div class="card__header">
+                                <div class="card__title-group">
+                                    <h3 class="card__title">Meta em destaque</h3>
+                                    <p class="card__subtitle">A prioridade financeira atual.</p>
+                                </div>
+                            </div>
+
+                            <div class="goal-featured">
+                                <div class="goal-featured__top">
+                                    <div>
+                                        <strong class="goal-featured__title">Reserva inicial</strong>
+                                        <p class="goal-featured__text">Guardar R$ 2.000 para ter mais segurança.</p>
+                                    </div>
+
+                                    <strong class="goal-featured__amount">34%</strong>
+                                </div>
+
+                                <div class="goal-progress">
+                                    <div class="goal-progress__top">
+                                        <span>R$ 680 guardados</span>
+                                        <span>R$ 1.320 restantes</span>
+                                    </div>
+
+                                    <div class="goal-progress__track">
+                                        <span class="goal-progress__bar" style="--progress-value: 34%;"></span>
+                                    </div>
+                                </div>
+
+                                <a href="#nova-meta" class="btn btn-primary btn-block">
+                                    Atualizar meta
+                                </a>
+                            </div>
+                        </section>
+
+                        <section class="card">
+                            <div class="card__header">
+                                <div class="card__title-group">
+                                    <h3 class="card__title">Ranking de progresso</h3>
+                                    <p class="card__subtitle">Metas mais avançadas.</p>
+                                </div>
+                            </div>
+
+                            <div class="goals-ranking">
+                                <article class="goals-ranking__item">
+                                    <span class="goals-ranking__position">1</span>
+
+                                    <span class="goals-ranking__info">
+                                        <strong class="goals-ranking__title">Reserva inicial</strong>
+                                        <span class="goals-ranking__text">34% concluído • R$ 680 guardados</span>
+                                    </span>
+                                </article>
+
+                                <article class="goals-ranking__item">
+                                    <span class="goals-ranking__position">2</span>
+
+                                    <span class="goals-ranking__info">
+                                        <strong class="goals-ranking__title">Viagem futura</strong>
+                                        <span class="goals-ranking__text">0% concluído • comece com um pequeno aporte</span>
+                                    </span>
+                                </article>
+                            </div>
+                        </section>
+
+                        <section class="goals-tip">
+                            <span class="goals-tip__icon">
+                                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 17v-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                    <path d="M12 7h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                    <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+
+                            <span class="goals-tip__content">
+                                <strong class="goals-tip__title">Dica do Finly</strong>
+                                <span class="goals-tip__text">
+                                    Metas pequenas e consistentes funcionam melhor. Comece guardando um valor realista todo mês.
+                                </span>
+                            </span>
+                        </section>
+                    </aside>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../src/js/finance/metas.js"></script>
+    <script src="../src/js/dashboard/dashboard.js"></script>
+</body>
+</html>

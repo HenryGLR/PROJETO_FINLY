@@ -1,0 +1,408 @@
+.chart-card {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-sm);
+}
+
+.chart-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+
+.chart-card__title-group {
+    display: grid;
+    gap: var(--space-1);
+}
+
+.chart-card__title {
+    font-family: var(--font-secondary);
+    font-size: 1.125rem;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.045em;
+    color: var(--color-text);
+}
+
+.chart-card__subtitle {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+}
+
+.chart-card__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.chart-card__body {
+    position: relative;
+    min-height: 280px;
+}
+
+.chart-canvas {
+    position: relative;
+    width: 100%;
+    min-height: 280px;
+    overflow: hidden;
+    background:
+        linear-gradient(var(--color-border-soft) 1px, transparent 1px),
+        linear-gradient(90deg, var(--color-border-soft) 1px, transparent 1px);
+    background-size: 100% 25%, 16.66% 100%;
+    border-radius: var(--radius-xl);
+}
+
+.chart-canvas canvas,
+.chart-canvas svg {
+    width: 100%;
+    height: 100%;
+}
+
+.chart-placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: var(--space-6);
+    text-align: center;
+}
+
+.chart-placeholder__content {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+    max-width: 340px;
+}
+
+.chart-placeholder__icon {
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    color: var(--color-primary);
+    background: var(--color-primary-soft);
+    border-radius: var(--radius-xl);
+}
+
+.chart-placeholder__title {
+    font-family: var(--font-secondary);
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: var(--color-text);
+}
+
+.chart-placeholder__text {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+}
+
+.chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.chart-legend__item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    color: var(--color-text-muted);
+}
+
+.chart-legend__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-full);
+    background: var(--color-primary);
+}
+
+.chart-legend__dot--income {
+    background: var(--color-success);
+}
+
+.chart-legend__dot--expense {
+    background: var(--color-danger);
+}
+
+.chart-legend__dot--saving {
+    background: var(--color-primary);
+}
+
+.chart-legend__dot--goal {
+    background: var(--color-accent);
+}
+
+.chart-tooltip {
+    display: grid;
+    gap: var(--space-1);
+    min-width: 150px;
+    padding: var(--space-3);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+.chart-tooltip__label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--color-text-muted);
+}
+
+.chart-tooltip__value {
+    font-family: var(--font-secondary);
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: var(--color-text);
+}
+
+.chart-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+}
+
+.chart-summary__item {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-4);
+    background: var(--color-surface-soft);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-lg);
+}
+
+.chart-summary__label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--color-text-muted);
+}
+
+.chart-summary__value {
+    font-family: var(--font-secondary);
+    font-size: 1.125rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    color: var(--color-text);
+}
+
+.chart-summary__value--positive {
+    color: var(--color-success);
+}
+
+.chart-summary__value--negative {
+    color: var(--color-danger);
+}
+
+.mini-chart {
+    display: flex;
+    align-items: end;
+    gap: 6px;
+    width: 100%;
+    height: 58px;
+}
+
+.mini-chart__bar {
+    flex: 1;
+    min-width: 5px;
+    height: var(--bar-height, 50%);
+    background: var(--gradient-primary);
+    border-radius: var(--radius-full) var(--radius-full) var(--radius-xs) var(--radius-xs);
+    opacity: 0.82;
+}
+
+.mini-chart__bar:nth-child(even) {
+    opacity: 0.48;
+}
+
+.mini-chart--success .mini-chart__bar {
+    background: var(--gradient-success);
+}
+
+.mini-chart--danger .mini-chart__bar {
+    background: var(--gradient-danger);
+}
+
+.donut-chart {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 156px;
+    height: 156px;
+    margin-inline: auto;
+    border-radius: var(--radius-full);
+    background:
+        conic-gradient(
+            var(--color-primary) 0 var(--chart-value, 68%),
+            var(--color-surface-soft) var(--chart-value, 68%) 100%
+        );
+}
+
+.donut-chart::before {
+    content: "";
+    position: absolute;
+    inset: 16px;
+    background: var(--color-surface);
+    border-radius: inherit;
+}
+
+.donut-chart__content {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 2px;
+    text-align: center;
+}
+
+.donut-chart__value {
+    font-family: var(--font-secondary);
+    font-size: 1.7rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.06em;
+    color: var(--color-text);
+}
+
+.donut-chart__label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--color-text-muted);
+}
+
+.progress-chart {
+    display: grid;
+    gap: var(--space-3);
+}
+
+.progress-chart__row {
+    display: grid;
+    gap: var(--space-2);
+}
+
+.progress-chart__info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    color: var(--color-text-muted);
+}
+
+.progress-chart__track {
+    width: 100%;
+    height: 10px;
+    overflow: hidden;
+    background: var(--color-surface-soft);
+    border-radius: var(--radius-full);
+}
+
+.progress-chart__bar {
+    width: var(--progress-value, 0%);
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: inherit;
+}
+
+.progress-chart__bar--success {
+    background: var(--gradient-success);
+}
+
+.progress-chart__bar--danger {
+    background: var(--gradient-danger);
+}
+
+.progress-chart__bar--warning {
+    background: linear-gradient(135deg, var(--color-warning), var(--color-warning-light));
+}
+
+.chart-tabs {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px;
+    background: var(--color-surface-soft);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-full);
+}
+
+.chart-tabs__button {
+    min-height: 34px;
+    padding: 0 var(--space-3);
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: var(--color-text-muted);
+    border-radius: var(--radius-full);
+    transition:
+        color var(--transition-base),
+        background var(--transition-base),
+        box-shadow var(--transition-base);
+}
+
+.chart-tabs__button:hover {
+    color: var(--color-text);
+}
+
+.chart-tabs__button.is-active {
+    color: var(--color-text-inverse);
+    background: var(--gradient-primary);
+    box-shadow: var(--shadow-xs);
+}
+
+@media (max-width: 768px) {
+    .chart-card {
+        gap: var(--space-4);
+        padding: var(--space-5);
+        border-radius: var(--radius-xl);
+    }
+
+    .chart-card__header {
+        flex-direction: column;
+    }
+
+    .chart-card__actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .chart-card__body,
+    .chart-canvas {
+        min-height: 240px;
+    }
+
+    .chart-summary {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .chart-card__actions .btn,
+    .chart-tabs {
+        width: 100%;
+    }
+
+    .chart-tabs__button {
+        flex: 1;
+    }
+
+    .donut-chart {
+        width: 136px;
+        height: 136px;
+    }
+
+    .donut-chart__value {
+        font-size: 1.45rem;
+    }
+}

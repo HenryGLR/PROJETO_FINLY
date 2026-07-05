@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finly | Relatórios</title>
+    <meta name="description" content="Analise receitas, despesas, saldo e comportamento financeiro no Finly.">
+    <link rel="stylesheet" href="../src/css/style.css">
+</head>
+<body>
+    <button class="sidebar-toggle" type="button" aria-label="Abrir menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
+        </svg>
+    </button>
+
+    <div class="sidebar-overlay"></div>
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <a href="./dashboard.html" class="sidebar__brand">
+                <span class="sidebar__logo">F</span>
+
+                <span class="sidebar__brand-info">
+                    <strong class="sidebar__brand-name">Finly</strong>
+                    <span class="sidebar__brand-label">Painel financeiro</span>
+                </span>
+            </a>
+
+            <div class="sidebar__content custom-scrollbar">
+                <section class="sidebar__section">
+                    <span class="sidebar__section-title">Principal</span>
+
+                    <nav class="sidebar__nav" aria-label="Menu principal">
+                        <a href="./dashboard.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M4 13h7V4H4v9Zm9 7h7V4h-7v16ZM4 20h7v-5H4v5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Dashboard</span>
+                        </a>
+
+                        <a href="./receitas.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="m6 11 6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Receitas</span>
+                        </a>
+
+                        <a href="./despesas.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 5v14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="m18 13-6 6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M5 3h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Despesas</span>
+                        </a>
+
+                        <a href="./parcelamentos.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M7 7h10M7 12h10M7 17h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Parcelamentos</span>
+                            <span class="sidebar__badge">3</span>
+                        </a>
+
+                        <a href="./metas.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 12h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Metas</span>
+                        </a>
+                    </nav>
+                </section>
+
+                <section class="sidebar__section">
+                    <span class="sidebar__section-title">Análise</span>
+
+                    <nav class="sidebar__nav" aria-label="Menu de análise">
+                        <a href="./relatorios.html" class="sidebar__link is-active">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M4 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M8 17v-6M12 17V7M16 17v-4M20 17V9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Relatórios</span>
+                        </a>
+
+                        <a href="#" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">IA Financeira</span>
+                            <span class="sidebar__badge">em breve</span>
+                        </a>
+                    </nav>
+                </section>
+
+                <section class="sidebar__section">
+                    <span class="sidebar__section-title">Conta</span>
+
+                    <nav class="sidebar__nav" aria-label="Menu da conta">
+                        <a href="./perfil.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Perfil</span>
+                        </a>
+
+                        <a href="./configuracoes.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.36a1.7 1.7 0 0 0-1 .64 1.7 1.7 0 0 0-.36 1.08V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.6 19.36a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.24 15a1.7 1.7 0 0 0-.64-1 1.7 1.7 0 0 0-1.08-.36H2.5a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.24 8.6a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 8.6 4.24a1.7 1.7 0 0 0 1-.64A1.7 1.7 0 0 0 9.96 2.5V2.5a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.04 1.65 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.36 8.6a1.7 1.7 0 0 0 .64 1c.3.23.68.36 1.08.36H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Configurações</span>
+                        </a>
+                    </nav>
+                </section>
+            </div>
+
+            <div class="sidebar__footer">
+                <div class="sidebar-card">
+                    <strong class="sidebar-card__title">Resumo mensal</strong>
+                    <p class="sidebar-card__text">Veja o saldo, gastos e pontos de atenção do seu mês financeiro.</p>
+                    <span class="badge badge--primary">R$ 810 positivo</span>
+                </div>
+
+                <div class="sidebar-user">
+                    <span class="sidebar-user__avatar">H</span>
+
+                    <span class="sidebar-user__info">
+                        <strong class="sidebar-user__name">Henry Gabriel</strong>
+                        <span class="sidebar-user__email">henry@finly.app</span>
+                    </span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="app-main reports-page">
+            <header class="topbar">
+                <div class="topbar__left">
+                    <div class="topbar__title-group">
+                        <h1 class="topbar__title">Relatórios</h1>
+                        <span class="topbar__subtitle">Análise completa do seu dinheiro</span>
+                    </div>
+                </div>
+
+                <div class="topbar__right">
+                    <div class="topbar__search form-search">
+                        <span class="form-search__icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" stroke="currentColor" stroke-width="2"/>
+                                <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </span>
+                        <input class="input" type="search" placeholder="Buscar relatório...">
+                    </div>
+
+                    <button class="btn btn-ghost btn-icon" type="button" aria-label="Notificações">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+
+                    <button class="user-menu" type="button">
+                        <span class="user-menu__avatar">H</span>
+
+                        <span class="user-menu__info">
+                            <strong class="user-menu__name">Henry</strong>
+                            <span class="user-menu__role">Conta pessoal</span>
+                        </span>
+                    </button>
+                </div>
+            </header>
+
+            <section class="reports-content">
+                <div class="reports-header">
+                    <div class="reports-header__content">
+                        <span class="reports-header__eyebrow">
+                            <span class="status-dot primary"></span>
+                            Relatório de julho
+                        </span>
+
+                        <h2 class="reports-header__title">Entenda seu mês financeiro</h2>
+
+                        <p class="reports-header__text">
+                            Analise entradas, saídas, saldo, categorias de gasto e evolução mensal para tomar decisões melhores com seu dinheiro.
+                        </p>
+                    </div>
+
+                    <div class="reports-header__actions">
+                        <button class="btn btn-soft" type="button">
+                            Exportar PDF
+                        </button>
+
+                        <button class="btn btn-primary" type="button">
+                            Gerar análise IA
+                        </button>
+                    </div>
+                </div>
+
+                <section class="reports-kpis">
+                    <article class="reports-hero-card">
+                        <div>
+                            <span class="reports-hero-card__label">Saldo estimado do mês</span>
+                            <strong class="reports-hero-card__value">R$ 810,00</strong>
+                        </div>
+
+                        <p class="reports-hero-card__text">
+                            Seu mês está positivo. O maior ponto de atenção está nos parcelamentos futuros e nas despesas fixas recorrentes.
+                        </p>
+
+                        <div class="reports-hero-card__footer">
+                            <span class="reports-pill">47% da renda preservada</span>
+                            <span class="reports-pill">R$ 890 em gastos totais</span>
+                        </div>
+                    </article>
+
+                    <article class="reports-kpi">
+                        <div class="reports-kpi__top">
+                            <div>
+                                <span class="reports-kpi__label">Receitas</span>
+                                <strong class="reports-kpi__value">R$ 1.700</strong>
+                            </div>
+
+                            <span class="reports-kpi__icon reports-kpi__icon--success">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="m6 11 6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <span class="reports-kpi__meta">Entradas confirmadas</span>
+                    </article>
+
+                    <article class="reports-kpi">
+                        <div class="reports-kpi__top">
+                            <div>
+                                <span class="reports-kpi__label">Despesas</span>
+                                <strong class="reports-kpi__value">R$ 890</strong>
+                            </div>
+
+                            <span class="reports-kpi__icon reports-kpi__icon--danger">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 5v14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="m18 13-6 6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <span class="reports-kpi__meta">Saídas e gastos previstos</span>
+                    </article>
+
+                    <article class="reports-kpi">
+                        <div class="reports-kpi__top">
+                            <div>
+                                <span class="reports-kpi__label">Economia</span>
+                                <strong class="reports-kpi__value">47%</strong>
+                            </div>
+
+                            <span class="reports-kpi__icon reports-kpi__icon--warning">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M4 19 9 14l4 4 7-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M15 9h5v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <span class="reports-kpi__meta">Percentual preservado</span>
+                    </article>
+                </section>
+
+                <div class="reports-grid">
+                    <div class="reports-main">
+                        <section class="card reports-chart-card">
+                            <div class="reports-section__header">
+                                <div class="reports-section__title-group">
+                                    <h3 class="reports-section__title">Evolução mensal</h3>
+                                    <p class="reports-section__text">Comparativo entre receitas e despesas dos últimos meses.</p>
+                                </div>
+
+                                <div class="reports-filter">
+                                    <select class="input select" id="reportPeriod">
+                                        <option value="6">Últimos 6 meses</option>
+                                        <option value="3">Últimos 3 meses</option>
+                                        <option value="12">Últimos 12 meses</option>
+                                    </select>
+
+                                    <button class="btn btn-soft" type="button">Atualizar</button>
+                                </div>
+                            </div>
+
+                            <div class="reports-chart">
+                                <div class="reports-chart__item">
+                                    <div class="reports-chart__bars">
+                                        <span class="reports-chart__bar reports-chart__bar--income" style="--bar-value: 78%;"></span>
+                                        <span class="reports-chart__bar reports-chart__bar--expense" style="--bar-value: 54%;"></span>
+                                    </div>
+                                    <span class="reports-chart__label">Fev</span>
+                                </div>
+
+                                <div class="reports-chart__item">
+                                    <div class="reports-chart__bars">
+                                        <span class="reports-chart__bar reports-chart__bar--income" style="--bar-value: 82%;"></span>
+                                        <span class="reports-chart__bar reports-chart__bar--expense" style="--bar-value: 61%;"></span>
+                                    </div>
+                                    <span class="reports-chart__label">Mar</span>
+                                </div>
+
+                                <div class="reports-chart__item">
+                                    <div class="reports-chart__bars">
+                                        <span class="reports-chart__bar reports-chart__bar--income" style="--bar-value: 88%;"></span>
+                                        <span class="reports-chart__bar reports-chart__bar--expense" style="--bar-value: 48%;"></span>
+                                    </div>
+                                    <span class="reports-chart__label">Abr</span>
+                                </div>
+
+                                <div class="reports-chart__item">
+                                    <div class="reports-chart__bars">
+                                        <span class="reports-chart__bar reports-chart__bar--income" style="--bar-value: 90%;"></span>
+                                        <span class="reports-chart__bar reports-chart__bar--expense" style="--bar-value: 67%;"></span>
+                                    </div>
+                                    <span class="reports-chart__label">Mai</span>
+                                </div>
+
+                                <div class="reports-chart__item">
+                                    <div class="reports-chart__bars">
+                                        <span class="reports-chart__bar reports-chart__bar--income" style="--bar-value: 74%;"></span>
+                                        <span class="reports-chart__bar reports-chart__bar--expense" style="--bar-value: 52%;"></span>
+                                    </div>
+                                    <span class="reports-chart__label">Jun</span>
+                                </div>
+
+                                <div class="reports-chart__item">
+                                    <div class="reports-chart__bars">
+                                        <span class="reports-chart__bar reports-chart__bar--income" style="--bar-value: 86%;"></span>
+                                        <span class="reports-chart__bar reports-chart__bar--expense" style="--bar-value: 45%;"></span>
+                                    </div>
+                                    <span class="reports-chart__label">Jul</span>
+                                </div>
+                            </div>
+
+                            <div class="reports-chart__legend">
+                                <span class="reports-chart__legend-item">
+                                    <span class="reports-chart__dot reports-chart__dot--income"></span>
+                                    Receitas
+                                </span>
+
+                                <span class="reports-chart__legend-item">
+                                    <span class="reports-chart__dot reports-chart__dot--expense"></span>
+                                    Despesas
+                                </span>
+                            </div>
+                        </section>
+
+                        <section class="reports-section">
+                            <div class="reports-section__header">
+                                <div class="reports-section__title-group">
+                                    <h3 class="reports-section__title">Insights financeiros</h3>
+                                    <p class="reports-section__text">Pontos importantes identificados no seu comportamento financeiro.</p>
+                                </div>
+                            </div>
+
+                            <div class="reports-insights">
+                                <article class="reports-insight">
+                                    <span class="reports-insight__icon reports-insight__icon--success">
+                                        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </span>
+
+                                    <span class="reports-insight__content">
+                                        <strong class="reports-insight__title">Mês positivo</strong>
+                                        <span class="reports-insight__text">
+                                            Suas entradas superam suas saídas. Esse é um bom momento para fortalecer sua reserva.
+                                        </span>
+                                    </span>
+                                </article>
+
+                                <article class="reports-insight">
+                                    <span class="reports-insight__icon reports-insight__icon--danger">
+                                        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <path d="M12 8v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                            <path d="M12 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                            <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" stroke="currentColor" stroke-width="2"/>
+                                        </svg>
+                                    </span>
+
+                                    <span class="reports-insight__content">
+                                        <strong class="reports-insight__title">Parcelamentos pedem atenção</strong>
+                                        <span class="reports-insight__text">
+                                            Compras parceladas podem comprometer os próximos meses. Evite assumir parcelas novas agora.
+                                        </span>
+                                    </span>
+                                </article>
+
+                                <article class="reports-insight">
+                                    <span class="reports-insight__icon">
+                                        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <path d="M4 19 9 14l4 4 7-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M15 9h5v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </span>
+
+                                    <span class="reports-insight__content">
+                                        <strong class="reports-insight__title">Potencial de economia</strong>
+                                        <span class="reports-insight__text">
+                                            Reduzindo pequenos gastos variáveis, você pode acelerar suas metas financeiras.
+                                        </span>
+                                    </span>
+                                </article>
+                            </div>
+                        </section>
+
+                        <section class="card reports-table-card">
+                            <div class="card__header">
+                                <div class="card__title-group">
+                                    <h3 class="card__title">Resumo por mês</h3>
+                                    <p class="card__subtitle">Histórico financeiro consolidado.</p>
+                                </div>
+                            </div>
+
+                            <div class="reports-table-wrapper">
+                                <table class="reports-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Mês</th>
+                                            <th>Receitas</th>
+                                            <th>Despesas</th>
+                                            <th>Saldo</th>
+                                            <th>Economia</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Julho</strong></td>
+                                            <td>R$ 1.700,00</td>
+                                            <td>R$ 890,00</td>
+                                            <td><span class="reports-table__positive">R$ 810,00</span></td>
+                                            <td>47%</td>
+                                            <td><span class="badge badge--success">positivo</span></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><strong>Junho</strong></td>
+                                            <td>R$ 1.700,00</td>
+                                            <td>R$ 1.040,00</td>
+                                            <td><span class="reports-table__positive">R$ 660,00</span></td>
+                                            <td>38%</td>
+                                            <td><span class="badge badge--success">positivo</span></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><strong>Maio</strong></td>
+                                            <td>R$ 1.700,00</td>
+                                            <td>R$ 1.280,00</td>
+                                            <td><span class="reports-table__positive">R$ 420,00</span></td>
+                                            <td>24%</td>
+                                            <td><span class="badge badge--warning">atenção</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+
+                    <aside class="reports-aside">
+                        <section class="card">
+                            <div class="card__header">
+                                <div class="card__title-group">
+                                    <h3 class="card__title">Gastos por categoria</h3>
+                                    <p class="card__subtitle">Onde seu dinheiro mais saiu.</p>
+                                </div>
+                            </div>
+
+                            <div class="reports-categories">
+                                <div class="reports-category">
+                                    <div class="reports-category__top">
+                                        <span class="reports-category__name">Saúde e esporte</span>
+                                        <strong class="reports-category__value">R$ 490,00</strong>
+                                    </div>
+
+                                    <div class="reports-category__track">
+                                        <span class="reports-category__bar" style="--progress-value: 55%;"></span>
+                                    </div>
+                                </div>
+
+                                <div class="reports-category">
+                                    <div class="reports-category__top">
+                                        <span class="reports-category__name">Cartão</span>
+                                        <strong class="reports-category__value">R$ 385,87</strong>
+                                    </div>
+
+                                    <div class="reports-category__track">
+                                        <span class="reports-category__bar" style="--progress-value: 43%;"></span>
+                                    </div>
+                                </div>
+
+                                <div class="reports-category">
+                                    <div class="reports-category__top">
+                                        <span class="reports-category__name">Assinaturas</span>
+                                        <strong class="reports-category__value">R$ 112,90</strong>
+                                    </div>
+
+                                    <div class="reports-category__track">
+                                        <span class="reports-category__bar" style="--progress-value: 13%;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="card">
+                            <div class="card__header">
+                                <div class="card__title-group">
+                                    <h3 class="card__title">Saúde financeira</h3>
+                                    <p class="card__subtitle">Indicador geral do mês.</p>
+                                </div>
+                            </div>
+
+                            <div class="reports-balance-card">
+                                <div class="reports-balance-card__top">
+                                    <div>
+                                        <strong class="reports-balance-card__title">Pontuação Finly</strong>
+                                        <p class="reports-balance-card__text">
+                                            Sua pontuação considera saldo, gastos, metas e dívidas.
+                                        </p>
+                                    </div>
+
+                                    <strong class="reports-balance-card__value">78/100</strong>
+                                </div>
+
+                                <div class="reports-balance-card__track">
+                                    <span class="reports-balance-card__bar" style="--progress-value: 78%;"></span>
+                                </div>
+
+                                <button class="btn btn-primary btn-block" type="button">
+                                    Ver recomendação
+                                </button>
+                            </div>
+                        </section>
+
+                        <section class="reports-tip">
+                            <span class="reports-tip__icon">
+                                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 17v-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                    <path d="M12 7h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                    <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+
+                            <span class="reports-tip__content">
+                                <strong class="reports-tip__title">Dica do Finly</strong>
+                                <span class="reports-tip__text">
+                                    Relatório bom não é só olhar o saldo. Veja padrões: onde você sempre gasta e onde pode melhorar.
+                                </span>
+                            </span>
+                        </section>
+                    </aside>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../src/js/finance/relatorios.js"></script>
+    <script src="../src/js/dashboard/dashboard.js"></script>
+</body>
+</html>

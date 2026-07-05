@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finly | Configurações</title>
+    <meta name="description" content="Configure aparência, notificações, segurança e dados da sua conta Finly.">
+    <link rel="stylesheet" href="../src/css/style.css">
+</head>
+<body>
+    <button class="sidebar-toggle" type="button" aria-label="Abrir menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
+        </svg>
+    </button>
+
+    <div class="sidebar-overlay"></div>
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <a href="./dashboard.html" class="sidebar__brand">
+                <span class="sidebar__logo">F</span>
+
+                <span class="sidebar__brand-info">
+                    <strong class="sidebar__brand-name">Finly</strong>
+                    <span class="sidebar__brand-label">Painel financeiro</span>
+                </span>
+            </a>
+
+            <div class="sidebar__content custom-scrollbar">
+                <section class="sidebar__section">
+                    <span class="sidebar__section-title">Principal</span>
+
+                    <nav class="sidebar__nav" aria-label="Menu principal">
+                        <a href="./dashboard.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M4 13h7V4H4v9Zm9 7h7V4h-7v16ZM4 20h7v-5H4v5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Dashboard</span>
+                        </a>
+
+                        <a href="./receitas.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="m6 11 6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Receitas</span>
+                        </a>
+
+                        <a href="./despesas.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 5v14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="m18 13-6 6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M5 3h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Despesas</span>
+                        </a>
+
+                        <a href="./parcelamentos.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M7 7h10M7 12h10M7 17h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Parcelamentos</span>
+                            <span class="sidebar__badge">3</span>
+                        </a>
+
+                        <a href="./metas.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 12h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Metas</span>
+                        </a>
+                    </nav>
+                </section>
+
+                <section class="sidebar__section">
+                    <span class="sidebar__section-title">Análise</span>
+
+                    <nav class="sidebar__nav" aria-label="Menu de análise">
+                        <a href="./relatorios.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M4 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M8 17v-6M12 17V7M16 17v-4M20 17V9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Relatórios</span>
+                        </a>
+
+                        <a href="#" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">IA Financeira</span>
+                            <span class="sidebar__badge">em breve</span>
+                        </a>
+                    </nav>
+                </section>
+
+                <section class="sidebar__section">
+                    <span class="sidebar__section-title">Conta</span>
+
+                    <nav class="sidebar__nav" aria-label="Menu da conta">
+                        <a href="./perfil.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Perfil</span>
+                        </a>
+
+                        <a href="./configuracoes.html" class="sidebar__link is-active">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.36a1.7 1.7 0 0 0-1 .64 1.7 1.7 0 0 0-.36 1.08V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.6 19.36a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.24 15a1.7 1.7 0 0 0-.64-1 1.7 1.7 0 0 0-1.08-.36H2.5a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.24 8.6a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 8.6 4.24a1.7 1.7 0 0 0 1-.64A1.7 1.7 0 0 0 9.96 2.5V2.5a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.04 1.65 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.36 8.6a1.7 1.7 0 0 0 .64 1c.3.23.68.36 1.08.36H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Configurações</span>
+                        </a>
+                    </nav>
+                </section>
+            </div>
+
+            <div class="sidebar__footer">
+                <div class="sidebar-card">
+                    <strong class="sidebar-card__title">Configurações</strong>
+                    <p class="sidebar-card__text">Ajuste aparência, alertas, segurança e dados do Finly.</p>
+                    <span class="badge badge--primary">personalizável</span>
+                </div>
+
+                <div class="sidebar-user">
+                    <span class="sidebar-user__avatar">H</span>
+
+                    <span class="sidebar-user__info">
+                        <strong class="sidebar-user__name">Henry Gabriel</strong>
+                        <span class="sidebar-user__email">henry@finly.app</span>
+                    </span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="app-main settings-page">
+            <header class="topbar">
+                <div class="topbar__left">
+                    <div class="topbar__title-group">
+                        <h1 class="topbar__title">Configurações</h1>
+                        <span class="topbar__subtitle">Ajustes gerais da sua conta</span>
+                    </div>
+                </div>
+
+                <div class="topbar__right">
+                    <div class="topbar__search form-search">
+                        <span class="form-search__icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" stroke="currentColor" stroke-width="2"/>
+                                <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </span>
+                        <input class="input" type="search" placeholder="Buscar configuração...">
+                    </div>
+
+                    <button class="btn btn-ghost btn-icon" type="button" aria-label="Notificações">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+
+                    <button class="user-menu" type="button">
+                        <span class="user-menu__avatar">H</span>
+
+                        <span class="user-menu__info">
+                            <strong class="user-menu__name">Henry</strong>
+                            <span class="user-menu__role">Conta pessoal</span>
+                        </span>
+                    </button>
+                </div>
+            </header>
+
+            <section class="settings-content">
+                <div class="settings-header">
+                    <div class="settings-header__content">
+                        <span class="settings-header__eyebrow">
+                            <span class="status-dot primary"></span>
+                            Central de ajustes
+                        </span>
+
+                        <h2 class="settings-header__title">Deixe o Finly do seu jeito</h2>
+
+                        <p class="settings-header__text">
+                            Configure aparência, notificações, preferências financeiras, segurança e gerenciamento de dados da sua conta.
+                        </p>
+                    </div>
+
+                    <div class="settings-header__actions">
+                        <button class="btn btn-soft" type="button" data-action="reset-settings">
+                            Restaurar padrão
+                        </button>
+
+                        <button class="btn btn-primary" type="button" data-action="save-settings">
+                            Salvar configurações
+                        </button>
+                    </div>
+                </div>
+
+                <div class="settings-grid">
+                    <nav class="settings-menu" aria-label="Menu de configurações">
+                        <span class="settings-menu__title">Configurações</span>
+
+                        <a href="#geral" class="settings-menu__link is-active">
+                            <span class="settings-menu__icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                    <path d="M4 7h16M4 12h10M4 17h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            Geral
+                        </a>
+
+                        <a href="#aparencia" class="settings-menu__link">
+                            <span class="settings-menu__icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            Aparência
+                        </a>
+
+                        <a href="#notificacoes" class="settings-menu__link">
+                            <span class="settings-menu__icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            Notificações
+                        </a>
+
+                        <a href="#financeiro" class="settings-menu__link">
+                            <span class="settings-menu__icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 3v18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                    <path d="M17 7.5c0-1.38-2.24-2.5-5-2.5S7 6.12 7 7.5 9.24 10 12 10s5 1.12 5 2.5S14.76 15 12 15s-5-1.12-5-2.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            Financeiro
+                        </a>
+
+                        <a href="#seguranca" class="settings-menu__link">
+                            <span class="settings-menu__icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 3 20 7v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            Segurança
+                        </a>
+
+                        <a href="#dados" class="settings-menu__link">
+                            <span class="settings-menu__icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                    <path d="M7 7h10M7 12h10M7 17h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+                            Dados
+                        </a>
+                    </nav>
+
+                    <div class="settings-main">
+                        <section class="card settings-card" id="geral">
+                            <div class="settings-section__header">
+                                <div class="settings-section__title-group">
+                                    <h3 class="settings-section__title">Configurações gerais</h3>
+                                    <p class="settings-section__text">Ajustes básicos de funcionamento do seu painel.</p>
+                                </div>
+
+                                <span class="badge badge--primary">geral</span>
+                            </div>
+
+                            <form class="settings-form">
+                                <div class="settings-form__grid">
+                                    <div class="form__group">
+                                        <label class="form__label" for="settingsCurrency">Moeda principal</label>
+                                        <select class="input select" id="settingsCurrency" name="settingsCurrency">
+                                            <option value="BRL" selected>Real brasileiro - BRL</option>
+                                            <option value="USD">Dólar americano - USD</option>
+                                            <option value="EUR">Euro - EUR</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form__group">
+                                        <label class="form__label" for="settingsMonthStart">Início do mês financeiro</label>
+                                        <select class="input select" id="settingsMonthStart" name="settingsMonthStart">
+                                            <option value="1" selected>Dia 1</option>
+                                            <option value="5">Dia 5</option>
+                                            <option value="10">Dia 10</option>
+                                            <option value="15">Dia 15</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="settings-form__grid">
+                                    <div class="form__group">
+                                        <label class="form__label" for="settingsLanguage">Idioma</label>
+                                        <select class="input select" id="settingsLanguage" name="settingsLanguage">
+                                            <option value="pt-BR" selected>Português do Brasil</option>
+                                            <option value="en-US">English</option>
+                                            <option value="es-ES">Español</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form__group">
+                                        <label class="form__label" for="settingsDateFormat">Formato de data</label>
+                                        <select class="input select" id="settingsDateFormat" name="settingsDateFormat">
+                                            <option value="dd/mm/yyyy" selected>DD/MM/AAAA</option>
+                                            <option value="mm/dd/yyyy">MM/DD/AAAA</option>
+                                            <option value="yyyy-mm-dd">AAAA-MM-DD</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </section>
+
+                        <section class="card settings-card" id="aparencia">
+                            <div class="settings-section__header">
+                                <div class="settings-section__title-group">
+                                    <h3 class="settings-section__title">Aparência</h3>
+                                    <p class="settings-section__text">Personalize tema, cor principal e visual do sistema.</p>
+                                </div>
+
+                                <span class="badge badge--primary">visual</span>
+                            </div>
+
+                            <div class="settings-section">
+                                <div class="form__group">
+                                    <label class="form__label">Tema do sistema</label>
+
+                                    <div class="settings-theme-grid">
+                                        <label class="settings-theme is-active">
+                                            <input type="radio" name="settingsTheme" value="light" checked>
+
+                                            <span class="settings-theme__preview settings-theme__preview--light">
+                                                <span class="settings-theme__bar"></span>
+                                                <span class="settings-theme__line"></span>
+                                                <span class="settings-theme__line"></span>
+                                                <span class="settings-theme__line"></span>
+                                            </span>
+
+                                            <strong class="settings-theme__name">Claro</strong>
+                                            <span class="settings-theme__text">Interface leve e limpa.</span>
+                                        </label>
+
+                                        <label class="settings-theme">
+                                            <input type="radio" name="settingsTheme" value="dark">
+
+                                            <span class="settings-theme__preview settings-theme__preview--dark">
+                                                <span class="settings-theme__bar"></span>
+                                                <span class="settings-theme__line"></span>
+                                                <span class="settings-theme__line"></span>
+                                                <span class="settings-theme__line"></span>
+                                            </span>
+
+                                            <strong class="settings-theme__name">Escuro</strong>
+                                            <span class="settings-theme__text">Ideal para usar à noite.</span>
+                                        </label>
+
+                                        <label class="settings-theme">
+                                            <input type="radio" name="settingsTheme" value="auto">
+
+                                            <span class="settings-theme__preview settings-theme__preview--auto">
+                                                <span class="settings-theme__bar"></span>
+                                                <span class="settings-theme__line"></span>
+                                                <span class="settings-theme__line"></span>
+                                                <span class="settings-theme__line"></span>
+                                            </span>
+
+                                            <strong class="settings-theme__name">Automático</strong>
+                                            <span class="settings-theme__text">Segue o dispositivo.</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form__group">
+                                    <label class="form__label">Cor principal</label>
+
+                                    <div class="settings-color-grid">
+                                        <label class="settings-color is-active" title="Azul">
+                                            <input type="radio" name="settingsColor" value="blue" checked>
+                                            <span class="settings-color__dot settings-color__dot--blue"></span>
+                                        </label>
+
+                                        <label class="settings-color" title="Verde">
+                                            <input type="radio" name="settingsColor" value="green">
+                                            <span class="settings-color__dot settings-color__dot--green"></span>
+                                        </label>
+
+                                        <label class="settings-color" title="Roxo">
+                                            <input type="radio" name="settingsColor" value="purple">
+                                            <span class="settings-color__dot settings-color__dot--purple"></span>
+                                        </label>
+
+                                        <label class="settings-color" title="Laranja">
+                                            <input type="radio" name="settingsColor" value="orange">
+                                            <span class="settings-color__dot settings-color__dot--orange"></span>
+                                        </label>
+
+                                        <label class="settings-color" title="Vermelho">
+                                            <input type="radio" name="settingsColor" value="red">
+                                            <span class="settings-color__dot settings-color__dot--red"></span>
+                                        </label>
+
+                                        <label class="settings-color" title="Slate">
+                                            <input type="radio" name="settingsColor" value="slate">
+                                            <span class="settings-color__dot settings-color__dot--slate"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="card settings-card" id="notificacoes">
+                            <div class="settings-section__header">
+                                <div class="settings-section__title-group">
+                                    <h3 class="settings-section__title">Notificações</h3>
+                                    <p class="settings-section__text">Escolha quando o Finly deve te avisar.</p>
+                                </div>
+
+                                <span class="badge badge--success">alertas</span>
+                            </div>
+
+                            <div class="settings-list">
+                                <article class="settings-item">
+                                    <div class="settings-item__main">
+                                        <span class="settings-item__icon settings-item__icon--success">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                            </svg>
+                                        </span>
+
+                                        <span class="settings-item__info">
+                                            <strong class="settings-item__title">Alertas de vencimento</strong>
+                                            <span class="settings-item__text">Avisar quando contas, parcelas e compromissos estiverem próximos.</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="settings-item__action">
+                                        <label class="settings-switch">
+                                            <input type="checkbox" id="notifyDueDates" checked>
+                                            <span class="settings-switch__slider"></span>
+                                        </label>
+                                    </div>
+                                </article>
+
+                                <article class="settings-item">
+                                    <div class="settings-item__main">
+                                        <span class="settings-item__icon">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                                <path d="M4 19 9 14l4 4 7-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+
+                                        <span class="settings-item__info">
+                                            <strong class="settings-item__title">Resumo semanal</strong>
+                                            <span class="settings-item__text">Receber uma visão geral da semana com saldo, gastos e metas.</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="settings-item__action">
+                                        <label class="settings-switch">
+                                            <input type="checkbox" id="notifyWeekly" checked>
+                                            <span class="settings-switch__slider"></span>
+                                        </label>
+                                    </div>
+                                </article>
+
+                                <article class="settings-item">
+                                    <div class="settings-item__main">
+                                        <span class="settings-item__icon settings-item__icon--warning">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                                <path d="M12 8v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                                <path d="M12 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                                <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" stroke="currentColor" stroke-width="2"/>
+                                            </svg>
+                                        </span>
+
+                                        <span class="settings-item__info">
+                                            <strong class="settings-item__title">Aviso de limite</strong>
+                                            <span class="settings-item__text">Alertar quando seus gastos chegarem perto do limite mensal definido.</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="settings-item__action">
+                                        <label class="settings-switch">
+                                            <input type="checkbox" id="notifyLimit" checked>
+                                            <span class="settings-switch__slider"></span>
+                                        </label>
+                                    </div>
+                                </article>
+                            </div>
+                        </section>
+
+                        <section class="card settings-card" id="financeiro">
+                            <div class="settings-section__header">
+                                <div class="settings-section__title-group">
+                                    <h3 class="settings-section__title">Preferências financeiras</h3>
+                                    <p class="settings-section__text">Defina limites, porcentagens e regras para recomendações.</p>
+                                </div>
+
+                                <span class="badge badge--warning">finanças</span>
+                            </div>
+
+                            <form class="settings-form">
+                                <div class="settings-form__grid">
+                                    <div class="form__group">
+                                        <label class="form__label" for="monthlyExpenseLimit">Limite mensal de gastos</label>
+                                        <input class="input" type="number" id="monthlyExpenseLimit" value="1300" min="0" step="0.01">
+                                    </div>
+
+                                    <div class="form__group">
+                                        <label class="form__label" for="recommendedSavePercent">Porcentagem para guardar</label>
+                                        <select class="input select" id="recommendedSavePercent">
+                                            <option value="10">10% da renda</option>
+                                            <option value="20">20% da renda</option>
+                                            <option value="30" selected>30% da renda</option>
+                                            <option value="40">40% da renda</option>
+                                            <option value="50">50% da renda</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="settings-form__grid">
+                                    <div class="form__group">
+                                        <label class="form__label" for="debtStrategy">Estratégia de dívidas</label>
+                                        <select class="input select" id="debtStrategy">
+                                            <option value="higher-interest" selected>Priorizar juros maiores</option>
+                                            <option value="lower-value">Quitar menores primeiro</option>
+                                            <option value="due-date">Priorizar vencimento próximo</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form__group">
+                                        <label class="form__label" for="investmentProfile">Perfil de investimento</label>
+                                        <select class="input select" id="investmentProfile">
+                                            <option value="conservative" selected>Conservador</option>
+                                            <option value="moderate">Moderado</option>
+                                            <option value="bold">Arrojado</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </section>
+
+                        <section class="card settings-card" id="seguranca">
+                            <div class="settings-section__header">
+                                <div class="settings-section__title-group">
+                                    <h3 class="settings-section__title">Segurança e privacidade</h3>
+                                    <p class="settings-section__text">Proteja seus dados e controle o que aparece na tela.</p>
+                                </div>
+
+                                <span class="badge badge--danger">segurança</span>
+                            </div>
+
+                            <div class="settings-list">
+                                <article class="settings-item">
+                                    <div class="settings-item__main">
+                                        <span class="settings-item__icon">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                                <path d="M7 11V8a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                <path d="M5 11h14v10H5V11Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+
+                                        <span class="settings-item__info">
+                                            <strong class="settings-item__title">Senha da conta</strong>
+                                            <span class="settings-item__text">Altere sua senha de acesso ao Finly.</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="settings-item__action">
+                                        <button class="btn btn-ghost btn-sm" type="button" data-action="change-password">Alterar</button>
+                                    </div>
+                                </article>
+
+                                <article class="settings-item">
+                                    <div class="settings-item__main">
+                                        <span class="settings-item__icon settings-item__icon--success">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                                <path d="M12 3 20 7v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                <path d="m9 12 2 2 4-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+
+                                        <span class="settings-item__info">
+                                            <strong class="settings-item__title">Verificação em duas etapas</strong>
+                                            <span class="settings-item__text">Adicione uma camada extra de segurança.</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="settings-item__action">
+                                        <label class="settings-switch">
+                                            <input type="checkbox" id="twoFactor">
+                                            <span class="settings-switch__slider"></span>
+                                        </label>
+                                    </div>
+                                </article>
+
+                                <article class="settings-item">
+                                    <div class="settings-item__main">
+                                        <span class="settings-item__icon settings-item__icon--warning">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                                <path d="M3 3l18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                <path d="M10.58 10.58A2 2 0 0 0 12 14a2 2 0 0 0 1.42-.58" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                <path d="M9.88 4.24A9.77 9.77 0 0 1 12 4c5 0 9 5 10 8a13.16 13.16 0 0 1-2.03 3.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                <path d="M6.1 6.1C4.14 7.42 2.7 9.5 2 12c1 3 5 8 10 8a9.4 9.4 0 0 0 4.35-1.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                            </svg>
+                                        </span>
+
+                                        <span class="settings-item__info">
+                                            <strong class="settings-item__title">Modo discreto</strong>
+                                            <span class="settings-item__text">Ocultar valores financeiros sensíveis na interface.</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="settings-item__action">
+                                        <label class="settings-switch">
+                                            <input type="checkbox" id="privacyMode">
+                                            <span class="settings-switch__slider"></span>
+                                        </label>
+                                    </div>
+                                </article>
+                            </div>
+                        </section>
+
+                        <section class="settings-backup-card" id="dados">
+                            <strong class="settings-backup-card__title">Backup dos seus dados</strong>
+
+                            <p class="settings-backup-card__text">
+                                Exporte uma cópia local das suas receitas, despesas, parcelamentos, metas, perfil e configurações salvas no navegador.
+                            </p>
+
+                            <div class="settings-backup-card__actions">
+                                <button class="btn" type="button" data-action="export-data">
+                                    Exportar dados
+                                </button>
+
+                                <button class="btn" type="button" data-action="import-data">
+                                    Importar backup
+                                </button>
+                            </div>
+                        </section>
+
+                        <section class="settings-danger-zone">
+                            <strong class="settings-danger-zone__title">Zona de risco</strong>
+
+                            <p class="settings-danger-zone__text">
+                                Essas ações podem apagar informações salvas localmente no navegador. Use apenas se tiver certeza.
+                            </p>
+
+                            <div class="settings-danger-zone__actions">
+                                <button class="btn btn-soft-danger" type="button" data-action="clear-transactions">
+                                    Limpar movimentações
+                                </button>
+
+                                <button class="btn btn-soft-danger" type="button" data-action="clear-all">
+                                    Apagar tudo
+                                </button>
+                            </div>
+                        </section>
+
+                        <section class="settings-tip">
+                            <span class="settings-tip__icon">
+                                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 17v-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                    <path d="M12 7h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                    <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+
+                            <span class="settings-tip__content">
+                                <strong class="settings-tip__title">Dica do Finly</strong>
+                                <span class="settings-tip__text">
+                                    Revise suas configurações financeiras todo mês para manter limites, alertas e metas alinhados com sua realidade.
+                                </span>
+                            </span>
+                        </section>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../src/js/profile/configuracoes.js"></script>
+    <script src="../src/js/dashboard/dashboard.js"></script>
+</body>
+</html>

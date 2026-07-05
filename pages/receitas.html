@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finly | Receitas</title>
+    <meta name="description" content="Gerencie suas receitas no Finly e acompanhe todas as entradas do mês.">
+    <link rel="stylesheet" href="../src/css/style.css">
+</head>
+<body>
+    <button class="sidebar-toggle" type="button" aria-label="Abrir menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
+        </svg>
+    </button>
+
+    <div class="sidebar-overlay"></div>
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <a href="./dashboard.html" class="sidebar__brand">
+                <span class="sidebar__logo">F</span>
+
+                <span class="sidebar__brand-info">
+                    <strong class="sidebar__brand-name">Finly</strong>
+                    <span class="sidebar__brand-label">Painel financeiro</span>
+                </span>
+            </a>
+
+            <div class="sidebar__content custom-scrollbar">
+                <section class="sidebar__section">
+                    <span class="sidebar__section-title">Principal</span>
+
+                    <nav class="sidebar__nav" aria-label="Menu principal">
+                        <a href="./dashboard.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M4 13h7V4H4v9Zm9 7h7V4h-7v16ZM4 20h7v-5H4v5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Dashboard</span>
+                        </a>
+
+                        <a href="./receitas.html" class="sidebar__link is-active">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="m6 11 6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Receitas</span>
+                        </a>
+
+                        <a href="./despesas.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 5v14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="m18 13-6 6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M5 3h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Despesas</span>
+                        </a>
+
+                        <a href="./parcelamentos.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M7 7h10M7 12h10M7 17h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Parcelamentos</span>
+                            <span class="sidebar__badge">3</span>
+                        </a>
+
+                        <a href="./metas.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 12h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Metas</span>
+                        </a>
+                    </nav>
+                </section>
+
+                <section class="sidebar__section">
+                    <span class="sidebar__section-title">Análise</span>
+
+                    <nav class="sidebar__nav" aria-label="Menu de análise">
+                        <a href="./relatorios.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M4 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M8 17v-6M12 17V7M16 17v-4M20 17V9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Relatórios</span>
+                        </a>
+
+                        <a href="#" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">IA Financeira</span>
+                            <span class="sidebar__badge">em breve</span>
+                        </a>
+                    </nav>
+                </section>
+
+                <section class="sidebar__section">
+                    <span class="sidebar__section-title">Conta</span>
+
+                    <nav class="sidebar__nav" aria-label="Menu da conta">
+                        <a href="./perfil.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Perfil</span>
+                        </a>
+
+                        <a href="./configuracoes.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.36a1.7 1.7 0 0 0-1 .64 1.7 1.7 0 0 0-.36 1.08V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.6 19.36a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.24 15a1.7 1.7 0 0 0-.64-1 1.7 1.7 0 0 0-1.08-.36H2.5a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.24 8.6a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 8.6 4.24a1.7 1.7 0 0 0 1-.64A1.7 1.7 0 0 0 9.96 2.5V2.5a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.04 1.65 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.36 8.6a1.7 1.7 0 0 0 .64 1c.3.23.68.36 1.08.36H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Configurações</span>
+                        </a>
+                    </nav>
+                </section>
+            </div>
+
+            <div class="sidebar__footer">
+                <div class="sidebar-card">
+                    <strong class="sidebar-card__title">Entradas do mês</strong>
+                    <p class="sidebar-card__text">Registre suas receitas para o Finly calcular seu saldo real.</p>
+                    <span class="badge badge--success">R$ 1.700</span>
+                </div>
+
+                <div class="sidebar-user">
+                    <span class="sidebar-user__avatar">H</span>
+
+                    <span class="sidebar-user__info">
+                        <strong class="sidebar-user__name">Henry Gabriel</strong>
+                        <span class="sidebar-user__email">henry@finly.app</span>
+                    </span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="app-main income-page">
+            <header class="topbar">
+                <div class="topbar__left">
+                    <div class="topbar__title-group">
+                        <h1 class="topbar__title">Receitas</h1>
+                        <span class="topbar__subtitle">Controle todas as entradas do mês</span>
+                    </div>
+                </div>
+
+                <div class="topbar__right">
+                    <div class="topbar__search form-search">
+                        <span class="form-search__icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" stroke="currentColor" stroke-width="2"/>
+                                <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </span>
+                        <input class="input" type="search" placeholder="Buscar receita...">
+                    </div>
+
+                    <button class="btn btn-ghost btn-icon" type="button" aria-label="Notificações">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+
+                    <button class="user-menu" type="button">
+                        <span class="user-menu__avatar">H</span>
+
+                        <span class="user-menu__info">
+                            <strong class="user-menu__name">Henry</strong>
+                            <span class="user-menu__role">Conta pessoal</span>
+                        </span>
+                    </button>
+                </div>
+            </header>
+
+            <section class="income-content">
+                <div class="income-header">
+                    <div class="income-header__content">
+                        <span class="income-header__eyebrow">
+                            <span class="status-dot success"></span>
+                            Receitas de julho
+                        </span>
+
+                        <h2 class="income-header__title">Controle o dinheiro que entra</h2>
+
+                        <p class="income-header__text">
+                            Cadastre salários, rendas extras, trabalhos, presentes e qualquer entrada para manter seu saldo sempre atualizado.
+                        </p>
+                    </div>
+
+                    <div class="income-header__actions">
+                        <button class="btn btn-soft-success" type="button">
+                            Exportar
+                        </button>
+
+                        <a href="#nova-receita" class="btn btn-primary">
+                            Nova receita
+                        </a>
+                    </div>
+                </div>
+
+                <section class="income-kpis">
+                    <article class="income-hero-card">
+                        <div>
+                            <span class="income-hero-card__label">Receita total do mês</span>
+                            <strong class="income-hero-card__value">R$ 1.700,00</strong>
+                        </div>
+
+                        <p class="income-hero-card__text">
+                            Sua principal entrada já foi registrada. Continue acompanhando rendas extras para melhorar sua visão financeira.
+                        </p>
+
+                        <div class="income-hero-card__footer">
+                            <span class="income-pill">+8% vs mês anterior</span>
+                            <span class="income-pill">1 entrada fixa</span>
+                        </div>
+                    </article>
+
+                    <article class="income-kpi">
+                        <div class="income-kpi__top">
+                            <div>
+                                <span class="income-kpi__label">Salário</span>
+                                <strong class="income-kpi__value">R$ 1.700</strong>
+                            </div>
+
+                            <span class="income-kpi__icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 3v18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                    <path d="M17 7.5c0-1.38-2.24-2.5-5-2.5S7 6.12 7 7.5 9.24 10 12 10s5 1.12 5 2.5S14.76 15 12 15s-5-1.12-5-2.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <span class="income-kpi__meta">Entrada principal do mês</span>
+                    </article>
+
+                    <article class="income-kpi">
+                        <div class="income-kpi__top">
+                            <div>
+                                <span class="income-kpi__label">Renda extra</span>
+                                <strong class="income-kpi__value">R$ 0</strong>
+                            </div>
+
+                            <span class="income-kpi__icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <span class="income-kpi__meta">Nenhuma renda extra registrada</span>
+                    </article>
+
+                    <article class="income-kpi">
+                        <div class="income-kpi__top">
+                            <div>
+                                <span class="income-kpi__label">Recorrentes</span>
+                                <strong class="income-kpi__value">1</strong>
+                            </div>
+
+                            <span class="income-kpi__icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M17 1v6h-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M20.49 12a8.5 8.5 0 1 1-2.49-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <span class="income-kpi__meta">Receitas automáticas previstas</span>
+                    </article>
+                </section>
+
+                <div class="income-grid">
+                    <div class="income-main">
+                        <section class="card income-form-card" id="nova-receita">
+                            <div class="card__header">
+                                <div class="card__title-group">
+                                    <h3 class="card__title">Nova receita</h3>
+                                    <p class="card__subtitle">Registre uma nova entrada no seu painel.</p>
+                                </div>
+
+                                <span class="badge badge--success">Entrada</span>
+                            </div>
+
+                            <form class="income-form">
+                                <div class="income-form__grid">
+                                    <div class="form__group">
+                                        <label class="form__label" for="incomeName">Nome da receita</label>
+                                        <input class="input" type="text" id="incomeName" name="incomeName" placeholder="Ex: Salário, freela, venda..." required>
+                                    </div>
+
+                                    <div class="form__group">
+                                        <label class="form__label" for="incomeValue">Valor</label>
+                                        <input class="input" type="number" id="incomeValue" name="incomeValue" placeholder="0,00" min="0" step="0.01" required>
+                                    </div>
+                                </div>
+
+                                <div class="income-form__grid">
+                                    <div class="form__group">
+                                        <label class="form__label" for="incomeDate">Data de entrada</label>
+                                        <input class="input" type="date" id="incomeDate" name="incomeDate" required>
+                                    </div>
+
+                                    <div class="form__group">
+                                        <label class="form__label" for="incomeRecurrence">Recorrência</label>
+                                        <select class="input select" id="incomeRecurrence" name="incomeRecurrence">
+                                            <option value="none">Não recorrente</option>
+                                            <option value="monthly">Mensal</option>
+                                            <option value="weekly">Semanal</option>
+                                            <option value="yearly">Anual</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form__group">
+                                    <label class="form__label">Categoria</label>
+
+                                    <div class="income-category-grid">
+                                        <label class="income-category is-active">
+                                            <input type="radio" name="incomeCategory" value="salary" checked>
+                                            <span class="income-category__icon">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M12 3v18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                                    <path d="M17 7.5c0-1.38-2.24-2.5-5-2.5S7 6.12 7 7.5 9.24 10 12 10s5 1.12 5 2.5S14.76 15 12 15s-5-1.12-5-2.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                                </svg>
+                                            </span>
+                                            <span class="income-category__name">Salário</span>
+                                        </label>
+
+                                        <label class="income-category">
+                                            <input type="radio" name="incomeCategory" value="freelance">
+                                            <span class="income-category__icon">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M4 7h16v12H4V7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                    <path d="M9 7V5h6v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                </svg>
+                                            </span>
+                                            <span class="income-category__name">Freela</span>
+                                        </label>
+
+                                        <label class="income-category">
+                                            <input type="radio" name="incomeCategory" value="sales">
+                                            <span class="income-category__icon">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M5 11h14l-1.5 8h-11L5 11Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                    <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                </svg>
+                                            </span>
+                                            <span class="income-category__name">Vendas</span>
+                                        </label>
+
+                                        <label class="income-category">
+                                            <input type="radio" name="incomeCategory" value="gift">
+                                            <span class="income-category__icon">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M20 12v8H4v-8" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                    <path d="M2 7h20v5H2V7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                    <path d="M12 7v13" stroke="currentColor" stroke-width="2"/>
+                                                    <path d="M12 7H8.5a2 2 0 1 1 0-4C11 3 12 7 12 7Zm0 0h3.5a2 2 0 1 0 0-4C13 3 12 7 12 7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                            <span class="income-category__name">Presente</span>
+                                        </label>
+
+                                        <label class="income-category">
+                                            <input type="radio" name="incomeCategory" value="investment">
+                                            <span class="income-category__icon">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M4 19 9 14l4 4 7-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M15 9h5v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                            <span class="income-category__name">Invest.</span>
+                                        </label>
+
+                                        <label class="income-category">
+                                            <input type="radio" name="incomeCategory" value="other">
+                                            <span class="income-category__icon">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                                </svg>
+                                            </span>
+                                            <span class="income-category__name">Outros</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form__group">
+                                    <label class="form__label" for="incomeDescription">Observação</label>
+                                    <textarea class="input textarea" id="incomeDescription" name="incomeDescription" rows="4" placeholder="Detalhe algo importante sobre essa receita..."></textarea>
+                                </div>
+
+                                <button class="btn btn-primary btn-block btn-lg" type="submit">
+                                    Salvar receita
+                                </button>
+                            </form>
+                        </section>
+
+                        <section class="income-section">
+                            <div class="income-section__header">
+                                <div class="income-section__title-group">
+                                    <h3 class="income-section__title">Receitas registradas</h3>
+                                    <p class="income-section__text">Entradas mais recentes cadastradas no Finly.</p>
+                                </div>
+
+                                <div class="income-filter">
+                                    <input class="input" type="search" placeholder="Filtrar receitas...">
+                                    <button class="btn btn-soft-success" type="button">Filtrar</button>
+                                </div>
+                            </div>
+
+                            <div class="income-list">
+                                <article class="income-item">
+                                    <div class="income-item__main">
+                                        <span class="income-item__icon">
+                                            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <path d="M12 3v18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                                <path d="M17 7.5c0-1.38-2.24-2.5-5-2.5S7 6.12 7 7.5 9.24 10 12 10s5 1.12 5 2.5S14.76 15 12 15s-5-1.12-5-2.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                            </svg>
+                                        </span>
+
+                                        <span class="income-item__info">
+                                            <strong class="income-item__title">Salário</strong>
+                                            <span class="income-item__meta">Salário • 10 Jul • Mensal</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="income-item__side">
+                                        <strong class="income-item__value">+ R$ 1.700,00</strong>
+
+                                        <div class="income-item__actions">
+                                            <button class="btn btn-ghost btn-sm" type="button">Editar</button>
+                                            <button class="btn btn-ghost btn-sm" type="button">Excluir</button>
+                                        </div>
+                                    </div>
+                                </article>
+
+                                <article class="income-item">
+                                    <div class="income-item__main">
+                                        <span class="income-item__icon">
+                                            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <path d="M4 7h16v12H4V7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                <path d="M9 7V5h6v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                            </svg>
+                                        </span>
+
+                                        <span class="income-item__info">
+                                            <strong class="income-item__title">Site landing page</strong>
+                                            <span class="income-item__meta">Freela • previsto • Não recorrente</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="income-item__side">
+                                        <strong class="income-item__value">+ R$ 700,00</strong>
+
+                                        <div class="income-item__actions">
+                                            <button class="btn btn-ghost btn-sm" type="button">Editar</button>
+                                            <button class="btn btn-ghost btn-sm" type="button">Excluir</button>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                        </section>
+                    </div>
+
+                    <aside class="income-aside">
+                        <section class="card">
+                            <div class="card__header">
+                                <div class="card__title-group">
+                                    <h3 class="card__title">Fontes de renda</h3>
+                                    <p class="card__subtitle">Distribuição das entradas atuais.</p>
+                                </div>
+                            </div>
+
+                            <div class="income-sources">
+                                <div class="income-source">
+                                    <div class="income-source__top">
+                                        <span class="income-source__name">Salário</span>
+                                        <strong class="income-source__value">R$ 1.700</strong>
+                                    </div>
+
+                                    <div class="income-source__track">
+                                        <span class="income-source__bar" style="--progress-value: 100%;"></span>
+                                    </div>
+                                </div>
+
+                                <div class="income-source">
+                                    <div class="income-source__top">
+                                        <span class="income-source__name">Freelas</span>
+                                        <strong class="income-source__value">R$ 0</strong>
+                                    </div>
+
+                                    <div class="income-source__track">
+                                        <span class="income-source__bar" style="--progress-value: 0%;"></span>
+                                    </div>
+                                </div>
+
+                                <div class="income-source">
+                                    <div class="income-source__top">
+                                        <span class="income-source__name">Outros</span>
+                                        <strong class="income-source__value">R$ 0</strong>
+                                    </div>
+
+                                    <div class="income-source__track">
+                                        <span class="income-source__bar" style="--progress-value: 0%;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="card">
+                            <div class="card__header">
+                                <div class="card__title-group">
+                                    <h3 class="card__title">Calendário</h3>
+                                    <p class="card__subtitle">Dias com entrada prevista.</p>
+                                </div>
+                            </div>
+
+                            <div class="income-calendar">
+                                <div class="income-calendar__grid">
+                                    <span class="income-calendar__day">1</span>
+                                    <span class="income-calendar__day">2</span>
+                                    <span class="income-calendar__day">3</span>
+                                    <span class="income-calendar__day">4</span>
+                                    <span class="income-calendar__day">5</span>
+                                    <span class="income-calendar__day">6</span>
+                                    <span class="income-calendar__day">7</span>
+                                    <span class="income-calendar__day">8</span>
+                                    <span class="income-calendar__day">9</span>
+                                    <span class="income-calendar__day is-income">10</span>
+                                    <span class="income-calendar__day">11</span>
+                                    <span class="income-calendar__day">12</span>
+                                    <span class="income-calendar__day">13</span>
+                                    <span class="income-calendar__day">14</span>
+                                    <span class="income-calendar__day">15</span>
+                                    <span class="income-calendar__day is-today">16</span>
+                                    <span class="income-calendar__day">17</span>
+                                    <span class="income-calendar__day">18</span>
+                                    <span class="income-calendar__day">19</span>
+                                    <span class="income-calendar__day">20</span>
+                                    <span class="income-calendar__day">21</span>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="card">
+                            <div class="card__header">
+                                <div class="card__title-group">
+                                    <h3 class="card__title">Próximas entradas</h3>
+                                    <p class="card__subtitle">Receitas previstas para entrar.</p>
+                                </div>
+                            </div>
+
+                            <div class="income-list">
+                                <article class="income-item">
+                                    <div class="income-item__main">
+                                        <span class="income-item__icon">
+                                            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <path d="M4 7h16v12H4V7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                <path d="M9 7V5h6v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                            </svg>
+                                        </span>
+
+                                        <span class="income-item__info">
+                                            <strong class="income-item__title">Projeto de site</strong>
+                                            <span class="income-item__meta">Previsto para este mês</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="income-item__side">
+                                        <strong class="income-item__value">+ R$ 700,00</strong>
+                                    </div>
+                                </article>
+                            </div>
+                        </section>
+
+                        <section class="income-tip">
+                            <span class="income-tip__icon">
+                                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 17v-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                    <path d="M12 7h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                    <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+
+                            <span class="income-tip__content">
+                                <strong class="income-tip__title">Dica do Finly</strong>
+                                <span class="income-tip__text">
+                                    Sempre que entrar uma renda extra, defina uma porcentagem para guardar antes de gastar.
+                                </span>
+                            </span>
+                        </section>
+                    </aside>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../src/js/finance/receitas.js"></script>
+    <script src="../src/js/dashboard/dashboard.js"></script>
+</body>
+</html>

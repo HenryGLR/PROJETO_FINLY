@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finly | Parcelamentos</title>
+    <meta name="description" content="Gerencie parcelamentos, compras no cartão e parcelas futuras no Finly.">
+    <link rel="stylesheet" href="../src/css/style.css">
+</head>
+<body>
+    <button class="sidebar-toggle" type="button" aria-label="Abrir menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
+        </svg>
+    </button>
+
+    <div class="sidebar-overlay"></div>
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <a href="./dashboard.html" class="sidebar__brand">
+                <span class="sidebar__logo">F</span>
+
+                <span class="sidebar__brand-info">
+                    <strong class="sidebar__brand-name">Finly</strong>
+                    <span class="sidebar__brand-label">Painel financeiro</span>
+                </span>
+            </a>
+
+            <div class="sidebar__content custom-scrollbar">
+                <section class="sidebar__section">
+                    <span class="sidebar__section-title">Principal</span>
+
+                    <nav class="sidebar__nav" aria-label="Menu principal">
+                        <a href="./dashboard.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M4 13h7V4H4v9Zm9 7h7V4h-7v16ZM4 20h7v-5H4v5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Dashboard</span>
+                        </a>
+
+                        <a href="./receitas.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="m6 11 6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Receitas</span>
+                        </a>
+
+                        <a href="./despesas.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 5v14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="m18 13-6 6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M5 3h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Despesas</span>
+                        </a>
+
+                        <a href="./parcelamentos.html" class="sidebar__link is-active">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M7 7h10M7 12h10M7 17h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Parcelamentos</span>
+                            <span class="sidebar__badge">3</span>
+                        </a>
+
+                        <a href="./metas.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 12h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Metas</span>
+                        </a>
+                    </nav>
+                </section>
+
+                <section class="sidebar__section">
+                    <span class="sidebar__section-title">Análise</span>
+
+                    <nav class="sidebar__nav" aria-label="Menu de análise">
+                        <a href="./relatorios.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M4 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M8 17v-6M12 17V7M16 17v-4M20 17V9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Relatórios</span>
+                        </a>
+
+                        <a href="#" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">IA Financeira</span>
+                            <span class="sidebar__badge">em breve</span>
+                        </a>
+                    </nav>
+                </section>
+
+                <section class="sidebar__section">
+                    <span class="sidebar__section-title">Conta</span>
+
+                    <nav class="sidebar__nav" aria-label="Menu da conta">
+                        <a href="./perfil.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Perfil</span>
+                        </a>
+
+                        <a href="./configuracoes.html" class="sidebar__link">
+                            <span class="sidebar__icon">
+                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.36a1.7 1.7 0 0 0-1 .64 1.7 1.7 0 0 0-.36 1.08V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.6 19.36a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.24 15a1.7 1.7 0 0 0-.64-1 1.7 1.7 0 0 0-1.08-.36H2.5a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.24 8.6a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 8.6 4.24a1.7 1.7 0 0 0 1-.64A1.7 1.7 0 0 0 9.96 2.5V2.5a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.04 1.65 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.36 8.6a1.7 1.7 0 0 0 .64 1c.3.23.68.36 1.08.36H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+                            <span class="sidebar__text">Configurações</span>
+                        </a>
+                    </nav>
+                </section>
+            </div>
+
+            <div class="sidebar__footer">
+                <div class="sidebar-card">
+                    <strong class="sidebar-card__title">Parcelas ativas</strong>
+                    <p class="sidebar-card__text">Acompanhe compras parceladas para não perder o controle dos próximos meses.</p>
+                    <span class="badge badge--warning">3 ativos</span>
+                </div>
+
+                <div class="sidebar-user">
+                    <span class="sidebar-user__avatar">H</span>
+
+                    <span class="sidebar-user__info">
+                        <strong class="sidebar-user__name">Henry Gabriel</strong>
+                        <span class="sidebar-user__email">henry@finly.app</span>
+                    </span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="app-main installments-page">
+            <header class="topbar">
+                <div class="topbar__left">
+                    <div class="topbar__title-group">
+                        <h1 class="topbar__title">Parcelamentos</h1>
+                        <span class="topbar__subtitle">Controle compras parceladas e vencimentos</span>
+                    </div>
+                </div>
+
+                <div class="topbar__right">
+                    <div class="topbar__search form-search">
+                        <span class="form-search__icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" stroke="currentColor" stroke-width="2"/>
+                                <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </span>
+                        <input class="input" type="search" placeholder="Buscar parcelamento...">
+                    </div>
+
+                    <button class="btn btn-ghost btn-icon" type="button" aria-label="Notificações">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+
+                    <button class="user-menu" type="button">
+                        <span class="user-menu__avatar">H</span>
+
+                        <span class="user-menu__info">
+                            <strong class="user-menu__name">Henry</strong>
+                            <span class="user-menu__role">Conta pessoal</span>
+                        </span>
+                    </button>
+                </div>
+            </header>
+
+            <section class="installments-content">
+                <div class="installments-header">
+                    <div class="installments-header__content">
+                        <span class="installments-header__eyebrow">
+                            <span class="status-dot warning"></span>
+                            Parcelas de julho
+                        </span>
+
+                        <h2 class="installments-header__title">Organize suas parcelas</h2>
+
+                        <p class="installments-header__text">
+                            Cadastre compras parceladas, acompanhe o progresso de pagamento e entenda o quanto já está comprometido nos próximos meses.
+                        </p>
+                    </div>
+
+                    <div class="installments-header__actions">
+                        <button class="btn btn-soft-warning" type="button">
+                            Exportar
+                        </button>
+
+                        <a href="#novo-parcelamento" class="btn btn-primary">
+                            Novo parcelamento
+                        </a>
+                    </div>
+                </div>
+
+                <section class="installments-kpis">
+                    <article class="installments-hero-card">
+                        <div>
+                            <span class="installments-hero-card__label">Total em aberto</span>
+                            <strong class="installments-hero-card__value">R$ 1.157,61</strong>
+                        </div>
+
+                        <p class="installments-hero-card__text">
+                            Você possui compras parceladas ativas. Acompanhe os vencimentos para evitar atrasos e manter seu saldo previsível.
+                        </p>
+
+                        <div class="installments-hero-card__footer">
+                            <span class="installments-pill">3 parcelamentos ativos</span>
+                            <span class="installments-pill">R$ 385,87 próximo vencimento</span>
+                        </div>
+                    </article>
+
+                    <article class="installments-kpi">
+                        <div class="installments-kpi__top">
+                            <div>
+                                <span class="installments-kpi__label">Ativos</span>
+                                <strong class="installments-kpi__value">3</strong>
+                            </div>
+
+                            <span class="installments-kpi__icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M7 7h10M7 12h10M7 17h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <span class="installments-kpi__meta">Compras em andamento</span>
+                    </article>
+
+                    <article class="installments-kpi">
+                        <div class="installments-kpi__top">
+                            <div>
+                                <span class="installments-kpi__label">Este mês</span>
+                                <strong class="installments-kpi__value">R$ 385</strong>
+                            </div>
+
+                            <span class="installments-kpi__icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M8 2v4M16 2v4M3 9h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <span class="installments-kpi__meta">Valor previsto em julho</span>
+                    </article>
+
+                    <article class="installments-kpi">
+                        <div class="installments-kpi__top">
+                            <div>
+                                <span class="installments-kpi__label">Quitado</span>
+                                <strong class="installments-kpi__value">42%</strong>
+                            </div>
+
+                            <span class="installments-kpi__icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <span class="installments-kpi__meta">Média de progresso</span>
+                    </article>
+                </section>
+
+                <div class="installments-grid">
+                    <div class="installments-main">
+                        <section class="card installment-form-card" id="novo-parcelamento">
+                            <div class="card__header">
+                                <div class="card__title-group">
+                                    <h3 class="card__title">Novo parcelamento</h3>
+                                    <p class="card__subtitle">Cadastre uma compra parcelada para acompanhar mês a mês.</p>
+                                </div>
+
+                                <span class="badge badge--warning">Parcelado</span>
+                            </div>
+
+                            <form class="installment-form">
+                                <div class="installment-form__grid">
+                                    <div class="form__group">
+                                        <label class="form__label" for="installmentName">Nome da compra</label>
+                                        <input class="input" type="text" id="installmentName" name="installmentName" placeholder="Ex: Nubank, notebook, curso..." required>
+                                    </div>
+
+                                    <div class="form__group">
+                                        <label class="form__label" for="installmentTotal">Valor total</label>
+                                        <input class="input" type="number" id="installmentTotal" name="installmentTotal" placeholder="0,00" min="0" step="0.01" required>
+                                    </div>
+                                </div>
+
+                                <div class="installment-form__grid">
+                                    <div class="form__group">
+                                        <label class="form__label" for="installmentTotalParts">Quantidade de parcelas</label>
+                                        <input class="input" type="number" id="installmentTotalParts" name="installmentTotalParts" placeholder="Ex: 5" min="1" step="1" required>
+                                    </div>
+
+                                    <div class="form__group">
+                                        <label class="form__label" for="installmentPaidParts">Parcelas pagas</label>
+                                        <input class="input" type="number" id="installmentPaidParts" name="installmentPaidParts" placeholder="Ex: 2" min="0" step="1" required>
+                                    </div>
+                                </div>
+
+                                <div class="installment-form__grid">
+                                    <div class="form__group">
+                                        <label class="form__label" for="installmentDueDate">Próximo vencimento</label>
+                                        <input class="input" type="date" id="installmentDueDate" name="installmentDueDate" required>
+                                    </div>
+
+                                    <div class="form__group">
+                                        <label class="form__label" for="installmentCard">Cartão/Origem</label>
+                                        <select class="input select" id="installmentCard" name="installmentCard">
+                                            <option value="nubank">Nubank</option>
+                                            <option value="picpay">PicPay</option>
+                                            <option value="renner">Renner</option>
+                                            <option value="other">Outro</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form__group">
+                                    <label class="form__label" for="installmentDescription">Observação</label>
+                                    <textarea class="input textarea" id="installmentDescription" name="installmentDescription" rows="4" placeholder="Detalhe algo importante sobre esse parcelamento..."></textarea>
+                                </div>
+
+                                <button class="btn btn-primary btn-block btn-lg" type="submit">
+                                    Salvar parcelamento
+                                </button>
+                            </form>
+                        </section>
+
+                        <section class="installments-section">
+                            <div class="installments-section__header">
+                                <div class="installments-section__title-group">
+                                    <h3 class="installments-section__title">Parcelamentos ativos</h3>
+                                    <p class="installments-section__text">Compras parceladas cadastradas no Finly.</p>
+                                </div>
+
+                                <div class="installment-filter">
+                                    <input class="input" type="search" placeholder="Filtrar parcelamentos...">
+                                    <button class="btn btn-soft-warning" type="button">Filtrar</button>
+                                </div>
+                            </div>
+
+                            <div class="installment-list">
+                                <article class="installment-item">
+                                    <div class="installment-item__top">
+                                        <div class="installment-item__main">
+                                            <span class="installment-item__icon">
+                                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M3 7h18v10H3V7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                    <path d="M3 10h18" stroke="currentColor" stroke-width="2"/>
+                                                    <path d="M7 15h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                </svg>
+                                            </span>
+
+                                            <span class="installment-item__info">
+                                                <strong class="installment-item__title">Parcela Nubank</strong>
+                                                <span class="installment-item__meta">Nubank • vence 24 Jul</span>
+                                            </span>
+                                        </div>
+
+                                        <div class="installment-item__value">
+                                            <strong class="installment-item__amount">R$ 385,87</strong>
+                                            <span class="installment-item__small">por parcela</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="installment-progress">
+                                        <div class="installment-progress__top">
+                                            <span>2 de 5 parcelas pagas</span>
+                                            <span>40%</span>
+                                        </div>
+
+                                        <div class="installment-progress__track">
+                                            <span class="installment-progress__bar" style="--progress-value: 40%;"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="installment-item__footer">
+                                        <span class="installment-status">Em andamento</span>
+
+                                        <div class="installment-item__actions">
+                                            <button class="btn btn-ghost btn-sm" type="button">Editar</button>
+                                            <button class="btn btn-ghost btn-sm" type="button">Excluir</button>
+                                        </div>
+                                    </div>
+                                </article>
+
+                                <article class="installment-item">
+                                    <div class="installment-item__top">
+                                        <div class="installment-item__main">
+                                            <span class="installment-item__icon">
+                                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M5 11h14l-1.5 8h-11L5 11Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                    <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                </svg>
+                                            </span>
+
+                                            <span class="installment-item__info">
+                                                <strong class="installment-item__title">Renner</strong>
+                                                <span class="installment-item__meta">Loja • vence 24 Jul</span>
+                                            </span>
+                                        </div>
+
+                                        <div class="installment-item__value">
+                                            <strong class="installment-item__amount">R$ 200,00</strong>
+                                            <span class="installment-item__small">por parcela</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="installment-progress">
+                                        <div class="installment-progress__top">
+                                            <span>1 de 2 parcelas pagas</span>
+                                            <span>50%</span>
+                                        </div>
+
+                                        <div class="installment-progress__track">
+                                            <span class="installment-progress__bar" style="--progress-value: 50%;"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="installment-item__footer">
+                                        <span class="installment-status">Em andamento</span>
+
+                                        <div class="installment-item__actions">
+                                            <button class="btn btn-ghost btn-sm" type="button">Editar</button>
+                                            <button class="btn btn-ghost btn-sm" type="button">Excluir</button>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                        </section>
+                    </div>
+
+                    <aside class="installments-aside">
+                        <section class="card">
+                            <div class="card__header">
+                                <div class="card__title-group">
+                                    <h3 class="card__title">Resumo</h3>
+                                    <p class="card__subtitle">Visão geral das parcelas.</p>
+                                </div>
+                            </div>
+
+                            <div class="installments-summary">
+                                <div class="installments-summary__item">
+                                    <span class="installments-summary__label">Total em aberto</span>
+                                    <strong class="installments-summary__value installments-summary__value--warning">R$ 1.157,61</strong>
+                                </div>
+
+                                <div class="installments-summary__item">
+                                    <span class="installments-summary__label">Próximo mês</span>
+                                    <strong class="installments-summary__value">R$ 585,87</strong>
+                                </div>
+
+                                <div class="installments-summary__item">
+                                    <span class="installments-summary__label">Já pago</span>
+                                    <strong class="installments-summary__value installments-summary__value--success">R$ 971,74</strong>
+                                </div>
+
+                                <div class="installments-summary__item">
+                                    <span class="installments-summary__label">Em atraso</span>
+                                    <strong class="installments-summary__value installments-summary__value--danger">R$ 0,00</strong>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="card">
+                            <div class="card__header">
+                                <div class="card__title-group">
+                                    <h3 class="card__title">Próximos vencimentos</h3>
+                                    <p class="card__subtitle">Acompanhe o que vem pela frente.</p>
+                                </div>
+                            </div>
+
+                            <div class="installments-timeline">
+                                <article class="installments-timeline__item">
+                                    <span class="installments-timeline__dot">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <path d="M8 2v4M16 2v4M3 9h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                            <path d="M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+                                        </svg>
+                                    </span>
+
+                                    <span class="installments-timeline__content">
+                                        <strong class="installments-timeline__title">24 Jul • Nubank</strong>
+                                        <span class="installments-timeline__text">Parcela de R$ 385,87 prevista para este mês.</span>
+                                    </span>
+                                </article>
+
+                                <article class="installments-timeline__item">
+                                    <span class="installments-timeline__dot">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <path d="M8 2v4M16 2v4M3 9h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                            <path d="M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+                                        </svg>
+                                    </span>
+
+                                    <span class="installments-timeline__content">
+                                        <strong class="installments-timeline__title">24 Jul • Renner</strong>
+                                        <span class="installments-timeline__text">Parcela de R$ 200,00 prevista para este mês.</span>
+                                    </span>
+                                </article>
+
+                                <article class="installments-timeline__item">
+                                    <span class="installments-timeline__dot">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <path d="M8 2v4M16 2v4M3 9h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                            <path d="M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+                                        </svg>
+                                    </span>
+
+                                    <span class="installments-timeline__content">
+                                        <strong class="installments-timeline__title">10 Ago • Nubank</strong>
+                                        <span class="installments-timeline__text">Próxima parcela após o fechamento deste mês.</span>
+                                    </span>
+                                </article>
+                            </div>
+                        </section>
+
+                        <section class="installments-tip">
+                            <span class="installments-tip__icon">
+                                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 17v-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                                    <path d="M12 7h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                    <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </span>
+
+                            <span class="installments-tip__content">
+                                <strong class="installments-tip__title">Dica do Finly</strong>
+                                <span class="installments-tip__text">
+                                    Antes de parcelar uma compra nova, veja se as parcelas futuras cabem junto das que já existem.
+                                </span>
+                            </span>
+                        </section>
+                    </aside>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../src/js/finance/parcelamentos.js"></script>
+    <script src="../src/js/dashboard/dashboard.js"></script>
+</body>
+</html>
