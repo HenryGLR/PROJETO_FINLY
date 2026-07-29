@@ -1,104 +1,229 @@
 (() => {
+    "use strict";
+
     const STORAGE_KEYS = {
-        incomes: "finly_incomes",
-        expenses: "finly_expenses",
-        installments: "finly_installments",
-        goals: "finly_goals"
+        incomes: "incomes",
+        expenses: "expenses",
+        installments: "installments",
+        goals: "goals"
     };
 
-    const fallbackData = {
-        incomes: [
-            {
-                id: "income-1",
-                name: "Salário",
-                value: 1700,
-                date: "2026-07-10",
-                category: "salary",
-                status: "received"
-            }
-        ],
-        expenses: [
-            {
-                id: "expense-1",
-                name: "Academia",
-                value: 170,
-                date: "2026-07-20",
-                type: "fixed",
-                category: "health",
-                status: "paid"
-            },
-            {
-                id: "expense-2",
-                name: "Futevôlei",
-                value: 320,
-                date: "2026-07-05",
-                type: "fixed",
-                category: "health",
-                status: "paid"
-            },
-            {
-                id: "expense-3",
-                name: "Spotify",
-                value: 12.9,
-                date: "2026-07-14",
-                type: "subscription",
-                category: "other",
-                status: "paid"
-            },
-            {
-                id: "expense-4",
-                name: "Parcela Nubank",
-                value: 385.87,
-                date: "2026-07-24",
-                type: "installment",
-                category: "card",
-                status: "pending"
-            }
-        ],
-        installments: [
-            {
-                id: "installment-1",
-                name: "Parcela Nubank",
-                total: 1929.35,
-                totalParts: 5,
-                paidParts: 2,
-                dueDate: "2026-07-24",
-                card: "nubank"
-            },
-            {
-                id: "installment-2",
-                name: "Renner",
-                total: 400,
-                totalParts: 2,
-                paidParts: 1,
-                dueDate: "2026-07-24",
-                card: "renner"
-            }
-        ],
-        goals: [
-            {
-                id: "goal-1",
-                name: "Reserva inicial",
-                target: 2000,
-                current: 680,
-                deadline: "2026-12-30",
-                type: "reserve"
-            }
-        ]
-    };
-
-    const expenseCategoryLabels = {
+    const CATEGORY_LABELS = {
+        salary: "Salário",
+        freelance: "Freelance",
+        sales: "Vendas",
+        gift: "Presente",
+        investment: "Investimentos",
         food: "Alimentação",
         transport: "Transporte",
         health: "Saúde e esporte",
         home: "Casa",
         card: "Cartão",
-        other: "Outros",
-        installments: "Parcelamentos"
+        emergency: "Reserva de emergência",
+        purchase: "Compra",
+        travel: "Viagem",
+        education: "Educação",
+        personal: "Objetivo pessoal",
+        other: "Outros"
     };
 
-    const $ = (selector, parent = document) => parent.querySelector(selector);
-    const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
+    const MONTH_NAMES = [
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro"
+    ];
+
+    const $ = (selector, parent = document) => {
+        return parent.querySelector(selector);
+    };
+
+    const $$ = (selector, parent = document) => {
+        return [...parent.querySelectorAll(selector)];
+    };
+
+    const getFirstElement = (...selectors) => {
+        for (const selector of selectors) {
+            const element = $(selector);
+
+            if (element) {
+                return element;
+            }
+        }
+
+        return null;
+    };
+
+    const reportForm = getFirstElement(
+        "#reportFilterForm",
+        ".report-filter-form",
+        'form[data-form="report-filter"]'
+    );
+
+    const fields = {
+        period: getFirstElement(
+            "#reportPeriod",
+            '[name="reportPeriod"]',
+            '[name="period"]',
+            "[data-report-period]"
+        ),
+
+        startDate: getFirstElement(
+            "#reportStartDate",
+            "#startDate",
+            '[name="reportStartDate"]',
+            '[name="startDate"]',
+            "[data-report-start]"
+        ),
+
+        endDate: getFirstElement(
+            "#reportEndDate",
+            "#endDate",
+            '[name="reportEndDate"]',
+            '[name="endDate"]',
+            "[data-report-end]"
+        ),
+
+        type: getFirstElement(
+            "#reportType",
+            '[name="reportType"]',
+            '[name="type"]',
+            "[data-report-type]"
+        ),
+
+        category: getFirstElement(
+            "#reportCategory",
+            '[name="reportCategory"]',
+            '[name="category"]',
+            "[data-report-category]"
+        ),
+
+        search: getFirstElement(
+            "#reportSearch",
+            ".report-search input",
+            "[data-report-search]",
+            ".topbar__search input"
+        )
+    };
+
+    const elements = {
+        transactionList: getFirstElement(
+            ".report-transaction-list",
+            ".report-transactions",
+            "[data-report-transactions]"
+        ),
+
+        transactionTableBody: getFirstElement(
+            ".report-table tbody",
+            "#reportTableBody",
+            "[data-report-table-body]"
+        ),
+
+        categoryList: getFirstElement(
+            ".report-category-list",
+            ".report-categories",
+            "[data-report-categories]"
+        ),
+
+        monthlyList: getFirstElement(
+            ".report-monthly-list",
+            ".report-months",
+            "[data-report-monthly]"
+        ),
+
+        insights: getFirstElement(
+            ".report-insights",
+            ".report-insight-list",
+            "[data-report-insights]"
+        ),
+
+        chart: getFirstElement(
+            "#reportChart",
+            ".report-chart canvas",
+            "canvas[data-report-chart]"
+        ),
+
+        emptyState: getFirstElement(
+            ".report-empty",
+            "[data-report-empty]"
+        )
+    };
+
+    const state = {
+        incomes: [],
+        expenses: [],
+        installments: [],
+        goals: [],
+        transactions: [],
+        filteredTransactions: [],
+        chartResizeTimeout: null,
+        unsubscribeStorage: null
+    };
+
+    const getStorage = () => {
+        if (!window.FinlyStorage) {
+            console.error(
+                "Finly: storage.js precisa ser carregado antes de relatorios.js."
+            );
+
+            return null;
+        }
+
+        return window.FinlyStorage;
+    };
+
+    const escapeHTML = (value) => {
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    };
+
+    const normalizeText = (value) => {
+        return String(value ?? "")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .trim()
+            .toLowerCase();
+    };
+
+    const parseValue = (value) => {
+        if (typeof value === "number") {
+            return Number.isFinite(value) ? value : 0;
+        }
+
+        let normalized = String(value ?? "")
+            .trim()
+            .replace(/\s/g, "")
+            .replace(/R\$/gi, "");
+
+        if (
+            normalized.includes(".") &&
+            normalized.includes(",")
+        ) {
+            normalized = normalized
+                .replace(/\./g, "")
+                .replace(",", ".");
+        } else if (normalized.includes(",")) {
+            normalized = normalized.replace(",", ".");
+        }
+
+        const parsedValue = Number(normalized);
+
+        return Number.isFinite(parsedValue)
+            ? parsedValue
+            : 0;
+    };
 
     const formatCurrency = (value) => {
         return Number(value || 0).toLocaleString("pt-BR", {
@@ -107,507 +232,1782 @@
         });
     };
 
-    const formatPercent = (value) => {
-        return `${Math.max(Math.round(value || 0), 0)}%`;
+    const formatPercentage = (value) => {
+        return `${Number(value || 0).toLocaleString("pt-BR", {
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1
+        })}%`;
     };
 
-    const formatMonth = (date) => {
-        return date.toLocaleDateString("pt-BR", {
-            month: "short"
-        }).replace(".", "");
+    const formatDate = (date) => {
+        if (!date) {
+            return "Sem data";
+        }
+
+        const parsedDate = new Date(`${date}T12:00:00`);
+
+        if (Number.isNaN(parsedDate.getTime())) {
+            return "Data inválida";
+        }
+
+        return parsedDate.toLocaleDateString("pt-BR");
     };
 
-    const parseDate = (date) => {
-        if (!date) return null;
-        return new Date(`${date}T12:00:00`);
+    const formatMonth = (monthKey) => {
+        if (!monthKey) {
+            return "Período desconhecido";
+        }
+
+        const [year, month] = monthKey
+            .split("-")
+            .map(Number);
+
+        if (!year || !month) {
+            return monthKey;
+        }
+
+        return `${MONTH_NAMES[month - 1]} de ${year}`;
+    };
+
+    const toISODate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
     };
 
     const getMonthKey = (date) => {
-        const parsedDate = date instanceof Date ? date : parseDate(date);
-        if (!parsedDate || Number.isNaN(parsedDate.getTime())) return "";
-
-        return `${parsedDate.getFullYear()}-${String(parsedDate.getMonth() + 1).padStart(2, "0")}`;
-    };
-
-    const readStorage = (key, fallback) => {
-        const stored = localStorage.getItem(key);
-
-        if (!stored) return fallback;
-
-        try {
-            const parsed = JSON.parse(stored);
-            return Array.isArray(parsed) ? parsed : fallback;
-        } catch {
-            return fallback;
+        if (!date) {
+            return "";
         }
+
+        const parsedDate = date instanceof Date
+            ? date
+            : new Date(`${date}T12:00:00`);
+
+        if (Number.isNaN(parsedDate.getTime())) {
+            return "";
+        }
+
+        return [
+            parsedDate.getFullYear(),
+            String(parsedDate.getMonth() + 1).padStart(2, "0")
+        ].join("-");
     };
 
-    const getData = () => {
-        return {
-            incomes: readStorage(STORAGE_KEYS.incomes, fallbackData.incomes),
-            expenses: readStorage(STORAGE_KEYS.expenses, fallbackData.expenses),
-            installments: readStorage(STORAGE_KEYS.installments, fallbackData.installments),
-            goals: readStorage(STORAGE_KEYS.goals, fallbackData.goals)
-        };
+    const getCategoryLabel = (category) => {
+        return CATEGORY_LABELS[category] || "Outros";
     };
 
-    const getInstallmentPartValue = (installment) => {
-        return Number(installment.total || 0) / Number(installment.totalParts || 1);
+    const createTransactionId = (prefix, item, index) => {
+        return (
+            item.id ||
+            `${prefix}-${item.date || "no-date"}-${index}`
+        );
     };
 
-    const getInstallmentOpenValue = (installment) => {
-        const remainingParts = Math.max(Number(installment.totalParts || 0) - Number(installment.paidParts || 0), 0);
-        return getInstallmentPartValue(installment) * remainingParts;
+    const normalizeIncomeStatus = (status) => {
+        const normalizedStatus = normalizeText(status);
+
+        if (
+            normalizedStatus === "received" ||
+            normalizedStatus === "recebido" ||
+            normalizedStatus === "paid" ||
+            normalizedStatus === "pago"
+        ) {
+            return "received";
+        }
+
+        return "pending";
     };
 
-    const getReferenceDate = (data) => {
-        const dates = [
-            ...data.incomes.map((item) => item.date),
-            ...data.expenses.map((item) => item.date),
-            ...data.installments.map((item) => item.dueDate),
-            ...data.goals.map((item) => item.deadline)
-        ]
-            .map(parseDate)
-            .filter((date) => date && !Number.isNaN(date.getTime()))
-            .sort((a, b) => b - a);
+    const normalizeExpenseStatus = (status) => {
+        const normalizedStatus = normalizeText(status);
 
-        return dates[0] || new Date();
+        if (
+            normalizedStatus === "paid" ||
+            normalizedStatus === "pago" ||
+            normalizedStatus === "paga" ||
+            normalizedStatus === "quitado"
+        ) {
+            return "paid";
+        }
+
+        return "pending";
     };
 
-    const getMonthList = (referenceDate, amount) => {
-        return Array.from({ length: amount }).map((_, index) => {
-            const date = new Date(referenceDate);
-            date.setMonth(referenceDate.getMonth() - (amount - 1 - index));
+    const loadData = () => {
+        const storage = getStorage();
 
+        if (!storage) {
+            return false;
+        }
+
+        const incomes = storage.get(
+            STORAGE_KEYS.incomes,
+            []
+        );
+
+        const expenses = storage.get(
+            STORAGE_KEYS.expenses,
+            []
+        );
+
+        const installments = storage.get(
+            STORAGE_KEYS.installments,
+            []
+        );
+
+        const goals = storage.get(
+            STORAGE_KEYS.goals,
+            []
+        );
+
+        state.incomes = Array.isArray(incomes)
+            ? incomes
+            : [];
+
+        state.expenses = Array.isArray(expenses)
+            ? expenses
+            : [];
+
+        state.installments = Array.isArray(installments)
+            ? installments
+            : [];
+
+        state.goals = Array.isArray(goals)
+            ? goals
+            : [];
+
+        buildTransactions();
+
+        return true;
+    };
+
+    const buildTransactions = () => {
+        const incomes = state.incomes.map((income, index) => {
             return {
-                date,
-                key: getMonthKey(date),
-                label: formatMonth(date)
+                id: createTransactionId(
+                    "income",
+                    income,
+                    index
+                ),
+
+                originalId: income.id || null,
+                type: "income",
+                name: String(
+                    income.name ||
+                    income.title ||
+                    income.source ||
+                    "Receita"
+                ).trim(),
+
+                value: Math.max(
+                    parseValue(
+                        income.value ??
+                        income.amount ??
+                        income.total
+                    ),
+                    0
+                ),
+
+                date:
+                    income.date ||
+                    income.receivedAt ||
+                    "",
+
+                category: income.category || "other",
+
+                status: normalizeIncomeStatus(
+                    income.status
+                ),
+
+                description: String(
+                    income.description || ""
+                ).trim()
             };
+        });
+
+        const expenses = state.expenses.map((expense, index) => {
+            return {
+                id: createTransactionId(
+                    "expense",
+                    expense,
+                    index
+                ),
+
+                originalId: expense.id || null,
+                type: "expense",
+
+                name: String(
+                    expense.name ||
+                    expense.title ||
+                    "Despesa"
+                ).trim(),
+
+                value: Math.max(
+                    parseValue(
+                        expense.value ??
+                        expense.amount ??
+                        expense.total
+                    ),
+                    0
+                ),
+
+                date:
+                    expense.date ||
+                    expense.paidAt ||
+                    "",
+
+                category: expense.category || "other",
+
+                status: normalizeExpenseStatus(
+                    expense.status
+                ),
+
+                description: String(
+                    expense.description || ""
+                ).trim()
+            };
+        });
+
+        state.transactions = [
+            ...incomes,
+            ...expenses
+        ].sort((transactionA, transactionB) => {
+            const dateA = new Date(
+                `${transactionA.date}T12:00:00`
+            );
+
+            const dateB = new Date(
+                `${transactionB.date}T12:00:00`
+            );
+
+            if (
+                Number.isNaN(dateA.getTime()) &&
+                Number.isNaN(dateB.getTime())
+            ) {
+                return 0;
+            }
+
+            if (Number.isNaN(dateA.getTime())) {
+                return 1;
+            }
+
+            if (Number.isNaN(dateB.getTime())) {
+                return -1;
+            }
+
+            return dateB - dateA;
         });
     };
 
-    const calculateMonth = (data, monthKey) => {
-        const incomes = data.incomes
-            .filter((income) => income.status !== "pending")
-            .filter((income) => getMonthKey(income.date) === monthKey)
-            .reduce((sum, income) => sum + Number(income.value || 0), 0);
+    const getPeriodDates = (period) => {
+        const today = new Date();
+        today.setHours(12, 0, 0, 0);
 
-        const expenses = data.expenses
-            .filter((expense) => getMonthKey(expense.date) === monthKey)
-            .reduce((sum, expense) => sum + Number(expense.value || 0), 0);
+        const startDate = new Date(today);
+        const endDate = new Date(today);
 
-        const installmentExpenses = data.installments
-            .filter((installment) => Number(installment.paidParts || 0) < Number(installment.totalParts || 0))
-            .filter((installment) => getMonthKey(installment.dueDate) === monthKey)
-            .reduce((sum, installment) => sum + getInstallmentPartValue(installment), 0);
+        switch (period) {
+            case "today":
+                break;
 
-        const totalExpenses = expenses + installmentExpenses;
-        const balance = incomes - totalExpenses;
-        const savingsRate = incomes > 0 ? (balance / incomes) * 100 : 0;
+            case "7days":
+                startDate.setDate(today.getDate() - 6);
+                break;
+
+            case "30days":
+                startDate.setDate(today.getDate() - 29);
+                break;
+
+            case "current-month":
+            case "month":
+                startDate.setDate(1);
+
+                endDate.setMonth(today.getMonth() + 1);
+                endDate.setDate(0);
+                break;
+
+            case "previous-month":
+                startDate.setMonth(today.getMonth() - 1);
+                startDate.setDate(1);
+
+                endDate.setDate(0);
+                break;
+
+            case "current-year":
+            case "year":
+                startDate.setMonth(0, 1);
+                endDate.setMonth(11, 31);
+                break;
+
+            case "all":
+                return {
+                    startDate: "",
+                    endDate: ""
+                };
+
+            default:
+                startDate.setDate(1);
+
+                endDate.setMonth(today.getMonth() + 1);
+                endDate.setDate(0);
+                break;
+        }
+
+        return {
+            startDate: toISODate(startDate),
+            endDate: toISODate(endDate)
+        };
+    };
+
+    const applyPeriodSelection = () => {
+        if (!fields.period) {
+            return;
+        }
+
+        const period = fields.period.value;
+
+        if (period === "custom") {
+            return;
+        }
+
+        const dates = getPeriodDates(period);
+
+        if (fields.startDate) {
+            fields.startDate.value = dates.startDate;
+        }
+
+        if (fields.endDate) {
+            fields.endDate.value = dates.endDate;
+        }
+    };
+
+    const initializePeriod = () => {
+        if (fields.period && !fields.period.value) {
+            fields.period.value = "current-month";
+        }
+
+        const hasStartDate = Boolean(
+            fields.startDate?.value
+        );
+
+        const hasEndDate = Boolean(
+            fields.endDate?.value
+        );
+
+        if (!hasStartDate && !hasEndDate) {
+            const dates = getPeriodDates(
+                fields.period?.value || "current-month"
+            );
+
+            if (fields.startDate) {
+                fields.startDate.value = dates.startDate;
+            }
+
+            if (fields.endDate) {
+                fields.endDate.value = dates.endDate;
+            }
+        }
+    };
+
+    const getFilters = () => {
+        return {
+            startDate: fields.startDate?.value || "",
+            endDate: fields.endDate?.value || "",
+            type: fields.type?.value || "all",
+            category: fields.category?.value || "all",
+            search: normalizeText(
+                fields.search?.value || ""
+            )
+        };
+    };
+
+    const isDateInsidePeriod = (
+        date,
+        startDate,
+        endDate
+    ) => {
+        if (!date) {
+            return !startDate && !endDate;
+        }
+
+        const parsedDate = new Date(`${date}T12:00:00`);
+
+        if (Number.isNaN(parsedDate.getTime())) {
+            return false;
+        }
+
+        if (startDate) {
+            const parsedStartDate = new Date(
+                `${startDate}T00:00:00`
+            );
+
+            if (parsedDate < parsedStartDate) {
+                return false;
+            }
+        }
+
+        if (endDate) {
+            const parsedEndDate = new Date(
+                `${endDate}T23:59:59`
+            );
+
+            if (parsedDate > parsedEndDate) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+
+    const filterTransactions = () => {
+        const filters = getFilters();
+
+        state.filteredTransactions = state.transactions.filter(
+            (transaction) => {
+                if (
+                    !isDateInsidePeriod(
+                        transaction.date,
+                        filters.startDate,
+                        filters.endDate
+                    )
+                ) {
+                    return false;
+                }
+
+                if (
+                    filters.type !== "all" &&
+                    transaction.type !== filters.type
+                ) {
+                    return false;
+                }
+
+                if (
+                    filters.category !== "all" &&
+                    transaction.category !== filters.category
+                ) {
+                    return false;
+                }
+
+                if (filters.search) {
+                    const searchableText = normalizeText([
+                        transaction.name,
+                        transaction.description,
+                        getCategoryLabel(transaction.category),
+                        transaction.type === "income"
+                            ? "receita entrada"
+                            : "despesa saída",
+                        transaction.status,
+                        transaction.value,
+                        formatCurrency(transaction.value),
+                        transaction.date
+                    ].join(" "));
+
+                    if (
+                        !searchableText.includes(
+                            filters.search
+                        )
+                    ) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        );
+    };
+
+    const calculateSummary = () => {
+        const incomes = state.filteredTransactions
+            .filter((transaction) => {
+                return transaction.type === "income";
+            });
+
+        const expenses = state.filteredTransactions
+            .filter((transaction) => {
+                return transaction.type === "expense";
+            });
+
+        const totalIncomes = incomes.reduce(
+            (sum, transaction) => {
+                return sum + transaction.value;
+            },
+            0
+        );
+
+        const receivedIncomes = incomes
+            .filter((transaction) => {
+                return transaction.status === "received";
+            })
+            .reduce((sum, transaction) => {
+                return sum + transaction.value;
+            }, 0);
+
+        const pendingIncomes = Math.max(
+            totalIncomes - receivedIncomes,
+            0
+        );
+
+        const totalExpenses = expenses.reduce(
+            (sum, transaction) => {
+                return sum + transaction.value;
+            },
+            0
+        );
+
+        const paidExpenses = expenses
+            .filter((transaction) => {
+                return transaction.status === "paid";
+            })
+            .reduce((sum, transaction) => {
+                return sum + transaction.value;
+            }, 0);
+
+        const pendingExpenses = Math.max(
+            totalExpenses - paidExpenses,
+            0
+        );
+
+        const balance =
+            totalIncomes - totalExpenses;
+
+        const realizedBalance =
+            receivedIncomes - paidExpenses;
+
+        const savingsRate = totalIncomes > 0
+            ? balance / totalIncomes * 100
+            : 0;
+
+        const expenseRate = totalIncomes > 0
+            ? totalExpenses / totalIncomes * 100
+            : 0;
+
+        const averageIncome = incomes.length
+            ? totalIncomes / incomes.length
+            : 0;
+
+        const averageExpense = expenses.length
+            ? totalExpenses / expenses.length
+            : 0;
 
         return {
             incomes,
-            expenses: totalExpenses,
+            expenses,
+            totalIncomes,
+            receivedIncomes,
+            pendingIncomes,
+            totalExpenses,
+            paidExpenses,
+            pendingExpenses,
             balance,
-            savingsRate
+            realizedBalance,
+            savingsRate,
+            expenseRate,
+            averageIncome,
+            averageExpense,
+            transactionCount:
+                state.filteredTransactions.length
         };
     };
 
-    const getHistory = (data, amount) => {
-        const referenceDate = getReferenceDate(data);
-        const months = getMonthList(referenceDate, amount);
-        const currentKey = getMonthKey(referenceDate);
-        const currentMonth = calculateMonth(data, currentKey);
+    const calculateInstallmentSummary = () => {
+        const active = state.installments.filter(
+            (installment) => {
+                const totalParts = Number(
+                    installment.totalParts ||
+                    installment.parts ||
+                    1
+                );
 
-        const incomeBase = Math.max(currentMonth.incomes, 1700);
-        const expenseBase = Math.max(currentMonth.expenses, 700);
-        const incomeFactors = [0.88, 0.94, 1, 0.91, 0.98, 1];
-        const expenseFactors = [0.76, 0.84, 0.68, 0.92, 0.74, 1];
+                const paidParts = Number(
+                    installment.paidParts ||
+                    installment.paid ||
+                    0
+                );
 
-        return months.map((month, index) => {
-            const monthData = calculateMonth(data, month.key);
-            const hasRealData = monthData.incomes > 0 || monthData.expenses > 0;
-
-            if (hasRealData) {
-                return {
-                    ...month,
-                    ...monthData
-                };
+                return paidParts < totalParts;
             }
+        );
 
-            const incomeFactor = incomeFactors[index % incomeFactors.length];
-            const expenseFactor = expenseFactors[index % expenseFactors.length];
-            const incomes = incomeBase * incomeFactor;
-            const expenses = expenseBase * expenseFactor;
+        const monthlyCommitment = active.reduce(
+            (sum, installment) => {
+                const total = parseValue(
+                    installment.total ??
+                    installment.value ??
+                    installment.totalValue
+                );
 
-            return {
-                ...month,
-                incomes,
-                expenses,
-                balance: incomes - expenses,
-                savingsRate: incomes > 0 ? ((incomes - expenses) / incomes) * 100 : 0
-            };
-        });
-    };
+                const parts = Math.max(
+                    Number(
+                        installment.totalParts ||
+                        installment.parts ||
+                        1
+                    ),
+                    1
+                );
 
-    const getCurrentSummary = (data) => {
-        const referenceDate = getReferenceDate(data);
-        const monthKey = getMonthKey(referenceDate);
-        const current = calculateMonth(data, monthKey);
+                return sum + total / parts;
+            },
+            0
+        );
 
-        const activeInstallments = data.installments.filter((item) => {
-            return Number(item.paidParts || 0) < Number(item.totalParts || 0);
-        });
+        const totalOpen = active.reduce(
+            (sum, installment) => {
+                const total = parseValue(
+                    installment.total ??
+                    installment.value ??
+                    installment.totalValue
+                );
 
-        const openInstallments = activeInstallments.reduce((sum, item) => {
-            return sum + getInstallmentOpenValue(item);
-        }, 0);
+                const totalParts = Math.max(
+                    Number(
+                        installment.totalParts ||
+                        installment.parts ||
+                        1
+                    ),
+                    1
+                );
 
-        const totalGoals = data.goals.reduce((sum, goal) => {
-            return sum + Number(goal.target || 0);
-        }, 0);
+                const paidParts = Math.min(
+                    Math.max(
+                        Number(
+                            installment.paidParts ||
+                            installment.paid ||
+                            0
+                        ),
+                        0
+                    ),
+                    totalParts
+                );
 
-        const savedGoals = data.goals.reduce((sum, goal) => {
-            return sum + Number(goal.current || 0);
-        }, 0);
+                const paidValue =
+                    total / totalParts * paidParts;
+
+                return sum + Math.max(
+                    total - paidValue,
+                    0
+                );
+            },
+            0
+        );
 
         return {
-            ...current,
-            referenceDate,
-            activeInstallments,
-            openInstallments,
-            totalGoals,
-            savedGoals,
-            activeGoals: data.goals.filter((goal) => Number(goal.current || 0) < Number(goal.target || 0)).length
+            activeCount: active.length,
+            monthlyCommitment,
+            totalOpen
         };
     };
 
-    const getCategoryTotals = (data, monthKey) => {
-        const categories = {};
+    const calculateGoalsSummary = () => {
+        const totalTarget = state.goals.reduce(
+            (sum, goal) => {
+                return sum + parseValue(
+                    goal.targetValue ??
+                    goal.target ??
+                    goal.total ??
+                    goal.value
+                );
+            },
+            0
+        );
 
-        data.expenses
-            .filter((expense) => getMonthKey(expense.date) === monthKey)
-            .forEach((expense) => {
-                const category = expense.category || "other";
-                categories[category] = (categories[category] || 0) + Number(expense.value || 0);
-            });
+        const totalSaved = state.goals.reduce(
+            (sum, goal) => {
+                return sum + parseValue(
+                    goal.currentValue ??
+                    goal.savedValue ??
+                    goal.saved ??
+                    goal.current
+                );
+            },
+            0
+        );
 
-        const installmentMonthTotal = data.installments
-            .filter((installment) => Number(installment.paidParts || 0) < Number(installment.totalParts || 0))
-            .filter((installment) => getMonthKey(installment.dueDate) === monthKey)
-            .reduce((sum, installment) => sum + getInstallmentPartValue(installment), 0);
+        const progress = totalTarget > 0
+            ? Math.min(
+                totalSaved / totalTarget * 100,
+                100
+            )
+            : 0;
 
-        if (installmentMonthTotal > 0) {
-            categories.installments = installmentMonthTotal;
-        }
-
-        return Object.entries(categories)
-            .map(([category, value]) => ({
-                category,
-                label: expenseCategoryLabels[category] || "Outros",
-                value
-            }))
-            .sort((a, b) => b.value - a.value);
-    };
-
-    const calculateHealthScore = (summary) => {
-        let score = 55;
-
-        if (summary.balance > 0) score += 15;
-        if (summary.savingsRate >= 20) score += 12;
-        if (summary.savingsRate >= 40) score += 8;
-        if (summary.activeGoals > 0) score += 5;
-
-        const expenseRate = summary.incomes > 0 ? (summary.expenses / summary.incomes) * 100 : 100;
-
-        if (expenseRate > 70) score -= 12;
-        if (summary.openInstallments > summary.incomes) score -= 8;
-        if (summary.balance < 0) score -= 18;
-
-        return Math.max(Math.min(Math.round(score), 100), 0);
+        return {
+            totalTarget,
+            totalSaved,
+            totalRemaining: Math.max(
+                totalTarget - totalSaved,
+                0
+            ),
+            progress
+        };
     };
 
     const setText = (selector, value) => {
         const element = $(selector);
-        if (element) element.textContent = value;
+
+        if (element) {
+            element.textContent = value;
+        }
+    };
+
+    const updateHero = (summary) => {
+        setText(
+            ".report-hero-card__value",
+            formatCurrency(summary.balance)
+        );
+
+        setText(
+            ".report-hero__value",
+            formatCurrency(summary.balance)
+        );
+
+        const heroValues = $$(
+            ".report-hero-card__footer .report-pill, .report-hero .report-pill"
+        );
+
+        if (heroValues[0]) {
+            heroValues[0].textContent =
+                `${formatCurrency(summary.totalIncomes)} em receitas`;
+        }
+
+        if (heroValues[1]) {
+            heroValues[1].textContent =
+                `${formatCurrency(summary.totalExpenses)} em despesas`;
+        }
+
+        const heroText = getFirstElement(
+            ".report-hero-card__text",
+            ".report-hero__text"
+        );
+
+        if (heroText) {
+            if (summary.balance > 0) {
+                heroText.textContent =
+                    `O período terminou positivo em ${formatCurrency(summary.balance)}. A taxa de economia foi de ${formatPercentage(summary.savingsRate)}.`;
+            } else if (summary.balance < 0) {
+                heroText.textContent =
+                    `As despesas ultrapassaram as receitas em ${formatCurrency(Math.abs(summary.balance))}.`;
+            } else {
+                heroText.textContent =
+                    "As receitas e despesas do período estão equilibradas.";
+            }
+        }
+
+        const heroCard = getFirstElement(
+            ".report-hero-card",
+            ".report-hero"
+        );
+
+        heroCard?.classList.toggle(
+            "is-negative",
+            summary.balance < 0
+        );
+
+        heroCard?.classList.toggle(
+            "is-positive",
+            summary.balance > 0
+        );
     };
 
     const updateKpis = (summary) => {
-        const balanceText = formatCurrency(summary.balance);
-        const savingsRate = Math.max(summary.savingsRate, 0);
+        const installmentSummary =
+            calculateInstallmentSummary();
 
-        setText(".reports-hero-card__value", balanceText);
+        const goalsSummary =
+            calculateGoalsSummary();
 
-        const heroText = $(".reports-hero-card__text");
-        if (heroText) {
-            heroText.textContent = summary.balance >= 0
-                ? "Seu mês está positivo. Aproveite esse cenário para fortalecer sua reserva e acelerar suas metas."
-                : "Seu mês está negativo. O ideal é revisar gastos, parcelas e compras variáveis antes de assumir novos compromissos.";
-        }
-
-        const heroPills = $$(".reports-hero-card__footer .reports-pill");
-
-        if (heroPills[0]) {
-            heroPills[0].textContent = `${formatPercent(savingsRate)} da renda preservada`;
-        }
-
-        if (heroPills[1]) {
-            heroPills[1].textContent = `${formatCurrency(summary.expenses)} em gastos totais`;
-        }
-
-        const kpiValues = $$(".reports-kpi__value");
-
-        if (kpiValues[0]) kpiValues[0].textContent = formatCurrency(summary.incomes);
-        if (kpiValues[1]) kpiValues[1].textContent = formatCurrency(summary.expenses);
-        if (kpiValues[2]) kpiValues[2].textContent = formatPercent(savingsRate);
-
-        const badge = $(".sidebar-card .badge");
-
-        if (badge) {
-            badge.textContent = summary.balance >= 0
-                ? `${formatCurrency(summary.balance)} positivo`
-                : `${formatCurrency(Math.abs(summary.balance))} negativo`;
-
-            badge.classList.toggle("badge--success", summary.balance >= 0);
-            badge.classList.toggle("badge--danger", summary.balance < 0);
-            badge.classList.remove("badge--primary");
-        }
-    };
-
-    const updateChart = (history) => {
-        const chart = $(".reports-chart");
-        if (!chart) return;
-
-        const maxValue = Math.max(
-            ...history.map((item) => item.incomes),
-            ...history.map((item) => item.expenses),
-            1
+        const cards = $$(
+            ".report-kpi, [data-report-kpi]"
         );
 
-        chart.innerHTML = history.map((item) => {
-            const incomeHeight = Math.max((item.incomes / maxValue) * 100, 8);
-            const expenseHeight = Math.max((item.expenses / maxValue) * 100, 8);
+        cards.forEach((card, index) => {
+            const valueElement = getFirstElementInside(
+                card,
+                ".report-kpi__value",
+                "[data-kpi-value]"
+            );
 
-            return `
-                <div class="reports-chart__item">
-                    <div class="reports-chart__bars">
-                        <span class="reports-chart__bar reports-chart__bar--income" style="--bar-value: ${incomeHeight}%;"></span>
-                        <span class="reports-chart__bar reports-chart__bar--expense" style="--bar-value: ${expenseHeight}%;"></span>
-                    </div>
-                    <span class="reports-chart__label">${item.label}</span>
-                </div>
-            `;
-        }).join("");
+            if (!valueElement) {
+                return;
+            }
+
+            const label = normalizeText(
+                getFirstElementInside(
+                    card,
+                    ".report-kpi__label",
+                    "[data-kpi-label]"
+                )?.textContent || card.textContent
+            );
+
+            if (
+                label.includes("receita") ||
+                label.includes("entrada")
+            ) {
+                valueElement.textContent =
+                    formatCurrency(summary.totalIncomes);
+
+                return;
+            }
+
+            if (
+                label.includes("despesa") ||
+                label.includes("saida")
+            ) {
+                valueElement.textContent =
+                    formatCurrency(summary.totalExpenses);
+
+                return;
+            }
+
+            if (
+                label.includes("saldo") ||
+                label.includes("resultado")
+            ) {
+                valueElement.textContent =
+                    formatCurrency(summary.balance);
+
+                valueElement.classList.toggle(
+                    "is-negative",
+                    summary.balance < 0
+                );
+
+                valueElement.classList.toggle(
+                    "is-positive",
+                    summary.balance > 0
+                );
+
+                return;
+            }
+
+            if (
+                label.includes("economia") ||
+                label.includes("poupanca")
+            ) {
+                valueElement.textContent =
+                    formatPercentage(summary.savingsRate);
+
+                return;
+            }
+
+            if (
+                label.includes("parcelamento") ||
+                label.includes("compromisso")
+            ) {
+                valueElement.textContent =
+                    formatCurrency(
+                        installmentSummary.monthlyCommitment
+                    );
+
+                return;
+            }
+
+            if (
+                label.includes("meta") ||
+                label.includes("objetivo")
+            ) {
+                valueElement.textContent =
+                    formatPercentage(goalsSummary.progress);
+
+                return;
+            }
+
+            if (
+                label.includes("transa") ||
+                label.includes("movimenta")
+            ) {
+                valueElement.textContent =
+                    String(summary.transactionCount);
+
+                return;
+            }
+
+            const fallbackValues = [
+                formatCurrency(summary.totalIncomes),
+                formatCurrency(summary.totalExpenses),
+                formatCurrency(summary.balance),
+                formatPercentage(summary.savingsRate)
+            ];
+
+            valueElement.textContent =
+                fallbackValues[index] ||
+                String(summary.transactionCount);
+        });
     };
 
-    const updateCategories = (data, summary) => {
-        const wrapper = $(".reports-categories");
-        if (!wrapper) return;
+    const getFirstElementInside = (
+        parent,
+        ...selectors
+    ) => {
+        for (const selector of selectors) {
+            const element = $(selector, parent);
 
-        const monthKey = getMonthKey(summary.referenceDate);
-        const categories = getCategoryTotals(data, monthKey);
-        const total = categories.reduce((sum, item) => sum + item.value, 0);
+            if (element) {
+                return element;
+            }
+        }
 
-        if (!categories.length) {
-            wrapper.innerHTML = `
-                <div class="empty-card">
-                    <h3 class="empty-card__title">Sem categorias</h3>
-                    <p class="empty-card__text">Cadastre despesas para visualizar os gastos por categoria.</p>
-                </div>
-            `;
+        return null;
+    };
+
+    const getTransactionStatus = (transaction) => {
+        if (transaction.type === "income") {
+            return transaction.status === "received"
+                ? {
+                    label: "Recebido",
+                    className: "report-status--success"
+                }
+                : {
+                    label: "Previsto",
+                    className: "report-status--warning"
+                };
+        }
+
+        return transaction.status === "paid"
+            ? {
+                label: "Pago",
+                className: "report-status--success"
+            }
+            : {
+                label: "Pendente",
+                className: "report-status--warning"
+            };
+    };
+
+    const renderTransactionList = () => {
+        if (!elements.transactionList) {
             return;
         }
 
-        wrapper.innerHTML = categories.slice(0, 4).map((item) => {
-            const percent = total > 0 ? Math.min((item.value / total) * 100, 100) : 0;
+        if (!state.filteredTransactions.length) {
+            elements.transactionList.innerHTML = `
+                <div class="empty-card">
+                    <h3 class="empty-card__title">
+                        Nenhuma movimentação encontrada
+                    </h3>
 
-            return `
-                <div class="reports-category" data-report-search="${item.label.toLowerCase()}">
-                    <div class="reports-category__top">
-                        <span class="reports-category__name">${item.label}</span>
-                        <strong class="reports-category__value">${formatCurrency(item.value)}</strong>
-                    </div>
-
-                    <div class="reports-category__track">
-                        <span class="reports-category__bar" style="--progress-value: ${percent}%;"></span>
-                    </div>
+                    <p class="empty-card__text">
+                        Altere o período ou os filtros para visualizar outros resultados.
+                    </p>
                 </div>
             `;
-        }).join("");
+
+            return;
+        }
+
+        elements.transactionList.innerHTML =
+            state.filteredTransactions
+                .map((transaction) => {
+                    const status =
+                        getTransactionStatus(transaction);
+
+                    const typeLabel =
+                        transaction.type === "income"
+                            ? "Receita"
+                            : "Despesa";
+
+                    return `
+                        <article class="report-transaction">
+                            <span class="report-transaction__indicator report-transaction__indicator--${transaction.type}">
+                                ${
+                                    transaction.type === "income"
+                                        ? "+"
+                                        : "−"
+                                }
+                            </span>
+
+                            <span class="report-transaction__info">
+                                <strong class="report-transaction__title">
+                                    ${escapeHTML(transaction.name)}
+                                </strong>
+
+                                <span class="report-transaction__meta">
+                                    ${escapeHTML(typeLabel)}
+                                    •
+                                    ${escapeHTML(getCategoryLabel(transaction.category))}
+                                    •
+                                    ${escapeHTML(formatDate(transaction.date))}
+                                </span>
+                            </span>
+
+                            <span class="report-transaction__status ${status.className}">
+                                ${escapeHTML(status.label)}
+                            </span>
+
+                            <strong class="report-transaction__value report-transaction__value--${transaction.type}">
+                                ${
+                                    transaction.type === "income"
+                                        ? "+"
+                                        : "−"
+                                }
+                                ${formatCurrency(transaction.value)}
+                            </strong>
+                        </article>
+                    `;
+                })
+                .join("");
     };
 
-    const updateHealth = (summary) => {
-        const score = calculateHealthScore(summary);
+    const renderTransactionTable = () => {
+        if (!elements.transactionTableBody) {
+            return;
+        }
 
-        setText(".reports-balance-card__value", `${score}/100`);
+        if (!state.filteredTransactions.length) {
+            elements.transactionTableBody.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        Nenhuma movimentação encontrada.
+                    </td>
+                </tr>
+            `;
 
-        const bar = $(".reports-balance-card__bar");
-        if (bar) bar.style.setProperty("--progress-value", `${score}%`);
+            return;
+        }
 
-        const text = $(".reports-balance-card__text");
+        elements.transactionTableBody.innerHTML =
+            state.filteredTransactions
+                .map((transaction) => {
+                    const status =
+                        getTransactionStatus(transaction);
 
-        if (text) {
-            if (score >= 80) {
-                text.textContent = "Sua saúde financeira está muito boa. Continue mantendo gastos controlados.";
-            } else if (score >= 60) {
-                text.textContent = "Sua saúde financeira está estável, mas ainda existe espaço para melhorar.";
-            } else {
-                text.textContent = "Sua saúde financeira pede atenção. Revise despesas, parcelas e metas.";
+                    return `
+                        <tr>
+                            <td>
+                                ${escapeHTML(formatDate(transaction.date))}
+                            </td>
+
+                            <td>
+                                <strong>
+                                    ${escapeHTML(transaction.name)}
+                                </strong>
+                            </td>
+
+                            <td>
+                                ${
+                                    transaction.type === "income"
+                                        ? "Receita"
+                                        : "Despesa"
+                                }
+                            </td>
+
+                            <td>
+                                ${escapeHTML(getCategoryLabel(transaction.category))}
+                            </td>
+
+                            <td>
+                                <span class="report-status ${status.className}">
+                                    ${escapeHTML(status.label)}
+                                </span>
+                            </td>
+
+                            <td class="report-table__value report-table__value--${transaction.type}">
+                                ${
+                                    transaction.type === "income"
+                                        ? "+"
+                                        : "−"
+                                }
+                                ${formatCurrency(transaction.value)}
+                            </td>
+                        </tr>
+                    `;
+                })
+                .join("");
+    };
+
+    const calculateCategories = () => {
+        const categoryMap = {};
+
+        state.filteredTransactions.forEach(
+            (transaction) => {
+                const key = [
+                    transaction.type,
+                    transaction.category
+                ].join(":");
+
+                if (!categoryMap[key]) {
+                    categoryMap[key] = {
+                        type: transaction.type,
+                        category: transaction.category,
+                        value: 0,
+                        quantity: 0
+                    };
+                }
+
+                categoryMap[key].value +=
+                    transaction.value;
+
+                categoryMap[key].quantity += 1;
             }
-        }
+        );
+
+        return Object.values(categoryMap)
+            .sort((categoryA, categoryB) => {
+                return categoryB.value - categoryA.value;
+            });
     };
 
-    const updateInsights = (summary) => {
-        const wrapper = $(".reports-insights");
-        if (!wrapper) return;
-
-        const insights = [];
-
-        if (summary.balance >= 0) {
-            insights.push({
-                type: "success",
-                title: "Mês positivo",
-                text: `Seu saldo estimado está positivo em ${formatCurrency(summary.balance)}. Esse valor pode fortalecer suas metas.`
-            });
-        } else {
-            insights.push({
-                type: "danger",
-                title: "Mês negativo",
-                text: `Faltam ${formatCurrency(Math.abs(summary.balance))} para equilibrar o mês. Revise os gastos mais pesados.`
-            });
+    const renderCategories = () => {
+        if (!elements.categoryList) {
+            return;
         }
 
-        if (summary.openInstallments > 0) {
-            insights.push({
-                type: "danger",
-                title: "Parcelamentos pedem atenção",
-                text: `Você ainda possui ${formatCurrency(summary.openInstallments)} em parcelas abertas. Evite assumir novas compras longas agora.`
-            });
-        }
+        const categories = calculateCategories();
 
-        if (summary.savedGoals > 0) {
-            insights.push({
-                type: "primary",
-                title: "Metas em movimento",
-                text: `Você já guardou ${formatCurrency(summary.savedGoals)} em metas. Manter aportes pequenos já ajuda bastante.`
-            });
-        } else {
-            insights.push({
-                type: "primary",
-                title: "Comece uma meta",
-                text: "Criar uma meta simples ajuda a dar direção para o dinheiro que sobra no mês."
-            });
-        }
-
-        wrapper.innerHTML = insights.map((insight) => {
-            const iconClass = insight.type === "success"
-                ? "reports-insight__icon--success"
-                : insight.type === "danger"
-                    ? "reports-insight__icon--danger"
-                    : "";
-
-            return `
-                <article class="reports-insight" data-report-search="${`${insight.title} ${insight.text}`.toLowerCase()}">
-                    <span class="reports-insight__icon ${iconClass}">
-                        ${getInsightIcon(insight.type)}
-                    </span>
-
-                    <span class="reports-insight__content">
-                        <strong class="reports-insight__title">${insight.title}</strong>
-                        <span class="reports-insight__text">${insight.text}</span>
-                    </span>
-                </article>
+        if (!categories.length) {
+            elements.categoryList.innerHTML = `
+                <p class="empty-card__text">
+                    Nenhuma categoria disponível no período.
+                </p>
             `;
-        }).join("");
-    };
 
-    const getInsightIcon = (type) => {
-        if (type === "success") {
-            return `
-                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            `;
+            return;
         }
 
-        if (type === "danger") {
-            return `
-                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M12 8v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                    <path d="M12 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                    <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" stroke="currentColor" stroke-width="2"/>
-                </svg>
-            `;
-        }
+        const highestValue = Math.max(
+            ...categories.map((category) => {
+                return category.value;
+            }),
+            1
+        );
 
-        return `
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M4 19 9 14l4 4 7-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M15 9h5v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        `;
-    };
-
-    const updateTable = (history) => {
-        const tbody = $(".reports-table tbody");
-        if (!tbody) return;
-
-        tbody.innerHTML = [...history]
-            .reverse()
-            .slice(0, 6)
-            .map((item) => {
-                const balanceClass = item.balance >= 0 ? "reports-table__positive" : "reports-table__negative";
-                const badgeClass = item.balance >= 0 ? "badge--success" : "badge--danger";
-                const status = item.balance >= 0 ? "positivo" : "negativo";
+        elements.categoryList.innerHTML = categories
+            .slice(0, 8)
+            .map((category) => {
+                const percentage =
+                    category.value / highestValue * 100;
 
                 return `
-                    <tr data-report-search="${item.label.toLowerCase()} ${status}">
-                        <td><strong>${item.label}</strong></td>
-                        <td>${formatCurrency(item.incomes)}</td>
-                        <td>${formatCurrency(item.expenses)}</td>
-                        <td><span class="${balanceClass}">${formatCurrency(item.balance)}</span></td>
-                        <td>${formatPercent(item.savingsRate)}</td>
-                        <td><span class="badge ${badgeClass}">${status}</span></td>
-                    </tr>
+                    <article class="report-category">
+                        <div class="report-category__top">
+                            <span>
+                                <strong class="report-category__name">
+                                    ${escapeHTML(getCategoryLabel(category.category))}
+                                </strong>
+
+                                <small class="report-category__type">
+                                    ${
+                                        category.type === "income"
+                                            ? "Receita"
+                                            : "Despesa"
+                                    }
+                                    •
+                                    ${category.quantity}
+                                    ${
+                                        category.quantity === 1
+                                            ? "movimentação"
+                                            : "movimentações"
+                                    }
+                                </small>
+                            </span>
+
+                            <strong class="report-category__value">
+                                ${formatCurrency(category.value)}
+                            </strong>
+                        </div>
+
+                        <div class="report-category__track">
+                            <span
+                                class="report-category__bar report-category__bar--${category.type}"
+                                style="width: ${percentage}%; --progress-value: ${percentage}%;"
+                            ></span>
+                        </div>
+                    </article>
                 `;
             })
             .join("");
     };
 
-    const getToastIcon = (type) => {
-        const icons = {
-            success: `
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            `,
-            danger: `
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 8v5" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
-                    <path d="M12 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                    <path d="M10.3 4.4 2.9 18a2 2 0 0 0 1.7 3h14.8a2 2 0 0 0 1.7-3L13.7 4.4a2 2 0 0 0-3.4 0Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                </svg>
-            `,
-            info: `
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 17v-6" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
-                    <path d="M12 7h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                    <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" stroke="currentColor" stroke-width="2"/>
-                </svg>
-            `
-        };
+    const calculateMonthlyData = () => {
+        const monthlyMap = {};
 
-        return icons[type] || icons.info;
+        state.filteredTransactions.forEach(
+            (transaction) => {
+                const monthKey = getMonthKey(
+                    transaction.date
+                );
+
+                if (!monthKey) {
+                    return;
+                }
+
+                if (!monthlyMap[monthKey]) {
+                    monthlyMap[monthKey] = {
+                        monthKey,
+                        incomes: 0,
+                        expenses: 0,
+                        balance: 0,
+                        transactions: 0
+                    };
+                }
+
+                if (transaction.type === "income") {
+                    monthlyMap[monthKey].incomes +=
+                        transaction.value;
+                } else {
+                    monthlyMap[monthKey].expenses +=
+                        transaction.value;
+                }
+
+                monthlyMap[monthKey].transactions += 1;
+            }
+        );
+
+        return Object.values(monthlyMap)
+            .map((month) => {
+                return {
+                    ...month,
+                    balance:
+                        month.incomes -
+                        month.expenses
+                };
+            })
+            .sort((monthA, monthB) => {
+                return monthA.monthKey.localeCompare(
+                    monthB.monthKey
+                );
+            });
     };
 
-    const getCloseIcon = () => `
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
-        </svg>
-    `;
+    const renderMonthlyData = () => {
+        if (!elements.monthlyList) {
+            return;
+        }
 
-    const createToastContainer = () => {
+        const monthlyData = calculateMonthlyData();
+
+        if (!monthlyData.length) {
+            elements.monthlyList.innerHTML = `
+                <p class="empty-card__text">
+                    Nenhum resumo mensal disponível.
+                </p>
+            `;
+
+            return;
+        }
+
+        elements.monthlyList.innerHTML = monthlyData
+            .slice()
+            .reverse()
+            .map((month) => {
+                return `
+                    <article class="report-month">
+                        <span class="report-month__info">
+                            <strong class="report-month__name">
+                                ${escapeHTML(formatMonth(month.monthKey))}
+                            </strong>
+
+                            <small class="report-month__meta">
+                                ${month.transactions}
+                                ${
+                                    month.transactions === 1
+                                        ? "movimentação"
+                                        : "movimentações"
+                                }
+                            </small>
+                        </span>
+
+                        <span class="report-month__values">
+                            <small>
+                                Receitas
+                                <strong class="is-positive">
+                                    ${formatCurrency(month.incomes)}
+                                </strong>
+                            </small>
+
+                            <small>
+                                Despesas
+                                <strong class="is-negative">
+                                    ${formatCurrency(month.expenses)}
+                                </strong>
+                            </small>
+
+                            <small>
+                                Saldo
+                                <strong class="${
+                                    month.balance >= 0
+                                        ? "is-positive"
+                                        : "is-negative"
+                                }">
+                                    ${formatCurrency(month.balance)}
+                                </strong>
+                            </small>
+                        </span>
+                    </article>
+                `;
+            })
+            .join("");
+    };
+
+    const getHighestExpenseCategory = () => {
+        const categories = calculateCategories()
+            .filter((category) => {
+                return category.type === "expense";
+            });
+
+        return categories[0] || null;
+    };
+
+    const buildInsights = (summary) => {
+        const insights = [];
+        const highestExpenseCategory =
+            getHighestExpenseCategory();
+
+        const installmentSummary =
+            calculateInstallmentSummary();
+
+        const goalsSummary =
+            calculateGoalsSummary();
+
+        if (!summary.transactionCount) {
+            return [
+                {
+                    type: "info",
+                    title: "Sem movimentações no período",
+                    message:
+                        "Cadastre receitas e despesas ou altere os filtros para gerar uma análise."
+                }
+            ];
+        }
+
+        if (summary.balance > 0) {
+            insights.push({
+                type: "success",
+                title: "Período positivo",
+                message:
+                    `Você terminou o período com saldo positivo de ${formatCurrency(summary.balance)}.`
+            });
+        } else if (summary.balance < 0) {
+            insights.push({
+                type: "danger",
+                title: "Despesas acima das receitas",
+                message:
+                    `As despesas ultrapassaram as receitas em ${formatCurrency(Math.abs(summary.balance))}.`
+            });
+        } else {
+            insights.push({
+                type: "warning",
+                title: "Orçamento equilibrado",
+                message:
+                    "As receitas cobriram exatamente as despesas, mas não houve valor disponível para economia."
+            });
+        }
+
+        if (summary.totalIncomes > 0) {
+            if (summary.savingsRate >= 20) {
+                insights.push({
+                    type: "success",
+                    title: "Boa taxa de economia",
+                    message:
+                        `Você preservou ${formatPercentage(summary.savingsRate)} das receitas do período.`
+                });
+            } else if (summary.savingsRate > 0) {
+                insights.push({
+                    type: "warning",
+                    title: "Economia abaixo de 20%",
+                    message:
+                        `Sua taxa de economia foi de ${formatPercentage(summary.savingsRate)}. Existe espaço para aumentar essa margem.`
+                });
+            }
+        }
+
+        if (highestExpenseCategory) {
+            insights.push({
+                type: "info",
+                title: "Maior categoria de despesa",
+                message:
+                    `${getCategoryLabel(highestExpenseCategory.category)} representou ${formatCurrency(highestExpenseCategory.value)} no período.`
+            });
+        }
+
+        if (summary.pendingIncomes > 0) {
+            insights.push({
+                type: "warning",
+                title: "Receitas ainda previstas",
+                message:
+                    `Existem ${formatCurrency(summary.pendingIncomes)} em receitas que ainda não foram recebidas.`
+            });
+        }
+
+        if (summary.pendingExpenses > 0) {
+            insights.push({
+                type: "warning",
+                title: "Despesas pendentes",
+                message:
+                    `Existem ${formatCurrency(summary.pendingExpenses)} em despesas que ainda precisam ser pagas.`
+            });
+        }
+
+        if (installmentSummary.monthlyCommitment > 0) {
+            insights.push({
+                type: "info",
+                title: "Compromisso com parcelamentos",
+                message:
+                    `Os parcelamentos ativos comprometem aproximadamente ${formatCurrency(installmentSummary.monthlyCommitment)} por mês.`
+            });
+        }
+
+        if (state.goals.length) {
+            insights.push({
+                type: goalsSummary.progress >= 100
+                    ? "success"
+                    : "info",
+
+                title: "Progresso das metas",
+                message:
+                    `Você já alcançou ${formatPercentage(goalsSummary.progress)} do valor total das metas financeiras.`
+            });
+        }
+
+        return insights.slice(0, 6);
+    };
+
+    const renderInsights = (summary) => {
+        if (!elements.insights) {
+            return;
+        }
+
+        const insights = buildInsights(summary);
+
+        elements.insights.innerHTML = insights
+            .map((insight) => {
+                return `
+                    <article class="report-insight report-insight--${insight.type}">
+                        <span class="report-insight__indicator"></span>
+
+                        <span class="report-insight__content">
+                            <strong class="report-insight__title">
+                                ${escapeHTML(insight.title)}
+                            </strong>
+
+                            <span class="report-insight__text">
+                                ${escapeHTML(insight.message)}
+                            </span>
+                        </span>
+                    </article>
+                `;
+            })
+            .join("");
+    };
+
+    const drawChart = () => {
+        const canvas = elements.chart;
+
+        if (
+            !canvas ||
+            !(canvas instanceof HTMLCanvasElement)
+        ) {
+            return;
+        }
+
+        const monthlyData = calculateMonthlyData()
+            .slice(-6);
+
+        const containerWidth =
+            canvas.parentElement?.clientWidth || 700;
+
+        const width = Math.max(containerWidth, 320);
+        const height = 300;
+        const ratio = window.devicePixelRatio || 1;
+
+        canvas.width = width * ratio;
+        canvas.height = height * ratio;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+
+        const context = canvas.getContext("2d");
+
+        context.setTransform(
+            ratio,
+            0,
+            0,
+            ratio,
+            0,
+            0
+        );
+
+        context.clearRect(0, 0, width, height);
+
+        const styles = getComputedStyle(
+            document.documentElement
+        );
+
+        const textColor =
+            styles.getPropertyValue("--text-secondary").trim() ||
+            "#64748b";
+
+        const gridColor =
+            styles.getPropertyValue("--border-color").trim() ||
+            "#e2e8f0";
+
+        const incomeColor =
+            styles.getPropertyValue("--color-success").trim() ||
+            "#15803d";
+
+        const expenseColor =
+            styles.getPropertyValue("--color-danger").trim() ||
+            "#b42318";
+
+        context.font =
+            '12px Inter, system-ui, sans-serif';
+
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+
+        if (!monthlyData.length) {
+            context.fillStyle = textColor;
+            context.font =
+                '14px Inter, system-ui, sans-serif';
+
+            context.fillText(
+                "Nenhum dado disponível para o gráfico.",
+                width / 2,
+                height / 2
+            );
+
+            return;
+        }
+
+        const padding = {
+            top: 30,
+            right: 20,
+            bottom: 50,
+            left: 55
+        };
+
+        const chartWidth =
+            width - padding.left - padding.right;
+
+        const chartHeight =
+            height - padding.top - padding.bottom;
+
+        const maximumValue = Math.max(
+            ...monthlyData.flatMap((month) => {
+                return [
+                    month.incomes,
+                    month.expenses
+                ];
+            }),
+            1
+        );
+
+        context.strokeStyle = gridColor;
+        context.lineWidth = 1;
+        context.fillStyle = textColor;
+
+        const gridLines = 4;
+
+        for (
+            let index = 0;
+            index <= gridLines;
+            index += 1
+        ) {
+            const y =
+                padding.top +
+                chartHeight / gridLines * index;
+
+            const value =
+                maximumValue -
+                maximumValue / gridLines * index;
+
+            context.beginPath();
+            context.moveTo(padding.left, y);
+            context.lineTo(
+                width - padding.right,
+                y
+            );
+            context.stroke();
+
+            context.textAlign = "right";
+
+            context.fillText(
+                value.toLocaleString("pt-BR", {
+                    notation: "compact",
+                    maximumFractionDigits: 1
+                }),
+                padding.left - 8,
+                y
+            );
+        }
+
+        const groupWidth =
+            chartWidth / monthlyData.length;
+
+        const barWidth = Math.min(
+            groupWidth * 0.26,
+            28
+        );
+
+        monthlyData.forEach((month, index) => {
+            const centerX =
+                padding.left +
+                groupWidth * index +
+                groupWidth / 2;
+
+            const incomeHeight =
+                month.incomes /
+                maximumValue *
+                chartHeight;
+
+            const expenseHeight =
+                month.expenses /
+                maximumValue *
+                chartHeight;
+
+            context.fillStyle = incomeColor;
+
+            context.fillRect(
+                centerX - barWidth - 2,
+                padding.top +
+                    chartHeight -
+                    incomeHeight,
+                barWidth,
+                incomeHeight
+            );
+
+            context.fillStyle = expenseColor;
+
+            context.fillRect(
+                centerX + 2,
+                padding.top +
+                    chartHeight -
+                    expenseHeight,
+                barWidth,
+                expenseHeight
+            );
+
+            const [, monthNumber] =
+                month.monthKey
+                    .split("-")
+                    .map(Number);
+
+            context.fillStyle = textColor;
+            context.textAlign = "center";
+
+            context.fillText(
+                MONTH_NAMES[monthNumber - 1]
+                    .slice(0, 3),
+                centerX,
+                height - 22
+            );
+        });
+
+        const legendY = 14;
+
+        context.fillStyle = incomeColor;
+        context.fillRect(
+            width / 2 - 100,
+            legendY - 5,
+            10,
+            10
+        );
+
+        context.fillStyle = textColor;
+        context.textAlign = "left";
+
+        context.fillText(
+            "Receitas",
+            width / 2 - 84,
+            legendY
+        );
+
+        context.fillStyle = expenseColor;
+        context.fillRect(
+            width / 2 + 10,
+            legendY - 5,
+            10,
+            10
+        );
+
+        context.fillStyle = textColor;
+
+        context.fillText(
+            "Despesas",
+            width / 2 + 26,
+            legendY
+        );
+    };
+
+    const updateEmptyState = () => {
+        if (!elements.emptyState) {
+            return;
+        }
+
+        elements.emptyState.hidden =
+            state.filteredTransactions.length > 0;
+    };
+
+    const updateReportPeriodText = () => {
+        const filters = getFilters();
+
+        const periodElements = $$(
+            ".report-period-text, [data-report-period-text]"
+        );
+
+        let text = "Todos os períodos";
+
+        if (filters.startDate && filters.endDate) {
+            text =
+                `${formatDate(filters.startDate)} até ${formatDate(filters.endDate)}`;
+        } else if (filters.startDate) {
+            text =
+                `A partir de ${formatDate(filters.startDate)}`;
+        } else if (filters.endDate) {
+            text =
+                `Até ${formatDate(filters.endDate)}`;
+        }
+
+        periodElements.forEach((element) => {
+            element.textContent = text;
+        });
+    };
+
+    const updateSidebar = (summary) => {
+        const sidebarBadge = getFirstElement(
+            '.sidebar__link[href*="relatorios"] .sidebar__badge',
+            "[data-report-sidebar-badge]"
+        );
+
+        if (sidebarBadge) {
+            sidebarBadge.textContent =
+                String(summary.transactionCount);
+        }
+    };
+
+    const renderReport = () => {
+        filterTransactions();
+
+        const summary = calculateSummary();
+
+        updateHero(summary);
+        updateKpis(summary);
+        renderTransactionList();
+        renderTransactionTable();
+        renderCategories();
+        renderMonthlyData();
+        renderInsights(summary);
+        drawChart();
+        updateEmptyState();
+        updateReportPeriodText();
+        updateSidebar(summary);
+    };
+
+    const showToast = ({
+        type = "info",
+        title,
+        message
+    }) => {
+        if (window.FinlyToast?.show) {
+            window.FinlyToast.show({
+                type,
+                title,
+                message
+            });
+
+            return;
+        }
+
         let container = $(".toast-container");
 
         if (!container) {
@@ -616,25 +2016,26 @@
             document.body.appendChild(container);
         }
 
-        return container;
-    };
-
-    const showToast = ({ type = "info", title, message }) => {
-        const container = createToastContainer();
-
         const toast = document.createElement("div");
         toast.className = `toast toast--${type}`;
 
         toast.innerHTML = `
-            <span class="toast__icon" aria-hidden="true">${getToastIcon(type)}</span>
-
             <span class="toast__content">
-                <strong class="toast__title">${title}</strong>
-                <span class="toast__message">${message}</span>
+                <strong class="toast__title">
+                    ${escapeHTML(title)}
+                </strong>
+
+                <span class="toast__message">
+                    ${escapeHTML(message)}
+                </span>
             </span>
 
-            <button class="toast__close" type="button" aria-label="Fechar aviso">
-                ${getCloseIcon()}
+            <button
+                class="toast__close"
+                type="button"
+                aria-label="Fechar aviso"
+            >
+                ×
             </button>
 
             <span class="toast__progress"></span>
@@ -643,115 +2044,304 @@
         container.appendChild(toast);
 
         const removeToast = () => {
+            if (!toast.isConnected) {
+                return;
+            }
+
             toast.classList.add("is-leaving");
-            setTimeout(() => toast.remove(), 240);
+
+            window.setTimeout(() => {
+                toast.remove();
+            }, 250);
         };
 
-        $(".toast__close", toast).addEventListener("click", removeToast);
-        setTimeout(removeToast, 4200);
+        $(".toast__close", toast)?.addEventListener(
+            "click",
+            removeToast
+        );
+
+        window.setTimeout(removeToast, 4200);
     };
 
-    const filterReport = () => {
-        const searchTerm = $(".topbar__search input")?.value.trim().toLowerCase() || "";
-        const searchableItems = $$("[data-report-search], .reports-insight, .reports-category, .reports-table tbody tr");
+    const escapeCSV = (value) => {
+        const text = String(value ?? "");
 
-        searchableItems.forEach((item) => {
-            const text = (
-                item.dataset.reportSearch ||
-                item.textContent ||
-                ""
-            ).toLowerCase();
-
-            item.style.display = !searchTerm || text.includes(searchTerm) ? "" : "none";
-        });
-    };
-
-    const generateAiAnalysis = (summary) => {
-        if (summary.balance >= 0 && summary.savingsRate >= 30) {
-            showToast({
-                type: "success",
-                title: "Análise Finly",
-                message: `Seu mês está saudável. Você preservou ${formatPercent(summary.savingsRate)} da renda e pode direcionar parte disso para metas.`
-            });
-
-            return;
+        if (
+            text.includes(";") ||
+            text.includes('"') ||
+            text.includes("\n")
+        ) {
+            return `"${text.replaceAll('"', '""')}"`;
         }
 
-        if (summary.balance >= 0) {
+        return text;
+    };
+
+    const exportCSV = () => {
+        if (!state.filteredTransactions.length) {
             showToast({
                 type: "info",
-                title: "Análise Finly",
-                message: "Você está no positivo, mas ainda pode melhorar reduzindo gastos variáveis e parcelamentos."
+                title: "Nada para exportar",
+                message:
+                    "Não existem movimentações no período selecionado."
             });
 
             return;
         }
+
+        const rows = [
+            [
+                "Data",
+                "Descrição",
+                "Tipo",
+                "Categoria",
+                "Status",
+                "Valor"
+            ],
+
+            ...state.filteredTransactions.map(
+                (transaction) => {
+                    const status =
+                        getTransactionStatus(transaction);
+
+                    return [
+                        formatDate(transaction.date),
+                        transaction.name,
+                        transaction.type === "income"
+                            ? "Receita"
+                            : "Despesa",
+                        getCategoryLabel(
+                            transaction.category
+                        ),
+                        status.label,
+                        transaction.value.toFixed(2)
+                            .replace(".", ",")
+                    ];
+                }
+            )
+        ];
+
+        const csv = rows
+            .map((row) => {
+                return row
+                    .map(escapeCSV)
+                    .join(";");
+            })
+            .join("\n");
+
+        const file = new Blob(
+            [`\uFEFF${csv}`],
+            {
+                type:
+                    "text/csv;charset=utf-8;"
+            }
+        );
+
+        const url = URL.createObjectURL(file);
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download =
+            `finly-relatorio-${toISODate(new Date())}.csv`;
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        URL.revokeObjectURL(url);
 
         showToast({
-            type: "danger",
-            title: "Análise Finly",
-            message: "Seu mês está negativo. Priorize cortar gastos não essenciais antes de assumir novas parcelas."
+            type: "success",
+            title: "Relatório exportado",
+            message:
+                "O arquivo CSV foi gerado com sucesso."
         });
     };
 
-    const setupActions = (summary) => {
-        const headerButtons = $$(".reports-header__actions .btn");
-        const exportButton = headerButtons.find((button) => button.textContent.trim().toLowerCase().includes("exportar"));
-        const aiButton = headerButtons.find((button) => button.textContent.trim().toLowerCase().includes("ia"));
-        const recommendationButton = $(".reports-balance-card .btn");
-
-        exportButton?.addEventListener("click", () => {
-            showToast({
-                type: "info",
-                title: "Exportação iniciada",
-                message: "A janela de impressão será aberta para salvar o relatório em PDF."
-            });
-
-            setTimeout(() => window.print(), 500);
-        });
-
-        aiButton?.addEventListener("click", () => generateAiAnalysis(summary));
-
-        recommendationButton?.addEventListener("click", () => {
-            showToast({
-                type: "info",
-                title: "Recomendação Finly",
-                message: summary.balance >= 0
-                    ? "Separe uma parte do saldo positivo para metas e evite aumentar parcelas neste mês."
-                    : "Revise despesas variáveis, pause compras novas e reorganize os vencimentos mais próximos."
-            });
-        });
-
-        $(".reports-filter .btn")?.addEventListener("click", renderReport);
-        $("#reportPeriod")?.addEventListener("change", renderReport);
-        $(".topbar__search input")?.addEventListener("input", filterReport);
+    const printReport = () => {
+        window.print();
     };
 
-    const renderReport = () => {
-        const data = getData();
-        const period = Number($("#reportPeriod")?.value || 6);
-        const history = getHistory(data, period);
-        const summary = getCurrentSummary(data);
+    const resetFilters = () => {
+        reportForm?.reset();
 
-        updateKpis(summary);
-        updateChart(history);
-        updateCategories(data, summary);
-        updateHealth(summary);
-        updateInsights(summary);
-        updateTable(history);
-        filterReport();
+        if (fields.period) {
+            fields.period.value = "current-month";
+        }
+
+        if (fields.type) {
+            fields.type.value = "all";
+        }
+
+        if (fields.category) {
+            fields.category.value = "all";
+        }
+
+        if (fields.search) {
+            fields.search.value = "";
+        }
+
+        applyPeriodSelection();
+        renderReport();
+
+        showToast({
+            type: "info",
+            title: "Filtros redefinidos",
+            message:
+                "O relatório voltou para o mês atual."
+        });
+    };
+
+    const setupForm = () => {
+        reportForm?.addEventListener(
+            "submit",
+            (event) => {
+                event.preventDefault();
+                renderReport();
+            }
+        );
+
+        fields.period?.addEventListener(
+            "change",
+            () => {
+                applyPeriodSelection();
+                renderReport();
+            }
+        );
+
+        fields.startDate?.addEventListener(
+            "change",
+            () => {
+                if (fields.period) {
+                    fields.period.value = "custom";
+                }
+
+                renderReport();
+            }
+        );
+
+        fields.endDate?.addEventListener(
+            "change",
+            () => {
+                if (fields.period) {
+                    fields.period.value = "custom";
+                }
+
+                renderReport();
+            }
+        );
+
+        fields.type?.addEventListener(
+            "change",
+            renderReport
+        );
+
+        fields.category?.addEventListener(
+            "change",
+            renderReport
+        );
+
+        fields.search?.addEventListener(
+            "input",
+            renderReport
+        );
+    };
+
+    const setupButtons = () => {
+        const exportButtons = $$(
+            "[data-action='export-report'], .report-export"
+        );
+
+        exportButtons.forEach((button) => {
+            button.addEventListener(
+                "click",
+                exportCSV
+            );
+        });
+
+        const printButtons = $$(
+            "[data-action='print-report'], .report-print"
+        );
+
+        printButtons.forEach((button) => {
+            button.addEventListener(
+                "click",
+                printReport
+            );
+        });
+
+        const resetButtons = $$(
+            "[data-action='reset-report'], .report-reset"
+        );
+
+        resetButtons.forEach((button) => {
+            button.addEventListener(
+                "click",
+                resetFilters
+            );
+        });
+    };
+
+    const setupResponsiveChart = () => {
+        window.addEventListener("resize", () => {
+            window.clearTimeout(
+                state.chartResizeTimeout
+            );
+
+            state.chartResizeTimeout =
+                window.setTimeout(
+                    drawChart,
+                    180
+                );
+        });
+    };
+
+    const setupStorageSubscription = () => {
+        const storage = getStorage();
+
+        if (!storage?.subscribe) {
+            return;
+        }
+
+        state.unsubscribeStorage =
+            storage.subscribe((change) => {
+                const relevantKeys = [
+                    "finly_incomes",
+                    "finly_expenses",
+                    "finly_installments",
+                    "finly_goals"
+                ];
+
+                if (
+                    !change?.key ||
+                    !relevantKeys.includes(change.key)
+                ) {
+                    return;
+                }
+
+                loadData();
+                renderReport();
+            });
     };
 
     const init = () => {
-        const reportsPage = $(".reports-page");
-        if (!reportsPage) return;
+        if (!getStorage()) {
+            return;
+        }
 
-        const data = getData();
-        const summary = getCurrentSummary(data);
+        loadData();
+        initializePeriod();
+
+        setupForm();
+        setupButtons();
+        setupResponsiveChart();
+        setupStorageSubscription();
 
         renderReport();
-        setupActions(summary);
     };
 
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener(
+        "DOMContentLoaded",
+        init
+    );
 })();

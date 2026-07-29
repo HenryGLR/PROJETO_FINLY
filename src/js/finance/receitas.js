@@ -1,25 +1,25 @@
 (() => {
-    const STORAGE_KEY = "finly_incomes";
+    const STORAGE_KEY = "incomes";
 
-    const incomeCategories = {
+    const CATEGORY_DATA = {
         salary: {
             label: "Salário",
-            icon: "money"
+            icon: "wallet"
         },
         freelance: {
-            label: "Freela",
+            label: "Freelance",
             icon: "briefcase"
         },
         sales: {
             label: "Vendas",
-            icon: "bag"
+            icon: "shopping"
         },
         gift: {
             label: "Presente",
             icon: "gift"
         },
         investment: {
-            label: "Investimento",
+            label: "Investimentos",
             icon: "chart"
         },
         other: {
@@ -28,42 +28,156 @@
         }
     };
 
-    const defaultIncomes = [
+    const DEFAULT_INCOMES = [
         {
-            id: crypto.randomUUID(),
+            id: "income-salary-default",
             name: "Salário",
             value: 1700,
             date: "2026-07-10",
-            recurrence: "monthly",
             category: "salary",
-            description: "Entrada principal do mês.",
-            status: "received"
+            status: "received",
+            description: "Receita mensal principal.",
+            createdAt: "2026-07-10T12:00:00.000Z"
         },
         {
-            id: crypto.randomUUID(),
+            id: "income-freelance-default",
             name: "Site landing page",
             value: 700,
-            date: "2026-07-25",
-            recurrence: "none",
+            date: "2026-07-28",
             category: "freelance",
-            description: "Projeto previsto para este mês.",
-            status: "pending"
+            status: "pending",
+            description: "Pagamento previsto de projeto.",
+            createdAt: "2026-07-19T12:00:00.000Z"
         }
     ];
 
-    const $ = (selector, parent = document) => parent.querySelector(selector);
-    const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
+    const $ = (selector, parent = document) => {
+        return parent.querySelector(selector);
+    };
 
-    const incomeForm = $(".income-form");
-    const incomeList = $(".income-main .income-list");
-    const incomeSearchInputs = $$(".topbar__search input, .income-filter input");
+    const $$ = (selector, parent = document) => {
+        return [...parent.querySelectorAll(selector)];
+    };
+
+    const getFirstElement = (...selectors) => {
+        for (const selector of selectors) {
+            const element = $(selector);
+
+            if (element) {
+                return element;
+            }
+        }
+
+        return null;
+    };
+
+    const form = getFirstElement(
+        ".income-form",
+        "#incomeForm",
+        'form[data-form="income"]'
+    );
+
+    const list = getFirstElement(
+        ".income-main .income-list",
+        ".income-list",
+        "[data-income-list]"
+    );
+
     const categoryCards = $$(".income-category");
+
+    const searchInputs = $$(
+        ".topbar__search input, .income-filter input, [data-income-search]"
+    );
 
     let incomes = [];
     let editingId = null;
 
+    const getFormElement = (...selectors) => {
+        if (!form) return null;
+
+        for (const selector of selectors) {
+            const element = $(selector, form);
+
+            if (element) {
+                return element;
+            }
+        }
+
+        return null;
+    };
+
+    const fields = {
+        name: getFormElement(
+            "#incomeName",
+            '[name="incomeName"]',
+            "#incomeTitle",
+            '[name="name"]'
+        ),
+
+        value: getFormElement(
+            "#incomeValue",
+            '[name="incomeValue"]',
+            '[name="value"]'
+        ),
+
+        date: getFormElement(
+            "#incomeDate",
+            '[name="incomeDate"]',
+            '[name="date"]'
+        ),
+
+        description: getFormElement(
+            "#incomeDescription",
+            '[name="incomeDescription"]',
+            '[name="description"]'
+        )
+    };
+
+    const createId = () => {
+        if (window.crypto?.randomUUID) {
+            return window.crypto.randomUUID();
+        }
+
+        return `income-${Date.now()}-${Math.random()
+            .toString(16)
+            .slice(2)}`;
+    };
+
+    const escapeHTML = (value) => {
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    };
+
+    const normalizeText = (value) => {
+        return String(value ?? "")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .trim()
+            .toLowerCase();
+    };
+
+    const parseValue = (value) => {
+        if (typeof value === "number") {
+            return Number.isFinite(value) ? value : 0;
+        }
+
+        const normalized = String(value ?? "")
+            .replace(/\s/g, "")
+            .replace("R$", "")
+            .replace(/\./g, "")
+            .replace(",", ".");
+
+        const number = Number(normalized);
+
+        return Number.isFinite(number) ? number : 0;
+    };
+
     const formatCurrency = (value) => {
-        return Number(value).toLocaleString("pt-BR", {
+        return Number(value || 0).toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL"
         });
@@ -72,73 +186,253 @@
     const formatDate = (date) => {
         if (!date) return "Sem data";
 
-        const fixedDate = new Date(`${date}T12:00:00`);
+        const parsedDate = new Date(`${date}T12:00:00`);
 
-        return fixedDate.toLocaleDateString("pt-BR", {
+        if (Number.isNaN(parsedDate.getTime())) {
+            return "Data inválida";
+        }
+
+        return parsedDate.toLocaleDateString("pt-BR", {
             day: "2-digit",
-            month: "short"
+            month: "short",
+            year: "numeric"
         });
     };
 
-    const recurrenceLabel = (recurrence) => {
-        const labels = {
-            none: "Não recorrente",
-            monthly: "Mensal",
-            weekly: "Semanal",
-            yearly: "Anual"
-        };
+    const getMonthKey = (date) => {
+        const parsedDate = date instanceof Date
+            ? date
+            : new Date(`${date}T12:00:00`);
 
-        return labels[recurrence] || "Não recorrente";
+        if (Number.isNaN(parsedDate.getTime())) {
+            return "";
+        }
+
+        return [
+            parsedDate.getFullYear(),
+            String(parsedDate.getMonth() + 1).padStart(2, "0")
+        ].join("-");
     };
 
-    const getIcon = (type) => {
+    const getCurrentMonthKey = () => {
+        return getMonthKey(new Date());
+    };
+
+    const normalizeStatus = (status) => {
+        const value = normalizeText(status);
+
+        if (
+            value === "received" ||
+            value === "recebido" ||
+            value === "paid" ||
+            value === "confirmado"
+        ) {
+            return "received";
+        }
+
+        return "pending";
+    };
+
+    const normalizeCategory = (category) => {
+        return CATEGORY_DATA[category] ? category : "other";
+    };
+
+    const normalizeIncome = (income) => {
+        return {
+            id: income.id || createId(),
+            name: String(
+                income.name ||
+                income.title ||
+                income.source ||
+                "Receita"
+            ).trim(),
+
+            value: parseValue(
+                income.value ??
+                income.amount ??
+                income.total
+            ),
+
+            date: income.date || new Date().toISOString().slice(0, 10),
+            category: normalizeCategory(income.category),
+            status: normalizeStatus(income.status),
+            description: String(income.description || "").trim(),
+            createdAt: income.createdAt || new Date().toISOString()
+        };
+    };
+
+    const getStorage = () => {
+        if (!window.FinlyStorage) {
+            console.error(
+                "Finly: storage.js precisa ser carregado antes de receitas.js."
+            );
+
+            return null;
+        }
+
+        return window.FinlyStorage;
+    };
+
+    const saveIncomes = () => {
+        const storage = getStorage();
+
+        if (!storage) return false;
+
+        return storage.set(STORAGE_KEY, incomes);
+    };
+
+    const loadIncomes = () => {
+        const storage = getStorage();
+
+        if (!storage) {
+            incomes = [];
+            return;
+        }
+
+        if (!storage.has(STORAGE_KEY)) {
+            incomes = DEFAULT_INCOMES.map(normalizeIncome);
+            saveIncomes();
+            return;
+        }
+
+        const storedIncomes = storage.get(STORAGE_KEY, []);
+
+        if (!Array.isArray(storedIncomes)) {
+            incomes = [];
+            saveIncomes();
+            return;
+        }
+
+        incomes = storedIncomes.map(normalizeIncome);
+    };
+
+    const getSelectedCategory = () => {
+        const checkedInput = getFormElement(
+            'input[name="incomeCategory"]:checked',
+            'input[name="category"]:checked'
+        );
+
+        return normalizeCategory(checkedInput?.value || "salary");
+    };
+
+    const getSelectedStatus = () => {
+        const checkedInput = getFormElement(
+            'input[name="incomeStatus"]:checked',
+            'input[name="status"]:checked'
+        );
+
+        if (checkedInput) {
+            return normalizeStatus(checkedInput.value);
+        }
+
+        const select = getFormElement(
+            "#incomeStatus",
+            'select[name="incomeStatus"]',
+            'select[name="status"]'
+        );
+
+        return normalizeStatus(select?.value || "received");
+    };
+
+    const setSelectedCategory = (category) => {
+        const normalizedCategory = normalizeCategory(category);
+
+        const input = getFormElement(
+            `input[name="incomeCategory"][value="${normalizedCategory}"]`,
+            `input[name="category"][value="${normalizedCategory}"]`
+        );
+
+        if (input) {
+            input.checked = true;
+        }
+
+        updateCategoryCards();
+    };
+
+    const setSelectedStatus = (status) => {
+        const normalizedStatus = normalizeStatus(status);
+
+        const input = getFormElement(
+            `input[name="incomeStatus"][value="${normalizedStatus}"]`,
+            `input[name="status"][value="${normalizedStatus}"]`
+        );
+
+        if (input) {
+            input.checked = true;
+        }
+
+        const select = getFormElement(
+            "#incomeStatus",
+            'select[name="incomeStatus"]',
+            'select[name="status"]'
+        );
+
+        if (select) {
+            select.value = normalizedStatus;
+        }
+    };
+
+    const updateCategoryCards = () => {
+        categoryCards.forEach((card) => {
+            const input = $("input", card);
+
+            card.classList.toggle(
+                "is-active",
+                Boolean(input?.checked)
+            );
+        });
+    };
+
+    const getCategoryIcon = (icon) => {
         const icons = {
-            money: `
-                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M12 3v18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                    <path d="M17 7.5c0-1.38-2.24-2.5-5-2.5S7 6.12 7 7.5 9.24 10 12 10s5 1.12 5 2.5S14.76 15 12 15s-5-1.12-5-2.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+            wallet: `
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M4 6h15a2 2 0 0 1 2 2v10H4a2 2 0 0 1-2-2V6h2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M4 6V5a2 2 0 0 1 2-2h11v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M16 11h5v4h-5a2 2 0 0 1 0-4Z" stroke="currentColor" stroke-width="2"/>
                 </svg>
             `,
+
             briefcase: `
-                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M4 7h16v12H4V7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                     <path d="M9 7V5h6v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M4 12h16" stroke="currentColor" stroke-width="2"/>
                 </svg>
             `,
-            bag: `
-                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M5 11h14l-1.5 8h-11L5 11Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                    <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+
+            shopping: `
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M5 9h14l-1 11H6L5 9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M9 9V7a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
             `,
+
             gift: `
-                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M20 12v8H4v-8" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                    <path d="M2 7h20v5H2V7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                    <path d="M12 7v13" stroke="currentColor" stroke-width="2"/>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M4 10h16v11H4V10Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M2 6h20v4H2V6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M12 6v15" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 6H8.5A2.5 2.5 0 1 1 11 3.5L12 6Zm0 0h3.5A2.5 2.5 0 1 0 13 3.5L12 6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                 </svg>
             `,
+
             chart: `
-                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M4 19 9 14l4 4 7-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M15 9h5v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M4 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M8 17v-5M12 17V8M16 17v-7M20 17V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
             `,
+
             plus: `
-                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
                 </svg>
             `
         };
 
-        return icons[type] || icons.plus;
+        return icons[icon] || icons.plus;
     };
-
-    const getCloseIcon = () => `
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
-        </svg>
-    `;
 
     const getToastIcon = (type) => {
         const icons = {
@@ -147,6 +441,7 @@
                     <path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             `,
+
             danger: `
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path d="M12 8v5" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
@@ -154,6 +449,7 @@
                     <path d="M10.3 4.4 2.9 18a2 2 0 0 0 1.7 3h14.8a2 2 0 0 0 1.7-3L13.7 4.4a2 2 0 0 0-3.4 0Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                 </svg>
             `,
+
             info: `
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path d="M12 17v-6" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
@@ -166,7 +462,11 @@
         return icons[type] || icons.info;
     };
 
-    const createToastContainer = () => {
+    const showToast = ({
+        type = "info",
+        title,
+        message
+    }) => {
         let container = $(".toast-container");
 
         if (!container) {
@@ -175,25 +475,32 @@
             document.body.appendChild(container);
         }
 
-        return container;
-    };
-
-    const showToast = ({ type = "info", title, message }) => {
-        const container = createToastContainer();
-
         const toast = document.createElement("div");
         toast.className = `toast toast--${type}`;
 
         toast.innerHTML = `
-            <span class="toast__icon" aria-hidden="true">${getToastIcon(type)}</span>
-
-            <span class="toast__content">
-                <strong class="toast__title">${title}</strong>
-                <span class="toast__message">${message}</span>
+            <span class="toast__icon" aria-hidden="true">
+                ${getToastIcon(type)}
             </span>
 
-            <button class="toast__close" type="button" aria-label="Fechar aviso">
-                ${getCloseIcon()}
+            <span class="toast__content">
+                <strong class="toast__title">
+                    ${escapeHTML(title)}
+                </strong>
+
+                <span class="toast__message">
+                    ${escapeHTML(message)}
+                </span>
+            </span>
+
+            <button
+                class="toast__close"
+                type="button"
+                aria-label="Fechar aviso"
+            >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
+                </svg>
             </button>
 
             <span class="toast__progress"></span>
@@ -203,93 +510,532 @@
 
         const removeToast = () => {
             toast.classList.add("is-leaving");
-            setTimeout(() => toast.remove(), 240);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 240);
         };
 
-        $(".toast__close", toast).addEventListener("click", removeToast);
+        $(".toast__close", toast)?.addEventListener(
+            "click",
+            removeToast
+        );
+
         setTimeout(removeToast, 4200);
     };
 
-    const saveIncomes = () => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(incomes));
-    };
-
-    const loadIncomes = () => {
-        const stored = localStorage.getItem(STORAGE_KEY);
-
-        if (!stored) {
-            incomes = defaultIncomes;
-            saveIncomes();
-            return;
+    const getIncomeStatus = (income) => {
+        if (income.status === "received") {
+            return {
+                label: "Recebido",
+                className: "income-status--success",
+                badgeClass: "badge--success"
+            };
         }
 
-        try {
-            incomes = JSON.parse(stored);
-        } catch {
-            incomes = defaultIncomes;
-            saveIncomes();
-        }
-    };
-
-    const getSelectedCategory = () => {
-        return $(".income-category input:checked")?.value || "salary";
-    };
-
-    const setActiveCategory = () => {
-        categoryCards.forEach((card) => {
-            const input = $("input", card);
-            card.classList.toggle("is-active", input.checked);
-        });
-    };
-
-    const getIncomeFormData = () => {
         return {
-            id: editingId || crypto.randomUUID(),
-            name: $("#incomeName").value.trim(),
-            value: Number($("#incomeValue").value),
-            date: $("#incomeDate").value,
-            recurrence: $("#incomeRecurrence").value,
-            category: getSelectedCategory(),
-            description: $("#incomeDescription").value.trim(),
-            status: "received"
+            label: "Previsto",
+            className: "income-status--warning",
+            badgeClass: "badge--warning"
         };
     };
 
-    const resetForm = () => {
-        incomeForm.reset();
-        editingId = null;
+    const renderIncome = (income) => {
+        const category = CATEGORY_DATA[income.category] || CATEGORY_DATA.other;
+        const status = getIncomeStatus(income);
 
-        const salaryInput = $(".income-category input[value='salary']");
-        if (salaryInput) salaryInput.checked = true;
+        const searchableText = normalizeText([
+            income.name,
+            income.description,
+            category.label,
+            status.label,
+            formatCurrency(income.value)
+        ].join(" "));
 
-        setActiveCategory();
+        return `
+            <article
+                class="income-item"
+                data-income-id="${escapeHTML(income.id)}"
+                data-income-search="${escapeHTML(searchableText)}"
+            >
+                <div class="income-item__main">
+                    <span class="income-item__icon">
+                        ${getCategoryIcon(category.icon)}
+                    </span>
 
-        const submitButton = $(".income-form [type='submit']");
-        if (submitButton) submitButton.textContent = "Salvar receita";
+                    <span class="income-item__info">
+                        <strong class="income-item__title">
+                            ${escapeHTML(income.name)}
+                        </strong>
+
+                        <span class="income-item__meta">
+                            ${escapeHTML(category.label)}
+                            •
+                            ${escapeHTML(formatDate(income.date))}
+                        </span>
+
+                        ${
+                            income.description
+                                ? `
+                                    <span class="income-item__description">
+                                        ${escapeHTML(income.description)}
+                                    </span>
+                                `
+                                : ""
+                        }
+                    </span>
+                </div>
+
+                <div class="income-item__value">
+                    <strong class="income-item__amount">
+                        ${formatCurrency(income.value)}
+                    </strong>
+
+                    <span class="income-status ${status.className}">
+                        ${status.label}
+                    </span>
+                </div>
+
+                <div class="income-item__actions">
+                    <button
+                        class="btn btn-ghost btn-sm"
+                        type="button"
+                        data-action="edit"
+                    >
+                        Editar
+                    </button>
+
+                    <button
+                        class="btn btn-ghost btn-sm"
+                        type="button"
+                        data-action="delete"
+                    >
+                        Excluir
+                    </button>
+                </div>
+            </article>
+        `;
     };
 
-    const validateIncome = () => {
-        const name = $("#incomeName").value.trim();
-        const value = Number($("#incomeValue").value);
-        const date = $("#incomeDate").value;
+    const getSearchTerms = () => {
+        return searchInputs
+            .map((input) => normalizeText(input.value))
+            .filter(Boolean);
+    };
+
+    const getFilteredIncomes = () => {
+        const terms = getSearchTerms();
+
+        if (!terms.length) {
+            return [...incomes];
+        }
+
+        return incomes.filter((income) => {
+            const category = CATEGORY_DATA[income.category]?.label || "";
+            const status = getIncomeStatus(income).label;
+
+            const searchableText = normalizeText([
+                income.name,
+                income.description,
+                category,
+                status,
+                income.value,
+                formatCurrency(income.value),
+                income.date
+            ].join(" "));
+
+            return terms.every((term) => {
+                return searchableText.includes(term);
+            });
+        });
+    };
+
+    const renderIncomes = () => {
+        if (!list) return;
+
+        const filteredIncomes = getFilteredIncomes()
+            .sort((incomeA, incomeB) => {
+                const dateA = new Date(`${incomeA.date}T12:00:00`);
+                const dateB = new Date(`${incomeB.date}T12:00:00`);
+
+                return dateB - dateA;
+            });
+
+        if (!filteredIncomes.length) {
+            list.innerHTML = `
+                <div class="empty-card">
+                    <span class="empty-card__icon">
+                        ${getCategoryIcon("plus")}
+                    </span>
+
+                    <h3 class="empty-card__title">
+                        Nenhuma receita encontrada
+                    </h3>
+
+                    <p class="empty-card__text">
+                        Cadastre uma receita ou altere os termos da pesquisa.
+                    </p>
+                </div>
+            `;
+
+            return;
+        }
+
+        list.innerHTML = filteredIncomes
+            .map(renderIncome)
+            .join("");
+    };
+
+    const getCurrentMonthIncomes = () => {
+        const currentMonth = getCurrentMonthKey();
+
+        const currentItems = incomes.filter((income) => {
+            return getMonthKey(income.date) === currentMonth;
+        });
+
+        return currentItems.length
+            ? currentItems
+            : incomes;
+    };
+
+    const calculateSummary = () => {
+        const monthIncomes = getCurrentMonthIncomes();
+
+        const received = monthIncomes
+            .filter((income) => income.status === "received")
+            .reduce((sum, income) => sum + income.value, 0);
+
+        const pending = monthIncomes
+            .filter((income) => income.status === "pending")
+            .reduce((sum, income) => sum + income.value, 0);
+
+        const total = received + pending;
+
+        const average = monthIncomes.length
+            ? total / monthIncomes.length
+            : 0;
+
+        const sources = new Set(
+            monthIncomes.map((income) => income.category)
+        ).size;
+
+        return {
+            received,
+            pending,
+            total,
+            average,
+            sources,
+            quantity: monthIncomes.length
+        };
+    };
+
+    const setText = (selector, value) => {
+        const element = $(selector);
+
+        if (element) {
+            element.textContent = value;
+        }
+    };
+
+    const updateHero = (summary) => {
+        setText(
+            ".income-hero-card__value",
+            formatCurrency(summary.received)
+        );
+
+        setText(
+            ".income-hero__value",
+            formatCurrency(summary.received)
+        );
+
+        const pills = $$(
+            ".income-hero-card__footer .income-pill, .income-hero .income-pill"
+        );
+
+        if (pills[0]) {
+            pills[0].textContent =
+                `${summary.quantity} entradas no período`;
+        }
+
+        if (pills[1]) {
+            pills[1].textContent =
+                `${formatCurrency(summary.pending)} previstos`;
+        }
+
+        const heroText = getFirstElement(
+            ".income-hero-card__text",
+            ".income-hero__text"
+        );
+
+        if (heroText) {
+            heroText.textContent = summary.pending > 0
+                ? `Você já recebeu ${formatCurrency(summary.received)} e ainda possui ${formatCurrency(summary.pending)} previstos.`
+                : `Todas as receitas cadastradas para o período já foram recebidas.`;
+        }
+    };
+
+    const updateKpis = (summary) => {
+        const cards = $$(".income-kpi");
+
+        cards.forEach((card, index) => {
+            const label = normalizeText(
+                $(".income-kpi__label", card)?.textContent ||
+                card.textContent
+            );
+
+            const valueElement = $(".income-kpi__value", card);
+
+            if (!valueElement) return;
+
+            if (label.includes("recebid")) {
+                valueElement.textContent =
+                    formatCurrency(summary.received);
+                return;
+            }
+
+            if (
+                label.includes("previst") ||
+                label.includes("pendente")
+            ) {
+                valueElement.textContent =
+                    formatCurrency(summary.pending);
+                return;
+            }
+
+            if (
+                label.includes("fonte") ||
+                label.includes("categoria")
+            ) {
+                valueElement.textContent =
+                    String(summary.sources);
+                return;
+            }
+
+            if (label.includes("media")) {
+                valueElement.textContent =
+                    formatCurrency(summary.average);
+                return;
+            }
+
+            if (label.includes("total")) {
+                valueElement.textContent =
+                    formatCurrency(summary.total);
+                return;
+            }
+
+            const fallbackValues = [
+                formatCurrency(summary.received),
+                formatCurrency(summary.pending),
+                String(summary.sources),
+                formatCurrency(summary.average)
+            ];
+
+            valueElement.textContent =
+                fallbackValues[index] || formatCurrency(summary.total);
+        });
+
+        const looseValues = $$(".income-kpi__value");
+
+        if (!cards.length) {
+            if (looseValues[0]) {
+                looseValues[0].textContent =
+                    formatCurrency(summary.received);
+            }
+
+            if (looseValues[1]) {
+                looseValues[1].textContent =
+                    formatCurrency(summary.pending);
+            }
+
+            if (looseValues[2]) {
+                looseValues[2].textContent =
+                    String(summary.sources);
+            }
+        }
+    };
+
+    const updateSidebar = (summary) => {
+        const sidebarBadge = getFirstElement(
+            '.sidebar__link[href*="receitas"] .sidebar__badge',
+            "[data-income-sidebar-badge]"
+        );
+
+        if (sidebarBadge) {
+            sidebarBadge.textContent = String(summary.quantity);
+        }
+
+        const sidebarCardBadge = $(".sidebar-card .badge");
+
+        if (sidebarCardBadge) {
+            sidebarCardBadge.textContent =
+                `${formatCurrency(summary.received)} recebidos`;
+        }
+    };
+
+    const updateSources = () => {
+        const container = getFirstElement(
+            ".income-source-list",
+            ".income-sources__list",
+            "[data-income-sources]"
+        );
+
+        if (!container) return;
+
+        const monthIncomes = getCurrentMonthIncomes();
+
+        const sources = Object.entries(
+            monthIncomes.reduce((result, income) => {
+                if (!result[income.category]) {
+                    result[income.category] = {
+                        value: 0,
+                        quantity: 0
+                    };
+                }
+
+                result[income.category].value += income.value;
+                result[income.category].quantity += 1;
+
+                return result;
+            }, {})
+        )
+            .map(([category, data]) => ({
+                category,
+                ...data
+            }))
+            .sort((sourceA, sourceB) => {
+                return sourceB.value - sourceA.value;
+            });
+
+        if (!sources.length) {
+            container.innerHTML = `
+                <p class="empty-card__text">
+                    Nenhuma fonte cadastrada.
+                </p>
+            `;
+
+            return;
+        }
+
+        container.innerHTML = sources
+            .slice(0, 4)
+            .map((source) => {
+                const category =
+                    CATEGORY_DATA[source.category] ||
+                    CATEGORY_DATA.other;
+
+                return `
+                    <article class="income-source">
+                        <span class="income-source__icon">
+                            ${getCategoryIcon(category.icon)}
+                        </span>
+
+                        <span class="income-source__info">
+                            <strong class="income-source__name">
+                                ${escapeHTML(category.label)}
+                            </strong>
+
+                            <span class="income-source__meta">
+                                ${source.quantity}
+                                ${source.quantity === 1 ? "entrada" : "entradas"}
+                            </span>
+                        </span>
+
+                        <strong class="income-source__value">
+                            ${formatCurrency(source.value)}
+                        </strong>
+                    </article>
+                `;
+            })
+            .join("");
+    };
+
+    const updateUpcomingIncomes = () => {
+        const container = getFirstElement(
+            ".income-next-list",
+            ".income-upcoming__list",
+            "[data-income-upcoming]"
+        );
+
+        if (!container) return;
+
+        const upcoming = incomes
+            .filter((income) => income.status === "pending")
+            .sort((incomeA, incomeB) => {
+                const dateA = new Date(`${incomeA.date}T12:00:00`);
+                const dateB = new Date(`${incomeB.date}T12:00:00`);
+
+                return dateA - dateB;
+            })
+            .slice(0, 4);
+
+        if (!upcoming.length) {
+            container.innerHTML = `
+                <p class="empty-card__text">
+                    Nenhuma receita prevista.
+                </p>
+            `;
+
+            return;
+        }
+
+        container.innerHTML = upcoming
+            .map((income) => {
+                return `
+                    <article class="income-next">
+                        <span class="income-next__info">
+                            <strong class="income-next__title">
+                                ${escapeHTML(income.name)}
+                            </strong>
+
+                            <span class="income-next__date">
+                                ${escapeHTML(formatDate(income.date))}
+                            </span>
+                        </span>
+
+                        <strong class="income-next__value">
+                            ${formatCurrency(income.value)}
+                        </strong>
+                    </article>
+                `;
+            })
+            .join("");
+    };
+
+    const updateInterface = () => {
+        const summary = calculateSummary();
+
+        renderIncomes();
+        updateHero(summary);
+        updateKpis(summary);
+        updateSidebar(summary);
+        updateSources();
+        updateUpcomingIncomes();
+    };
+
+    const validateForm = () => {
+        const name = fields.name?.value.trim() || "";
+        const value = parseValue(fields.value?.value);
+        const date = fields.date?.value || "";
 
         if (!name) {
             showToast({
                 type: "danger",
                 title: "Nome obrigatório",
-                message: "Digite o nome da receita antes de salvar."
+                message: "Digite o nome ou a origem da receita."
             });
 
+            fields.name?.focus();
             return false;
         }
 
-        if (!value || value <= 0) {
+        if (value <= 0) {
             showToast({
                 type: "danger",
                 title: "Valor inválido",
-                message: "Digite um valor maior que zero."
+                message: "Digite um valor de receita maior que zero."
             });
 
+            fields.value?.focus();
             return false;
         }
 
@@ -297,289 +1043,212 @@
             showToast({
                 type: "danger",
                 title: "Data obrigatória",
-                message: "Informe a data de entrada da receita."
+                message: "Informe a data da receita."
             });
 
+            fields.date?.focus();
             return false;
         }
 
         return true;
     };
 
-    const renderIncomeItem = (income) => {
-        const category = incomeCategories[income.category] || incomeCategories.other;
-        const statusText = income.status === "pending" ? "Previsto" : category.label;
+    const getFormData = () => {
+        const existingIncome = incomes.find((income) => {
+            return income.id === editingId;
+        });
 
-        return `
-            <article class="income-item" data-income-id="${income.id}">
-                <div class="income-item__main">
-                    <span class="income-item__icon">
-                        ${getIcon(category.icon)}
-                    </span>
-
-                    <span class="income-item__info">
-                        <strong class="income-item__title">${income.name}</strong>
-                        <span class="income-item__meta">
-                            ${statusText} • ${formatDate(income.date)} • ${recurrenceLabel(income.recurrence)}
-                        </span>
-                    </span>
-                </div>
-
-                <div class="income-item__side">
-                    <strong class="income-item__value">+ ${formatCurrency(income.value)}</strong>
-
-                    <div class="income-item__actions">
-                        <button class="btn btn-ghost btn-sm" type="button" data-action="edit">Editar</button>
-                        <button class="btn btn-ghost btn-sm" type="button" data-action="delete">Excluir</button>
-                    </div>
-                </div>
-            </article>
-        `;
-    };
-
-    const renderIncomes = (list = incomes) => {
-        if (!incomeList) return;
-
-        if (!list.length) {
-            incomeList.innerHTML = `
-                <div class="empty-card">
-                    <span class="empty-card__icon">
-                        ${getIcon("plus")}
-                    </span>
-
-                    <h3 class="empty-card__title">Nenhuma receita encontrada</h3>
-                    <p class="empty-card__text">Cadastre uma nova entrada para ela aparecer aqui.</p>
-                </div>
-            `;
-
-            return;
-        }
-
-        incomeList.innerHTML = list
-            .sort((a, b) => new Date(b.date) - new Date(a.date))
-            .map(renderIncomeItem)
-            .join("");
-    };
-
-    const updateSummary = () => {
-        const receivedIncomes = incomes.filter((income) => income.status !== "pending");
-        const pendingIncomes = incomes.filter((income) => income.status === "pending");
-
-        const totalReceived = receivedIncomes.reduce((sum, income) => sum + Number(income.value), 0);
-        const totalPending = pendingIncomes.reduce((sum, income) => sum + Number(income.value), 0);
-        const salaryTotal = incomes
-            .filter((income) => income.category === "salary" && income.status !== "pending")
-            .reduce((sum, income) => sum + Number(income.value), 0);
-
-        const extraTotal = incomes
-            .filter((income) => income.category !== "salary" && income.status !== "pending")
-            .reduce((sum, income) => sum + Number(income.value), 0);
-
-        const recurringTotal = incomes.filter((income) => income.recurrence !== "none").length;
-
-        $(".income-hero-card__value").textContent = formatCurrency(totalReceived);
-        $(".sidebar-card .badge").textContent = formatCurrency(totalReceived);
-
-        const kpiValues = $$(".income-kpi__value");
-
-        if (kpiValues[0]) kpiValues[0].textContent = formatCurrency(salaryTotal);
-        if (kpiValues[1]) kpiValues[1].textContent = formatCurrency(extraTotal);
-        if (kpiValues[2]) kpiValues[2].textContent = recurringTotal;
-
-        const kpiMetas = $$(".income-kpi__meta");
-
-        if (kpiMetas[1]) {
-            kpiMetas[1].textContent = extraTotal > 0
-                ? "Renda extra registrada"
-                : "Nenhuma renda extra registrada";
-        }
-
-        updateSources(totalReceived, salaryTotal, extraTotal);
-        updateNextIncome(totalPending);
-    };
-
-    const updateSources = (total, salaryTotal, extraTotal) => {
-        const sources = $$(".income-source");
-
-        const items = [
-            {
-                name: "Salário",
-                value: salaryTotal
-            },
-            {
-                name: "Freelas",
-                value: extraTotal
-            },
-            {
-                name: "Outros",
-                value: incomes
-                    .filter((income) => income.category === "other")
-                    .reduce((sum, income) => sum + Number(income.value), 0)
-            }
-        ];
-
-        sources.forEach((source, index) => {
-            const item = items[index];
-            const percent = total > 0 ? Math.min((item.value / total) * 100, 100) : 0;
-
-            $(".income-source__name", source).textContent = item.name;
-            $(".income-source__value", source).textContent = formatCurrency(item.value);
-            $(".income-source__bar", source).style.setProperty("--progress-value", `${percent}%`);
+        return normalizeIncome({
+            id: editingId || createId(),
+            name: fields.name?.value.trim(),
+            value: parseValue(fields.value?.value),
+            date: fields.date?.value,
+            category: getSelectedCategory(),
+            status: getSelectedStatus(),
+            description: fields.description?.value.trim() || "",
+            createdAt:
+                existingIncome?.createdAt ||
+                new Date().toISOString()
         });
     };
 
-    const updateNextIncome = () => {
-        const asideLists = $$(".income-aside .income-list");
-        const nextList = asideLists[0];
-
-        if (!nextList) return;
-
-        const pending = incomes.filter((income) => income.status === "pending");
-
-        if (!pending.length) {
-            nextList.innerHTML = `
-                <div class="empty-card">
-                    <h3 class="empty-card__title">Nada previsto</h3>
-                    <p class="empty-card__text">Quando houver uma receita futura, ela aparecerá aqui.</p>
-                </div>
-            `;
-
-            return;
-        }
-
-        nextList.innerHTML = pending
-            .sort((a, b) => new Date(a.date) - new Date(b.date))
-            .slice(0, 2)
-            .map((income) => {
-                const category = incomeCategories[income.category] || incomeCategories.other;
-
-                return `
-                    <article class="income-item">
-                        <div class="income-item__main">
-                            <span class="income-item__icon">
-                                ${getIcon(category.icon)}
-                            </span>
-
-                            <span class="income-item__info">
-                                <strong class="income-item__title">${income.name}</strong>
-                                <span class="income-item__meta">Previsto para ${formatDate(income.date)}</span>
-                            </span>
-                        </div>
-
-                        <div class="income-item__side">
-                            <strong class="income-item__value">+ ${formatCurrency(income.value)}</strong>
-                        </div>
-                    </article>
-                `;
-            })
-            .join("");
+    const getSubmitButton = () => {
+        return getFormElement(
+            '[type="submit"]',
+            "[data-income-submit]"
+        );
     };
 
-    const filterIncomes = () => {
-        const terms = incomeSearchInputs
-            .map((input) => input.value.trim().toLowerCase())
-            .filter(Boolean);
+    const resetForm = () => {
+        if (!form) return;
 
-        if (!terms.length) {
-            renderIncomes();
-            return;
+        form.reset();
+        editingId = null;
+
+        setSelectedCategory("salary");
+        setSelectedStatus("received");
+        setDefaultDate();
+
+        const submitButton = getSubmitButton();
+
+        if (submitButton) {
+            submitButton.textContent = "Salvar receita";
         }
 
-        const filtered = incomes.filter((income) => {
-            const category = incomeCategories[income.category]?.label || "";
-            const text = `${income.name} ${category} ${income.description}`.toLowerCase();
-
-            return terms.every((term) => text.includes(term));
-        });
-
-        renderIncomes(filtered);
+        form.classList.remove("is-editing");
     };
 
-    const fillFormToEdit = (income) => {
+    const fillForm = (income) => {
         editingId = income.id;
 
-        $("#incomeName").value = income.name;
-        $("#incomeValue").value = income.value;
-        $("#incomeDate").value = income.date;
-        $("#incomeRecurrence").value = income.recurrence;
-        $("#incomeDescription").value = income.description || "";
+        if (fields.name) {
+            fields.name.value = income.name;
+        }
 
-        const categoryInput = $(`.income-category input[value="${income.category}"]`);
-        if (categoryInput) categoryInput.checked = true;
+        if (fields.value) {
+            fields.value.value = income.value;
+        }
 
-        setActiveCategory();
+        if (fields.date) {
+            fields.date.value = income.date;
+        }
 
-        const submitButton = $(".income-form [type='submit']");
-        if (submitButton) submitButton.textContent = "Salvar alterações";
+        if (fields.description) {
+            fields.description.value = income.description;
+        }
 
-        $("#nova-receita").scrollIntoView({
+        setSelectedCategory(income.category);
+        setSelectedStatus(income.status);
+
+        const submitButton = getSubmitButton();
+
+        if (submitButton) {
+            submitButton.textContent = "Salvar alterações";
+        }
+
+        form?.classList.add("is-editing");
+
+        form?.scrollIntoView({
             behavior: "smooth",
             block: "start"
         });
-    };
 
-    const deleteIncome = (id) => {
-        incomes = incomes.filter((income) => income.id !== id);
-        saveIncomes();
-        renderIncomes();
-        updateSummary();
-
-        showToast({
-            type: "success",
-            title: "Receita excluída",
-            message: "A entrada foi removida da sua lista."
-        });
-    };
-
-    const handleIncomeActions = (event) => {
-        const button = event.target.closest("[data-action]");
-        if (!button) return;
-
-        const item = event.target.closest("[data-income-id]");
-        const income = incomes.find((entry) => entry.id === item?.dataset.incomeId);
-
-        if (!income) return;
-
-        if (button.dataset.action === "edit") {
-            fillFormToEdit(income);
-        }
-
-        if (button.dataset.action === "delete") {
-            deleteIncome(income.id);
-        }
+        fields.name?.focus();
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        if (!validateIncome()) return;
+        if (!validateForm()) return;
 
-        const incomeData = getIncomeFormData();
+        const wasEditing = Boolean(editingId);
+        const incomeData = getFormData();
 
-        if (editingId) {
-            incomes = incomes.map((income) => income.id === editingId ? incomeData : income);
+        if (wasEditing) {
+            incomes = incomes.map((income) => {
+                return income.id === editingId
+                    ? incomeData
+                    : income;
+            });
         } else {
             incomes = [incomeData, ...incomes];
         }
 
-        saveIncomes();
-        renderIncomes();
-        updateSummary();
+        const saved = saveIncomes();
+
+        if (!saved) {
+            showToast({
+                type: "danger",
+                title: "Erro ao salvar",
+                message: "Não foi possível salvar a receita no navegador."
+            });
+
+            return;
+        }
+
         resetForm();
+        updateInterface();
 
         showToast({
             type: "success",
-            title: editingId ? "Receita atualizada" : "Receita salva",
-            message: "Sua lista de entradas foi atualizada com sucesso."
+            title: wasEditing
+                ? "Receita atualizada"
+                : "Receita salva",
+
+            message: wasEditing
+                ? "As alterações foram salvas com sucesso."
+                : "A nova receita foi adicionada ao seu controle."
         });
     };
 
-    const setupDefaultDate = () => {
-        const dateInput = $("#incomeDate");
+    const deleteIncome = (income) => {
+        const confirmed = window.confirm(
+            `Deseja excluir a receita "${income.name}"?`
+        );
 
-        if (dateInput && !dateInput.value) {
-            dateInput.valueAsDate = new Date();
+        if (!confirmed) return;
+
+        incomes = incomes.filter((item) => {
+            return item.id !== income.id;
+        });
+
+        const saved = saveIncomes();
+
+        if (!saved) {
+            showToast({
+                type: "danger",
+                title: "Erro ao excluir",
+                message: "Não foi possível atualizar os dados."
+            });
+
+            return;
         }
+
+        if (editingId === income.id) {
+            resetForm();
+        }
+
+        updateInterface();
+
+        showToast({
+            type: "success",
+            title: "Receita excluída",
+            message: "A receita foi removida do seu controle."
+        });
+    };
+
+    const handleListAction = (event) => {
+        const button = event.target.closest("[data-action]");
+
+        if (!button) return;
+
+        const item = button.closest("[data-income-id]");
+
+        if (!item) return;
+
+        const income = incomes.find((entry) => {
+            return entry.id === item.dataset.incomeId;
+        });
+
+        if (!income) return;
+
+        const action = button.dataset.action;
+
+        if (action === "edit") {
+            fillForm(income);
+        }
+
+        if (action === "delete") {
+            deleteIncome(income);
+        }
+    };
+
+    const setDefaultDate = () => {
+        if (!fields.date || fields.date.value) return;
+
+        fields.date.value = new Date()
+            .toISOString()
+            .slice(0, 10);
     };
 
     const setupCategoryCards = () => {
@@ -587,36 +1256,71 @@
             card.addEventListener("click", () => {
                 const input = $("input", card);
 
-                if (input) {
-                    input.checked = true;
-                    setActiveCategory();
-                }
+                if (!input) return;
+
+                input.checked = true;
+                updateCategoryCards();
             });
         });
     };
 
     const setupFilters = () => {
-        incomeSearchInputs.forEach((input) => {
-            input.addEventListener("input", filterIncomes);
+        searchInputs.forEach((input) => {
+            input.addEventListener("input", renderIncomes);
         });
 
-        $(".income-filter .btn")?.addEventListener("click", filterIncomes);
+        const filterButton = getFirstElement(
+            ".income-filter .btn",
+            "[data-action='filter-incomes']"
+        );
+
+        filterButton?.addEventListener(
+            "click",
+            renderIncomes
+        );
+    };
+
+    const setupCancelEditing = () => {
+        const cancelButton = getFirstElement(
+            "[data-action='cancel-income-edit']",
+            ".income-form__cancel"
+        );
+
+        cancelButton?.addEventListener("click", () => {
+            resetForm();
+
+            showToast({
+                type: "info",
+                title: "Edição cancelada",
+                message: "O formulário voltou ao estado inicial."
+            });
+        });
     };
 
     const init = () => {
-        if (!incomeForm) return;
+        if (!form || !list) {
+            console.warn(
+                "Finly: formulário ou lista de receitas não encontrados."
+            );
+
+            return;
+        }
+
+        if (!getStorage()) {
+            return;
+        }
 
         loadIncomes();
-        setupDefaultDate();
+        setDefaultDate();
         setupCategoryCards();
         setupFilters();
+        setupCancelEditing();
 
-        incomeForm.addEventListener("submit", handleSubmit);
-        incomeList?.addEventListener("click", handleIncomeActions);
+        form.addEventListener("submit", handleSubmit);
+        list.addEventListener("click", handleListAction);
 
-        setActiveCategory();
-        renderIncomes();
-        updateSummary();
+        updateCategoryCards();
+        updateInterface();
     };
 
     document.addEventListener("DOMContentLoaded", init);
